@@ -23,12 +23,13 @@ func NewUserRepository(conn *gorm.DB) users.Data {
 func (repo *mysqlUserRepository) PostUser(input users.Core) (row int, err error) {
 	passHash, _ := _bcrypt.HashPassword(input.Password)
 	user := User{
-		FullName:    input.FullName,
-		Password:    passHash,
-		Email:       input.Email,
-		PhoneNumber: input.PhoneNumber,
-		Address:     input.Address,
-		ImageURL:    input.ImageURL,
+		FullName:     input.FullName,
+		Password:     passHash,
+		Email:        input.Email,
+		PhoneNumber:  input.PhoneNumber,
+		Address:      input.Address,
+		ImageURL:     input.ImageURL,
+		IsContractor: false,
 	}
 	tx := repo.db.Create(&user)
 	if tx.Error != nil {
@@ -52,7 +53,7 @@ func (repo *mysqlUserRepository) AuthUser(email string, password string) (fullNa
 	if errToken != nil {
 		return "", "", "", false, errToken
 	}
-	return token, userData.FullName, userData.ImageURL, false, nil
+	return token, userData.FullName, userData.ImageURL, userData.IsContractor, nil
 }
 
 func (repo *mysqlUserRepository) PutDataUser(id int, data users.Core) (int, error) {
