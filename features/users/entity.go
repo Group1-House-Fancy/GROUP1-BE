@@ -27,6 +27,7 @@ type Data interface {
 	PostUser(data Core) (row int, err error)
 	AuthUser(email string, password string) (fullName string, token string, imageURL string, isContractor bool, e error)
 	PutDataUser(id int, data Core) (row int, err error)
+	PutDataUser1(id int, data bool) (row int, err error)
 	GetUser(id int) (data Core, err error)
 	DeleteUser(id int) (row int, err error)
 }

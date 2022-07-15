@@ -70,6 +70,20 @@ func (repo *mysqlUserRepository) PutDataUser(id int, data users.Core) (int, erro
 	return int(result.RowsAffected), nil
 }
 
+func (repo *mysqlUserRepository) PutDataUser1(id int, data bool) (int, error) {
+	contractorUser := User{
+		IsContractor: true,
+	}
+	result := repo.db.Model(&User{}).Where("id = ?", id).Updates(&contractorUser)
+	if result.Error != nil {
+		return 0, result.Error
+	}
+	if result.RowsAffected == 0 {
+		return 0, fmt.Errorf("failed to update data")
+	}
+	return int(result.RowsAffected), nil
+}
+
 func (repo *mysqlUserRepository) GetUser(id int) (data users.Core, err error) {
 	var userData User
 
