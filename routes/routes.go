@@ -27,6 +27,7 @@ func New(presenter factory.Presenter) *echo.Echo {
 
 	//houses
 	e.GET("houses", presenter.HousePresenter.GetAllHouse)
+	e.POST("houses", presenter.HousePresenter.PostNewHouse, middlewares.JWTMiddleware())
 
 	return e
 }

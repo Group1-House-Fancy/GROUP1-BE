@@ -11,8 +11,8 @@ type House struct {
 	Title        string  `json:"title" form:"title"`
 	Price        int     `json:"price" form:"price"`
 	Location     string  `json:"location" form:"location"`
-	Longitude    float64 `gorm:"type:varchar(30)" json:"longitude" form:"longitude"`
-	Latitude     float64 `gorm:"type:varchar(30)" json:"latitude" form:"latitude"`
+	Longitude    float64 `json:"longitude" form:"longitude"`
+	Latitude     float64 `json:"latitude" form:"latitude"`
 	SurfaceArea  int     `json:"surface_area" form:"surface_area"`
 	BuildingArea int     `json:"building_area" form:"building_area"`
 	Bathroom     int     `json:"bathroom" form:"bathroom"`
@@ -27,7 +27,7 @@ type House struct {
 type User struct {
 	gorm.Model
 	FullName    string `json:"full_name" form:"full_name"`
-	Email       string `json:"email" form:"email"`
+	Email       string `gorm:"unique" json:"email"`
 	PhoneNumber string `json:"phone_number" form:"phone_number"`
 	Address     string `json:"address" form:"address"`
 	ImageURL    string `json:"image_url" form:"image_url"`
@@ -52,9 +52,9 @@ func (data *House) toCore() houses.Core {
 		CreatedAt:    data.CreatedAt,
 		UpdatedAt:    data.UpdatedAt,
 		User: houses.User{
-			ID:          int(data.User.ID),
-			FullName:    data.User.FullName,
-			Email:       data.User.Email,
+			ID:       int(data.User.ID),
+			FullName: data.User.FullName,
+			//Email:       data.User.Email,
 			PhoneNumber: data.User.PhoneNumber,
 			Address:     data.User.Address,
 			ImageURL:    data.User.ImageURL,
