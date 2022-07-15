@@ -1,0 +1,25 @@
+name: Deploy to GCP EC2
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: executing deploy to server using remote ssh key
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          port: ${{ secrets.PORT }}
+          script: |
+            cd /home/Wen/GROUP1-BE
+            git pull origin main
+            docker stop projectCapsContainer
+            docker rm projectCapsContainer
+            docker rmi projectCaps-images:latest
+            docker build -t projectCaps-images:latest .
+            docker run -d -p 80:80 -e DB_Username=${{ secrets.DB_USERNAME }} -e DB_Password=${{ secrets.DB_PASSWORD }} -e DB_Port=${{ secrets.DB_PORT }} -e DB_Host=${{ secrets.DB_HOST }} -e DB_Name=${{ secrets.DB_NAME }} -e DB_BUCKET=${{ secrets.DB_BUCKET }} -e DB_SECRET=${{ secrets.DB_SECRET }} --name projectCapsContainer projectCaps-images:latest
