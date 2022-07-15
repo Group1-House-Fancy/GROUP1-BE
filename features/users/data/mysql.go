@@ -1,8 +1,8 @@
 package data
 
 import (
-	_bcrypt "capstoneproject/bcrypt"
 	"capstoneproject/features/users"
+	_bcrypt "capstoneproject/plugins"
 	"fmt"
 
 	"capstoneproject/middlewares"
