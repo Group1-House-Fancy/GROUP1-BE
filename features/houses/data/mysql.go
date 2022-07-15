@@ -24,3 +24,12 @@ func (repo *mysqlHouseRepository) SelectAllHouse(limit, offset int) ([]houses.Co
 	}
 	return toCoreList(dataHouses), nil
 }
+
+func (repo *mysqlHouseRepository) InsertNewHouse(data houses.Core) (int, int, error) {
+	var dataHouse = fromCore(data)
+	result := repo.db.Create(&dataHouse)
+	if result.Error != nil {
+		return 0, 0, result.Error
+	}
+	return int(dataHouse.ID), 1, nil
+}

@@ -1,6 +1,9 @@
 package business
 
-import "capstoneproject/features/houses"
+import (
+	"capstoneproject/features/houses"
+	"fmt"
+)
 
 type houseUsecase struct {
 	houseData houses.Data
@@ -28,4 +31,12 @@ func (uc *houseUsecase) GetAllHouse(limit, offset int) (resp []houses.Core, tota
 		}
 	}
 	return resp, totalPage, err
+}
+
+func (uc *houseUsecase) PostNewHouse(input houses.Core) (idHouse int, row int, err error) {
+	if input.Title == "" || input.Latitude == 0 || input.Longitude == 0 {
+		return 0, -1, fmt.Errorf("all input must be filled")
+	}
+	idHouse, row, err = uc.houseData.InsertNewHouse(input)
+	return idHouse, row, err
 }
