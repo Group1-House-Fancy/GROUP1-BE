@@ -3,7 +3,7 @@ package presentation
 import (
 	"capstoneproject/features/houses"
 	_responseHouse "capstoneproject/features/houses/presentation/response"
-	"capstoneproject/helper"
+	"capstoneproject/helpers"
 	"net/http"
 	"strconv"
 
@@ -27,11 +27,11 @@ func (h *HouseHandler) GetAllHouse(c echo.Context) error {
 	offsetInt, _ := strconv.Atoi(offset)
 	result, totalPage, err := h.houseBusiness.GetAllHouse(limitInt, offsetInt)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, helper.ResponseFailed("failed to get all data"))
+		return c.JSON(http.StatusInternalServerError, helpers.ResponseFailed("failed to get all data"))
 	}
 	var resp = map[string]interface{}{
 		"data":       _responseHouse.FromCoreList(result),
 		"total_page": totalPage,
 	}
-	return c.JSON(http.StatusOK, helper.ResponseSuccesWithData("success to get all data", resp))
+	return c.JSON(http.StatusOK, helpers.ResponseSuccesWithData("success to get all data", resp))
 }

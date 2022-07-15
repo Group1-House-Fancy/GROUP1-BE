@@ -4,7 +4,7 @@ import (
 	"capstoneproject/features/users"
 	_requestUser "capstoneproject/features/users/presentation/request"
 	_responseUser "capstoneproject/features/users/presentation/response"
-	_helper "capstoneproject/helper"
+	_helper "capstoneproject/helpers"
 	"capstoneproject/middlewares"
 	"fmt"
 
