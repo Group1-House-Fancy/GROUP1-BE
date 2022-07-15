@@ -22,5 +22,8 @@ func New(presenter factory.Presenter) *echo.Echo {
 	e.GET("users", presenter.UserPresenter.GetUser, middlewares.JWTMiddleware())
 	e.DELETE("users", presenter.UserPresenter.DeleteDataUser, middlewares.JWTMiddleware())
 
+	//contractor
+	e.POST("contractors", presenter.ContractorPresenter.JoinContractor, middlewares.JWTMiddleware())
+
 	return e
 }
