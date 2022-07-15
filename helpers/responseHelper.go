@@ -1,4 +1,4 @@
-package helper
+package helpers
 
 func ResponseFailed(msg string) map[string]interface{} {
 	return map[string]interface{}{
