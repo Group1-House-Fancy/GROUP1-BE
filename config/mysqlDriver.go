@@ -2,6 +2,7 @@ package config
 
 import (
 	_mContractors "capstoneproject/features/contractors/data"
+	_mHouses "capstoneproject/features/houses/data"
 	_mUsers "capstoneproject/features/users/data"
 	"fmt"
 	"os"
@@ -16,7 +17,7 @@ func InitDB() *gorm.DB {
 	dbPort := os.Getenv("DB_Port")
 	dbHost := os.Getenv("DB_Host")
 	dbName := os.Getenv("DB_Name")
-	connectionString := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local",
+	connectionString := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=UTC",
 		dbUsername,
 		dbPassword,
 		dbHost,
@@ -35,4 +36,5 @@ func InitDB() *gorm.DB {
 func InitMigrate(db *gorm.DB) {
 	db.AutoMigrate(&_mUsers.User{})
 	db.AutoMigrate(&_mContractors.Contractor{})
+	db.AutoMigrate(&_mHouses.House{})
 }
