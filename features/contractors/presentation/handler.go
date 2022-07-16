@@ -3,10 +3,12 @@ package presentation
 import (
 	"capstoneproject/features/contractors"
 	_requestContractor "capstoneproject/features/contractors/presentation/request"
+	_responseContractor "capstoneproject/features/contractors/presentation/response"
 	"capstoneproject/helpers"
 	"capstoneproject/middlewares"
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/labstack/echo/v4"
 )
@@ -65,4 +67,20 @@ func (h *ContractorHandler) JoinContractor(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, helpers.ResponseFailed("failed to create contractor"))
 	}
 	return c.JSON(http.StatusOK, helpers.ResponseSuccesNoData("success to create contractor"))
+}
+
+func (h *ContractorHandler) GetAllContractor(c echo.Context) error {
+	limit := c.QueryParam("limit")
+	offset := c.QueryParam("offset")
+	limitInt, _ := strconv.Atoi(limit)
+	offsetInt, _ := strconv.Atoi(offset)
+	result, totalPage, err := h.contractorBusiness.GetAllContractor(limitInt, offsetInt)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, helpers.ResponseFailed("failed to get all data"))
+	}
+	var res = map[string]interface{}{
+		"data":       _responseContractor.FromCoreList(result),
+		"total_page": totalPage,
+	}
+	return c.JSON(http.StatusOK, helpers.ResponseSuccesWithData("success to get all data", res))
 }

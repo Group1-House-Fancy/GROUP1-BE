@@ -24,9 +24,11 @@ type User struct {
 
 type Business interface {
 	CreateContractor(data Core) (row int, err error)
+	GetAllContractor(limit, offset int) (data []Core, totalPage int, err error)
 }
 
 type Data interface {
 	PostContractor(data Core) (row int, err error)
 	ContractorExist(id int, userContractor bool) (row int, err error)
+	SelectAllContractor(limit, offset int) (data []Core, err error)
 }
