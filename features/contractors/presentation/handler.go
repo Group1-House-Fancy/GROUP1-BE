@@ -84,3 +84,16 @@ func (h *ContractorHandler) GetAllContractor(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, helpers.ResponseSuccesWithData("success to get all data", res))
 }
+
+func (h *ContractorHandler) GetContractor(c echo.Context) error {
+	idCtr := c.Param("idContractor")
+	idCtrInt, errInt := strconv.Atoi(idCtr)
+	if errInt != nil {
+		return c.JSON(http.StatusBadRequest, helpers.ResponseFailed("failed id contractor not recognize"))
+	}
+	result, err := h.contractorBusiness.GetContractor(idCtrInt)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, helpers.ResponseFailed("failed to get data"))
+	}
+	return c.JSON(http.StatusOK, helpers.ResponseSuccesWithData("success to get data", _responseContractor.FromCore(result)))
+}

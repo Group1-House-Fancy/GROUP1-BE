@@ -55,3 +55,12 @@ func (repo *mysqlContractorRepository) SelectAllContractor(limit, offset int) ([
 	}
 	return toCoreList(dataCr), nil
 }
+
+func (repo *mysqlContractorRepository) SelectContractor(id int) (contractors.Core, error) {
+	var dataCrt Contractor
+	result := repo.db.Where("id = ?", id).First(&dataCrt)
+	if result.Error != nil {
+		return contractors.Core{}, result.Error
+	}
+	return dataCrt.toCore(), nil
+}
