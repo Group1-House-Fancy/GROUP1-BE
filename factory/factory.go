@@ -4,6 +4,9 @@ import (
 	_contractorBusiness "capstoneproject/features/contractors/business"
 	_contractorData "capstoneproject/features/contractors/data"
 	_contractorPresentation "capstoneproject/features/contractors/presentation"
+	_houseImageBusiness "capstoneproject/features/houseImages/business"
+	_houseImageData "capstoneproject/features/houseImages/data"
+	_houseImagePresentation "capstoneproject/features/houseImages/presentation"
 	_houseBusiness "capstoneproject/features/houses/business"
 	_houseData "capstoneproject/features/houses/data"
 	_housePresentation "capstoneproject/features/houses/presentation"
@@ -18,6 +21,7 @@ type Presenter struct {
 	UserPresenter       *_userPresentation.UserHandler
 	ContractorPresenter *_contractorPresentation.ContractorHandler
 	HousePresenter      *_housePresentation.HouseHandler
+	HouseImagePresenter *_houseImagePresentation.HouseImageHandler
 }
 
 func InitFactory(dbConn *gorm.DB) Presenter {
@@ -30,10 +34,14 @@ func InitFactory(dbConn *gorm.DB) Presenter {
 	houseData := _houseData.NewHouseRepository(dbConn)
 	houseBusiness := _houseBusiness.NewHouseBusiness(houseData)
 	housePresentation := _housePresentation.NewHouseHandler(houseBusiness)
+	houseImageData := _houseImageData.NewHouseImageRepository(dbConn)
+	houseImageBusiness := _houseImageBusiness.NewHouseImageBusiness(houseImageData)
+	houseImagePresentation := _houseImagePresentation.NewHouseImageHandler(houseImageBusiness)
 
 	return Presenter{
 		UserPresenter:       UserPresentation,
 		ContractorPresenter: contractorPresentation,
 		HousePresenter:      housePresentation,
+		HouseImagePresenter: houseImagePresentation,
 	}
 }
