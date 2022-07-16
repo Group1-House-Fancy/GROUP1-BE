@@ -2,6 +2,7 @@ package config
 
 import (
 	_mContractors "capstoneproject/features/contractors/data"
+	_mHouseImages "capstoneproject/features/houseImages/data"
 	_mHouses "capstoneproject/features/houses/data"
 	_mUsers "capstoneproject/features/users/data"
 	"fmt"
@@ -37,4 +38,5 @@ func InitMigrate(db *gorm.DB) {
 	db.AutoMigrate(&_mUsers.User{})
 	db.AutoMigrate(&_mContractors.Contractor{})
 	db.AutoMigrate(&_mHouses.House{})
+	db.AutoMigrate(&_mHouseImages.HouseImage{})
 }
