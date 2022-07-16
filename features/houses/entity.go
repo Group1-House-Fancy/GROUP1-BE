@@ -36,6 +36,7 @@ type Business interface {
 	GetHouseDetail(idHouse int) (data Core, err error)
 	GetMyListHouse(idUser, limit, offset int) (data []Core, totalPage int, err error)
 	PutHouse(idHouse int, data Core) (row int, err error)
+	DeleteHouse(idHouse int) (row int, err error)
 }
 
 type Data interface {
@@ -44,4 +45,5 @@ type Data interface {
 	SelectHouseByIdHouse(idHouse int) (data Core, err error)
 	SelectHouseByIdUser(idUser, limit, offset int) (data []Core, err error)
 	UpdateHouse(idHouse int, data Core) (row int, err error)
+	DeleteHouse(idHouse int) (row int, err error)
 }

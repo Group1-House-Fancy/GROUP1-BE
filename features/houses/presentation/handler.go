@@ -127,8 +127,33 @@ func (h *HouseHandler) PutHouse(c echo.Context) error {
 	if result == -1 {
 		return c.JSON(http.StatusBadRequest, helpers.ResponseFailed("all input must be filled"))
 	}
+	if result == 0 {
+		return c.JSON(http.StatusInternalServerError, helpers.ResponseFailed("failed to update house"))
+	}
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, helpers.ResponseFailed("failed to update house"))
 	}
 	return c.JSON(http.StatusOK, helpers.ResponseSuccesNoData("success to update house"))
+}
+func (h *HouseHandler) DeleteHouse(c echo.Context) error {
+	idHouse := c.Param("idHouse")
+	idHouseInt, errIdHouse := strconv.Atoi(idHouse)
+	if errIdHouse != nil {
+		return c.JSON(http.StatusBadRequest, helpers.ResponseFailed("failed id house not recognize"))
+	}
+	idToken, errToken := middlewares.ExtractToken(c)
+	if errToken != nil {
+		c.JSON(http.StatusBadRequest, helpers.ResponseFailed("invalid token"))
+	}
+	if idToken == 0 {
+		return c.JSON(http.StatusUnauthorized, helpers.ResponseFailed("unauthorized"))
+	}
+	result, err := h.houseBusiness.DeleteHouse(idHouseInt)
+	if result == 0 {
+		return c.JSON(http.StatusInternalServerError, helpers.ResponseFailed("failed to delete house"))
+	}
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, helpers.ResponseFailed("failed to delete house"))
+	}
+	return c.JSON(http.StatusOK, helpers.ResponseSuccesNoData("success to delete house"))
 }

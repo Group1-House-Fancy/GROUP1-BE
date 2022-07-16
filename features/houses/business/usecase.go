@@ -70,3 +70,7 @@ func (uc *houseUsecase) PutHouse(idHouse int, input houses.Core) (row int, err e
 	row, err = uc.houseData.UpdateHouse(idHouse, input)
 	return row, err
 }
+func (uc *houseUsecase) DeleteHouse(idHouse int) (row int, err error) {
+	row, err = uc.houseData.DeleteHouse(idHouse)
+	return row, err
+}

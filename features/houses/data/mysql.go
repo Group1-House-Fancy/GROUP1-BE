@@ -60,3 +60,10 @@ func (repo *mysqlHouseRepository) UpdateHouse(idHouse int, data houses.Core) (in
 	}
 	return 1, nil
 }
+func (repo *mysqlHouseRepository) DeleteHouse(idHouse int) (int, error) {
+	result := repo.db.Where("id = ?", idHouse).Delete(&House{})
+	if result.Error != nil {
+		return 0, result.Error
+	}
+	return 1, nil
+}
