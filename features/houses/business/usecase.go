@@ -45,3 +45,21 @@ func (uc *houseUsecase) GetHouseDetail(idHouse int) (resp houses.Core, err error
 	resp, err = uc.houseData.SelectHouseByIdHouse(idHouse)
 	return resp, err
 }
+
+func (uc *houseUsecase) GetMyListHouse(idUser, limit, offset int) (resp []houses.Core, totalPage int, err error) {
+	resp, err = uc.houseData.SelectHouseByIdUser(idUser, limit, offset)
+	total := len(resp)
+	if total == 0 {
+		totalPage = 0
+	} else {
+		if limit == 0 {
+			limit = total
+		}
+		if total%limit != 0 {
+			totalPage = (total / limit) + 1
+		} else {
+			totalPage = total / limit
+		}
+	}
+	return resp, totalPage, err
+}
