@@ -34,3 +34,21 @@ func (uc *contractorUsecase) CreateContractor(input contractors.Core) (row int, 
 		return row, err
 	}
 }
+
+func (uc *contractorUsecase) GetAllContractor(limit, offset int) (data []contractors.Core, totalPage int, err error) {
+	data, err = uc.contractorData.SelectAllContractor(limit, offset)
+	total := len(data)
+	if total == 0 {
+		totalPage = 0
+	} else {
+		if limit == 0 {
+			limit = total
+		}
+		if total%limit != 0 {
+			totalPage = (total / limit) + 1
+		} else {
+			totalPage = total / limit
+		}
+	}
+	return data, totalPage, err
+}

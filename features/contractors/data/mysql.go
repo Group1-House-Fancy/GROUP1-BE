@@ -46,3 +46,12 @@ func (repo *mysqlContractorRepository) ContractorExist(id int, bl bool) (int, er
 	}
 	return int(result.RowsAffected), nil
 }
+
+func (repo *mysqlContractorRepository) SelectAllContractor(limit, offset int) ([]contractors.Core, error) {
+	var dataCr []Contractor
+	result := repo.db.Limit(limit).Offset(offset).Find(&dataCr)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return toCoreList(dataCr), nil
+}
