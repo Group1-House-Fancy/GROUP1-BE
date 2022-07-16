@@ -52,3 +52,8 @@ func (uc *contractorUsecase) GetAllContractor(limit, offset int) (data []contrac
 	}
 	return data, totalPage, err
 }
+
+func (uc *contractorUsecase) GetContractor(id int) (data contractors.Core, err error) {
+	data, err = uc.contractorData.SelectContractor(id)
+	return data, err
+}
