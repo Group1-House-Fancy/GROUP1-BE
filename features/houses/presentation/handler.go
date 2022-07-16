@@ -79,3 +79,26 @@ func (h *HouseHandler) GetHouseDetail(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, helpers.ResponseSuccesWithData("success to get data", _responseHouse.FromCore(result)))
 }
+
+func (h *HouseHandler) GetMyListHouse(c echo.Context) error {
+	idToken, errToken := middlewares.ExtractToken(c)
+	if errToken != nil {
+		c.JSON(http.StatusBadRequest, helpers.ResponseFailed("invalid token"))
+	}
+	if idToken == 0 {
+		return c.JSON(http.StatusUnauthorized, helpers.ResponseFailed("unauthorized"))
+	}
+	limit := c.QueryParam("limit")
+	offset := c.QueryParam("offset")
+	limitInt, _ := strconv.Atoi(limit)
+	offsetInt, _ := strconv.Atoi(offset)
+	result, totalPage, err := h.houseBusiness.GetMyListHouse(idToken, limitInt, offsetInt)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, helpers.ResponseFailed("failed to get all data"))
+	}
+	var resp = map[string]interface{}{
+		"data":       _responseHouse.FromCoreList(result),
+		"total_page": totalPage,
+	}
+	return c.JSON(http.StatusOK, helpers.ResponseSuccesWithData("success to get all data", resp))
+}

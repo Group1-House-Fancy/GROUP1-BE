@@ -42,3 +42,12 @@ func (repo *mysqlHouseRepository) SelectHouseByIdHouse(idHouse int) (houses.Core
 	}
 	return dataHouses.toCore(), nil
 }
+
+func (repo *mysqlHouseRepository) SelectHouseByIdUser(idUser, limit, offset int) ([]houses.Core, error) {
+	var dataHouses []House
+	result := repo.db.Preload("User").Where("user_id = ?", idUser).Limit(limit).Offset(offset).Find(&dataHouses)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return toCoreList(dataHouses), nil
+}
