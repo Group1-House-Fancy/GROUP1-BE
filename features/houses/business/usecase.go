@@ -40,3 +40,8 @@ func (uc *houseUsecase) PostNewHouse(input houses.Core) (idHouse int, row int, e
 	idHouse, row, err = uc.houseData.InsertNewHouse(input)
 	return idHouse, row, err
 }
+
+func (uc *houseUsecase) GetHouseDetail(idHouse int) (resp houses.Core, err error) {
+	resp, err = uc.houseData.SelectHouseByIdHouse(idHouse)
+	return resp, err
+}

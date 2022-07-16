@@ -33,9 +33,11 @@ type User struct {
 type Business interface {
 	GetAllHouse(limit, offset int) (data []Core, totalPage int, err error)
 	PostNewHouse(data Core) (idHouse int, row int, err error)
+	GetHouseDetail(idHouse int) (data Core, err error)
 }
 
 type Data interface {
 	SelectAllHouse(limit, offset int) (data []Core, err error)
 	InsertNewHouse(data Core) (idHouse int, row int, err error)
+	SelectHouseByIdHouse(idHouse int) (data Core, err error)
 }
