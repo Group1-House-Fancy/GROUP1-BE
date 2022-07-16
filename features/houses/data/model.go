@@ -52,9 +52,9 @@ func (data *House) toCore() houses.Core {
 		CreatedAt:    data.CreatedAt,
 		UpdatedAt:    data.UpdatedAt,
 		User: houses.User{
-			ID:       int(data.User.ID),
-			FullName: data.User.FullName,
-			//Email:       data.User.Email,
+			ID:          int(data.User.ID),
+			FullName:    data.User.FullName,
+			Email:       data.User.Email,
 			PhoneNumber: data.User.PhoneNumber,
 			Address:     data.User.Address,
 			ImageURL:    data.User.ImageURL,

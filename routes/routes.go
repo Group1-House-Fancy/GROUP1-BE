@@ -32,6 +32,7 @@ func New(presenter factory.Presenter) *echo.Echo {
 	e.GET("houses/:idHouse", presenter.HousePresenter.GetHouseDetail)
 	e.GET("houses/mylisthouses", presenter.HousePresenter.GetMyListHouse, middlewares.JWTMiddleware())
 	e.POST("houses", presenter.HousePresenter.PostNewHouse, middlewares.JWTMiddleware())
+	e.PUT("houses/:idHouse", presenter.HousePresenter.PutHouse, middlewares.JWTMiddleware())
 
 	return e
 }
