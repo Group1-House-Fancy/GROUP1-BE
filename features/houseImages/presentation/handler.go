@@ -16,7 +16,7 @@ type HouseImageHandler struct {
 	houseImageBusiness houseimages.Business
 }
 
-func NewHouseHandler(business houseimages.Business) *HouseImageHandler {
+func NewHouseImageHandler(business houseimages.Business) *HouseImageHandler {
 	return &HouseImageHandler{
 		houseImageBusiness: business,
 	}

@@ -9,7 +9,7 @@ type houseImageUsecase struct {
 	houseImageData houseimages.Data
 }
 
-func NewHouseBusiness(houseImgData houseimages.Data) houseimages.Business {
+func NewHouseImageBusiness(houseImgData houseimages.Data) houseimages.Business {
 	return &houseImageUsecase{
 		houseImageData: houseImgData,
 	}
