@@ -66,3 +66,16 @@ func (h *HouseHandler) PostNewHouse(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, helpers.ResponseSuccesWithData("Succes to insert house", data))
 }
+
+func (h *HouseHandler) GetHouseDetail(c echo.Context) error {
+	idHouse := c.Param("idHouse")
+	idHouseInt, errIdHouse := strconv.Atoi(idHouse)
+	if errIdHouse != nil {
+		return c.JSON(http.StatusBadRequest, helpers.ResponseFailed("failed id house not recognize"))
+	}
+	result, err := h.houseBusiness.GetHouseDetail(idHouseInt)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, helpers.ResponseFailed("failed to get data"))
+	}
+	return c.JSON(http.StatusOK, helpers.ResponseSuccesWithData("success to get data", _responseHouse.FromCore(result)))
+}

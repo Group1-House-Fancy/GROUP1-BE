@@ -33,3 +33,12 @@ func (repo *mysqlHouseRepository) InsertNewHouse(data houses.Core) (int, int, er
 	}
 	return int(dataHouse.ID), 1, nil
 }
+
+func (repo *mysqlHouseRepository) SelectHouseByIdHouse(idHouse int) (houses.Core, error) {
+	var dataHouses House
+	result := repo.db.Preload("User").Where("id = ?", idHouse).First(&dataHouses)
+	if result.Error != nil {
+		return houses.Core{}, result.Error
+	}
+	return dataHouses.toCore(), nil
+}
