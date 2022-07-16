@@ -58,6 +58,9 @@ func (h *HouseHandler) PostNewHouse(c echo.Context) error {
 	if result == -1 {
 		return c.JSON(http.StatusBadRequest, helpers.ResponseFailed("all input must be filled"))
 	}
+	if result == 0 {
+		return c.JSON(http.StatusInternalServerError, helpers.ResponseFailed("failed to insert house"))
+	}
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, helpers.ResponseFailed("failed to insert house"))
 	}
