@@ -102,3 +102,33 @@ func (h *HouseHandler) GetMyListHouse(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, helpers.ResponseSuccesWithData("success to get all data", resp))
 }
+
+func (h *HouseHandler) PutHouse(c echo.Context) error {
+	idHouse := c.Param("idHouse")
+	idHouseInt, errIdHouse := strconv.Atoi(idHouse)
+	if errIdHouse != nil {
+		return c.JSON(http.StatusBadRequest, helpers.ResponseFailed("failed id house not recognize"))
+	}
+	idToken, errToken := middlewares.ExtractToken(c)
+	if errToken != nil {
+		c.JSON(http.StatusBadRequest, helpers.ResponseFailed("invalid token"))
+	}
+	if idToken == 0 {
+		return c.JSON(http.StatusUnauthorized, helpers.ResponseFailed("unauthorized"))
+	}
+	var dataHouse = _requestHouse.House{
+		UserID: idToken,
+	}
+	errBind := c.Bind(&dataHouse)
+	if errBind != nil {
+		return c.JSON(http.StatusInternalServerError, helpers.ResponseFailed("failed to bind data"))
+	}
+	result, err := h.houseBusiness.PutHouse(idHouseInt, _requestHouse.ToCore(dataHouse))
+	if result == -1 {
+		return c.JSON(http.StatusBadRequest, helpers.ResponseFailed("all input must be filled"))
+	}
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, helpers.ResponseFailed("failed to update house"))
+	}
+	return c.JSON(http.StatusOK, helpers.ResponseSuccesNoData("success to update house"))
+}

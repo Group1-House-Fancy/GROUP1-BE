@@ -51,3 +51,12 @@ func (repo *mysqlHouseRepository) SelectHouseByIdUser(idUser, limit, offset int)
 	}
 	return toCoreList(dataHouses), nil
 }
+
+func (repo *mysqlHouseRepository) UpdateHouse(idHouse int, data houses.Core) (int, error) {
+	var dataHouse = fromCore(data)
+	result := repo.db.Where("id = ?", idHouse).Updates(&dataHouse)
+	if result.Error != nil {
+		return 0, result.Error
+	}
+	return 1, nil
+}

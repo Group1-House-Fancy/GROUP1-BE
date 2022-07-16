@@ -63,3 +63,10 @@ func (uc *houseUsecase) GetMyListHouse(idUser, limit, offset int) (resp []houses
 	}
 	return resp, totalPage, err
 }
+func (uc *houseUsecase) PutHouse(idHouse int, input houses.Core) (row int, err error) {
+	if input.Title == "" || input.Latitude == 0 || input.Longitude == 0 {
+		return -1, fmt.Errorf("all input must be filled")
+	}
+	row, err = uc.houseData.UpdateHouse(idHouse, input)
+	return row, err
+}
