@@ -62,3 +62,11 @@ func (uc *contractorUsecase) DeleteContractor(idUser int) (row int, err error) {
 	row, err = uc.contractorData.DeleteContractor(idUser)
 	return row, err
 }
+
+func (uc *contractorUsecase) PutContractor(idCtr int, idUser int, data contractors.Core) (row int, err error) {
+	if data.ContractorName == "" || data.NumberSIUJK == "" || data.PhoneNumber == "" || data.Address == "" || data.Description == "" || data.ImageURL == "" || data.CertificateSIUJKURL == "" {
+		return -1, errors.New("all input data must be filled")
+	}
+	row, err = uc.contractorData.UpdateContractor(idCtr, idUser, data)
+	return row, err
+}
