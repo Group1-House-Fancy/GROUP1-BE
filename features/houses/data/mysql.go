@@ -18,7 +18,7 @@ func NewHouseRepository(conn *gorm.DB) houses.Data {
 
 func (repo *mysqlHouseRepository) SelectAllHouse(limit, offset int) ([]houses.Core, error) {
 	var dataHouses []House
-	result := repo.db.Preload("User").Limit(limit).Offset(offset).Find(&dataHouses)
+	result := repo.db.Preload("User").Preload("HouseImage").Limit(limit).Offset(offset).Find(&dataHouses)
 	if result.Error != nil {
 		return nil, result.Error
 	}

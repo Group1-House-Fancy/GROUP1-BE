@@ -6,21 +6,22 @@ import (
 )
 
 type House struct {
-	ID           int       `json:"id" form:"id"`
-	Title        string    `json:"title" form:"title"`
-	Price        int       `json:"price" form:"price"`
-	Location     string    `json:"location" form:"location"`
-	Longitude    float64   `json:"longitude" form:"longitude"`
-	Latitude     float64   `json:"latitude" form:"latitude"`
-	SurfaceArea  int       `json:"surface_area" form:"surface_area"`
-	BuildingArea int       `json:"building_area" form:"building_area"`
-	Bathroom     int       `json:"bathroom" form:"bathroom"`
-	Bedroom      int       `json:"bedroom" form:"bedroom"`
-	Certificate  string    `json:"certificate" form:"certificate"`
-	Description  string    `json:"description" form:"decsription"`
-	Status       string    `json:"status" form:"status"`
-	CreatedAt    time.Time `json:"created_at" form:"created_at"`
-	User         User      `json:"user" form:"user"`
+	ID           int          `json:"id" form:"id"`
+	Title        string       `json:"title" form:"title"`
+	Price        int          `json:"price" form:"price"`
+	Location     string       `json:"location" form:"location"`
+	Longitude    float64      `json:"longitude" form:"longitude"`
+	Latitude     float64      `json:"latitude" form:"latitude"`
+	SurfaceArea  int          `json:"surface_area" form:"surface_area"`
+	BuildingArea int          `json:"building_area" form:"building_area"`
+	Bathroom     int          `json:"bathroom" form:"bathroom"`
+	Bedroom      int          `json:"bedroom" form:"bedroom"`
+	Certificate  string       `json:"certificate" form:"certificate"`
+	Description  string       `json:"description" form:"decsription"`
+	Status       string       `json:"status" form:"status"`
+	CreatedAt    time.Time    `json:"created_at" form:"created_at"`
+	User         User         `json:"user" form:"user"`
+	HouseImage   []HouseImage `json:"image_url" form:"image_url"`
 }
 
 type User struct {
@@ -30,6 +31,12 @@ type User struct {
 	PhoneNumber string `json:"phone_number" form:"phone_number"`
 	Address     string `json:"address" form:"address"`
 	ImageURL    string `json:"image_url" form:"image_url"`
+}
+
+type HouseImage struct {
+	ID       int    `json:"id" form:"id"`
+	HouseID  uint   `json:"house_id" form:"house_id"`
+	ImageURL string `json:"image_url" form:"image_url"`
 }
 
 func FromCore(data houses.Core) House {
@@ -56,12 +63,30 @@ func FromCore(data houses.Core) House {
 			PhoneNumber: data.User.PhoneNumber,
 			ImageURL:    data.User.ImageURL,
 		},
+		HouseImage: FromHouseImageList(data.HouseImage),
 	}
 }
+
 func FromCoreList(data []houses.Core) []House {
 	result := []House{}
 	for key := range data {
 		result = append(result, FromCore(data[key]))
+	}
+	return result
+}
+
+func FromHouseImage(data houses.HouseImage) HouseImage {
+	return HouseImage{
+		ID:       data.ID,
+		HouseID:  uint(data.House.ID),
+		ImageURL: data.ImageURL,
+	}
+}
+
+func FromHouseImageList(data []houses.HouseImage) []HouseImage {
+	result := []HouseImage{}
+	for key := range data {
+		result = append(result, FromHouseImage(data[key]))
 	}
 	return result
 }

@@ -19,6 +19,7 @@ type Core struct {
 	CreatedAt    time.Time
 	UpdatedAt    time.Time
 	User         User
+	HouseImage   []HouseImage
 }
 
 type User struct {
@@ -28,6 +29,12 @@ type User struct {
 	PhoneNumber string
 	Address     string
 	ImageURL    string
+}
+
+type HouseImage struct {
+	ID       int
+	ImageURL string
+	House    Core
 }
 
 type Business interface {
