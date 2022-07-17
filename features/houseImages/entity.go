@@ -16,8 +16,10 @@ type House struct {
 
 type Business interface {
 	PostNewHouseImage(data Core) (row int, err error)
+	DeleteImage(idImage int) (row int, err error)
 }
 
 type Data interface {
-	InsertNewImages(data Core) (row int, err error)
+	InsertNewImage(data Core) (row int, err error)
+	DeleteImage(idImage int) (row int, err error)
 }
