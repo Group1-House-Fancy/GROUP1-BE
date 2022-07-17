@@ -25,7 +25,7 @@ func (repo *mysqlHouseImageRepository) InsertNewImage(data houseimages.Core) (in
 	return 1, nil
 }
 
-func (repo *mysqlHouseImageRepository) DeleteImage(idHouse, idImage int) (int, error) {
+func (repo *mysqlHouseImageRepository) DeleteImage(idImage int) (int, error) {
 	result := repo.db.Where("id = ?", idImage).Delete(&HouseImage{})
 	if result.Error != nil {
 		return 0, result.Error
