@@ -26,6 +26,7 @@ func New(presenter factory.Presenter) *echo.Echo {
 	e.POST("contractors", presenter.ContractorPresenter.JoinContractor, middlewares.JWTMiddleware())
 	e.GET("contractors", presenter.ContractorPresenter.GetAllContractor)
 	e.GET("contractors/:idContractor", presenter.ContractorPresenter.GetContractor)
+	e.DELETE("contractors", presenter.ContractorPresenter.DeleteContractor, middlewares.JWTMiddleware())
 
 	//houses
 	e.GET("houses", presenter.HousePresenter.GetAllHouse)

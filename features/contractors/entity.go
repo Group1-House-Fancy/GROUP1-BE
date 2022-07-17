@@ -26,6 +26,7 @@ type Business interface {
 	CreateContractor(data Core) (row int, err error)
 	GetAllContractor(limit, offset int) (data []Core, totalPage int, err error)
 	GetContractor(idCtr int) (data Core, err error)
+	DeleteContractor(idUser int) (row int, err error)
 }
 
 type Data interface {
@@ -33,4 +34,5 @@ type Data interface {
 	ContractorExist(id int, userContractor bool) (row int, err error)
 	SelectAllContractor(limit, offset int) (data []Core, err error)
 	SelectContractor(idCtr int) (data Core, err error)
+	DeleteContractor(idUser int) (row int, err error)
 }

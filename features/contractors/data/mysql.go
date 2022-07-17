@@ -64,3 +64,11 @@ func (repo *mysqlContractorRepository) SelectContractor(id int) (contractors.Cor
 	}
 	return dataCrt.toCore(), nil
 }
+
+func (repo *mysqlContractorRepository) DeleteContractor(id int) (int, error) {
+	result := repo.db.Where("user_id = ?", id).Delete(&Contractor{})
+	if result.Error != nil {
+		return 0, result.Error
+	}
+	return int(result.RowsAffected), nil
+}
