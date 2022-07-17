@@ -22,6 +22,7 @@ type House struct {
 	Status       string  `json:"status" form:"status"`
 	UserID       uint    `json:"user_id" form:"user_id"`
 	User         User
+	HouseImage   []HouseImage
 }
 
 type User struct {
@@ -32,6 +33,13 @@ type User struct {
 	Address     string `json:"address" form:"address"`
 	ImageURL    string `json:"image_url" form:"image_url"`
 	House       []House
+}
+
+type HouseImage struct {
+	gorm.Model
+	HouseID  uint   `json:"house_id" form:"house_id"`
+	ImageURL string `json:"image_url" form:"image_url"`
+	House    House
 }
 
 func (data *House) toCore() houses.Core {
@@ -59,6 +67,7 @@ func (data *House) toCore() houses.Core {
 			Address:     data.User.Address,
 			ImageURL:    data.User.ImageURL,
 		},
+		HouseImage: toCoreListHouseImages(data.HouseImage),
 	}
 }
 
@@ -86,4 +95,22 @@ func fromCore(core houses.Core) House {
 		Status:       core.Status,
 		UserID:       uint(core.User.ID),
 	}
+}
+
+func (data *HouseImage) toCoreHouseImages() houses.HouseImage {
+	return houses.HouseImage{
+		ID:       int(data.ID),
+		ImageURL: data.ImageURL,
+		House: houses.Core{
+			ID: int(data.HouseID),
+		},
+	}
+}
+
+func toCoreListHouseImages(data []HouseImage) []houses.HouseImage {
+	result := []houses.HouseImage{}
+	for key := range data {
+		result = append(result, data[key].toCoreHouseImages())
+	}
+	return result
 }
