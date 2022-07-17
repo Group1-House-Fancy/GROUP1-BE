@@ -2,6 +2,7 @@ package data
 
 import (
 	"capstoneproject/features/contractors"
+	"fmt"
 
 	"gorm.io/gorm"
 )
@@ -69,6 +70,18 @@ func (repo *mysqlContractorRepository) DeleteContractor(id int) (int, error) {
 	result := repo.db.Where("user_id = ?", id).Delete(&Contractor{})
 	if result.Error != nil {
 		return 0, result.Error
+	}
+	return int(result.RowsAffected), nil
+}
+
+func (repo *mysqlContractorRepository) UpdateContractor(idCtr int, idUser int, input contractors.Core) (int, error) {
+	var updateCtr = fromCore(input)
+	result := repo.db.Where("id = ? AND user_id = ?", idCtr, idUser).Updates(&updateCtr)
+	if result.Error != nil {
+		return 0, result.Error
+	}
+	if result.RowsAffected == 0 {
+		return 0, fmt.Errorf("failed to update data")
 	}
 	return int(result.RowsAffected), nil
 }

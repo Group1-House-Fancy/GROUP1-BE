@@ -114,5 +114,54 @@ func (h *ContractorHandler) DeleteContractor(c echo.Context) error {
 	if result == 0 {
 		return c.JSON(http.StatusInternalServerError, helpers.ResponseFailed("failed to delete contractor"))
 	}
-	return c.JSON(http.StatusOK, helpers.ResponseSuccesNoData("Success to delete contractor"))
+	return c.JSON(http.StatusOK, helpers.ResponseSuccesNoData("success to delete contractor"))
+}
+
+func (h *ContractorHandler) EditContractor(c echo.Context) error {
+	idTkn, errTkn := middlewares.ExtractToken(c)
+	if errTkn != nil {
+		return c.JSON(http.StatusBadRequest, helpers.ResponseFailed("invalid token"))
+	}
+	if idTkn == 0 {
+		return c.JSON(http.StatusUnauthorized, helpers.ResponseFailed("unauthorized"))
+	}
+	idCt := c.Param("idContractor")
+	idCtInt, _ := strconv.Atoi(idCt)
+
+	contractorName := c.FormValue("contractor_name")
+	numberSIUJK := c.FormValue("number_siujk")
+	phoneNumber := c.FormValue("phone_number")
+	email := c.FormValue("email")
+	address := c.FormValue("address")
+	description := c.FormValue("description")
+
+	urlImage, report, err := helpers.AddImageContractor(c)
+	if err != nil {
+		return c.JSON(report["code"].(int), helpers.ResponseFailed(fmt.Sprintf("%s", report["message"])))
+	}
+
+	urlCertificate, report, err := helpers.AddImageCertificate(c)
+	if err != nil {
+		return c.JSON(report["code"].(int), helpers.ResponseFailed(fmt.Sprintf("%s", report["message"])))
+	}
+
+	var updateContractor = _requestContractor.Contractor{
+		ContractorName:      contractorName,
+		NumberSIUJK:         numberSIUJK,
+		PhoneNumber:         phoneNumber,
+		Email:               email,
+		Address:             address,
+		Description:         description,
+		ImageURL:            urlImage,
+		CertificateSIUJKURL: urlCertificate,
+	}
+
+	row, err := h.contractorBusiness.PutContractor(idCtInt, idTkn, _requestContractor.ToCore(updateContractor))
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, helpers.ResponseFailed("failed to update data"))
+	}
+	if row == -1 {
+		return c.JSON(http.StatusBadRequest, helpers.ResponseFailed(err.Error()))
+	}
+	return c.JSON(http.StatusOK, helpers.ResponseSuccesNoData("success to update data"))
 }
