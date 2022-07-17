@@ -9,6 +9,6 @@ WORKDIR /app
 # copy all files to /app
 COPY . .
 
-RUN go build -o projectCapstone-api
+RUN go build -o projectcaps-api
 
 CMD [ "./projectcaps-api" ]
