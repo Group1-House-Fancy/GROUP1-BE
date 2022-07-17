@@ -57,3 +57,8 @@ func (uc *contractorUsecase) GetContractor(id int) (data contractors.Core, err e
 	data, err = uc.contractorData.SelectContractor(id)
 	return data, err
 }
+
+func (uc *contractorUsecase) DeleteContractor(idUser int) (row int, err error) {
+	row, err = uc.contractorData.DeleteContractor(idUser)
+	return row, err
+}

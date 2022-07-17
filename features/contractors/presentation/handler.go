@@ -97,3 +97,22 @@ func (h *ContractorHandler) GetContractor(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, helpers.ResponseSuccesWithData("success to get data", _responseContractor.FromCore(result)))
 }
+
+func (h *ContractorHandler) DeleteContractor(c echo.Context) error {
+	idToken, errToken := middlewares.ExtractToken(c)
+	if errToken != nil {
+		return c.JSON(http.StatusBadRequest, helpers.ResponseFailed("invalid token"))
+	}
+
+	if idToken == 0 {
+		return c.JSON(http.StatusUnauthorized, helpers.ResponseFailed("Unauthorized"))
+	}
+	result, err := h.contractorBusiness.DeleteContractor(idToken)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, helpers.ResponseFailed("failed to delete contractor"))
+	}
+	if result == 0 {
+		return c.JSON(http.StatusInternalServerError, helpers.ResponseFailed("failed to delete contractor"))
+	}
+	return c.JSON(http.StatusOK, helpers.ResponseSuccesNoData("Success to delete contractor"))
+}
