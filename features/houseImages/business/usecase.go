@@ -19,6 +19,11 @@ func (uc *houseImageUsecase) PostNewHouseImage(data houseimages.Core) (row int, 
 	if data.ImageURL == "" || data.House.ID == 0 {
 		return -1, fmt.Errorf("all input must be filled")
 	}
-	row, err = uc.houseImageData.InsertNewImages(data)
+	row, err = uc.houseImageData.InsertNewImage(data)
+	return row, err
+}
+
+func (uc *houseImageUsecase) DeleteImage(idImage int) (row int, err error) {
+	row, err = uc.houseImageData.DeleteImage(idImage)
 	return row, err
 }

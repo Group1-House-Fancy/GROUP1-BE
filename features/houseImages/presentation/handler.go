@@ -55,3 +55,26 @@ func (h *HouseImageHandler) PostNewHouseImage(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, helpers.ResponseSuccesNoData("success to insert image house"))
 }
+
+func (h *HouseImageHandler) DeleteHouseImage(c echo.Context) error {
+	idToken, errToken := middlewares.ExtractToken(c)
+	if errToken != nil {
+		c.JSON(http.StatusBadRequest, helpers.ResponseFailed("invalid token"))
+	}
+	if idToken == 0 {
+		return c.JSON(http.StatusUnauthorized, helpers.ResponseFailed("unauthorized"))
+	}
+	idImage := c.Param("idImage")
+	idImageInt, errIdHouse := strconv.Atoi(idImage)
+	if errIdHouse != nil {
+		return c.JSON(http.StatusBadRequest, helpers.ResponseFailed("failed id house not recognize"))
+	}
+	result, err := h.houseImageBusiness.DeleteImage(idImageInt)
+	if result == 0 {
+		return c.JSON(http.StatusInternalServerError, helpers.ResponseFailed("failed to delete image house"))
+	}
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, helpers.ResponseFailed("failed to delete image house"))
+	}
+	return c.JSON(http.StatusOK, helpers.ResponseSuccesNoData("success to delete image house"))
+}

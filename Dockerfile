@@ -11,4 +11,4 @@ COPY . .
 
 RUN go build -o projectCapstone-api
 
-CMD [ "./projectCaps-api" ]
+CMD [ "./projectcaps-api" ]
