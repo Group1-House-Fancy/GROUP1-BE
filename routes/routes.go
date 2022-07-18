@@ -41,6 +41,7 @@ func New(presenter factory.Presenter) *echo.Echo {
 
 	//negotiations
 	e.GET("negotiations", presenter.NegotiationPresenter.GetHistoryUser, middlewares.JWTMiddleware())
+	e.GET("negotiations/:idHouse", presenter.NegotiationPresenter.GetHouseNegotiators, middlewares.JWTMiddleware())
 
 	return e
 }
