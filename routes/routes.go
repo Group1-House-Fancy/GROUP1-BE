@@ -40,7 +40,7 @@ func New(presenter factory.Presenter) *echo.Echo {
 	e.DELETE("houses/images/:idImage", presenter.HouseImagePresenter.DeleteHouseImage, middlewares.JWTMiddleware())
 
 	//negotiations
-	e.GET("negotiations", presenter.NegotiationPresenter.GetAllHouse, middlewares.JWTMiddleware())
+	e.GET("negotiations", presenter.NegotiationPresenter.GetHistoryUser, middlewares.JWTMiddleware())
 
 	return e
 }

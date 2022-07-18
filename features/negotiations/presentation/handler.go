@@ -21,7 +21,7 @@ func NewNegotiationHandler(business negotiations.Business) *NegotiationHandler {
 	}
 }
 
-func (h *NegotiationHandler) GetAllHouse(c echo.Context) error {
+func (h *NegotiationHandler) GetHistoryUser(c echo.Context) error {
 	idToken, errToken := middlewares.ExtractToken(c)
 	if errToken != nil {
 		c.JSON(http.StatusBadRequest, helpers.ResponseFailed("invalid token"))
