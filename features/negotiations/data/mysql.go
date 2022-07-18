@@ -33,3 +33,28 @@ func (repo *mysqlNegotiationRepository) SelectNegotiationsByIdHouse(idHouse, lim
 	}
 	return toCoreList(dataNegotiations), nil
 }
+
+func (repo *mysqlNegotiationRepository) InsertNewNegotiation(data negotiations.Core) (int, error) {
+	var dataNegotiation = fromCore(data)
+	result := repo.db.Create(&dataNegotiation)
+	if result.Error != nil {
+		return 0, result.Error
+	}
+	return 1, nil
+}
+
+func (repo *mysqlNegotiationRepository) CheckAlreadyNegotiation(idUser, idHouse int) (row int, err error) {
+	result := repo.db.Where("user_id = ? AND house_id = ? ", idUser, idHouse).First(&Negotiation{})
+	if result.Error != nil {
+		return -1, result.Error
+	}
+	return int(result.RowsAffected), nil
+}
+
+func (repo *mysqlNegotiationRepository) UpdateHouseStatus(idHouse int, status string) (int, error) {
+	result := repo.db.Model(&House{}).Where("id = ? ", idHouse).Update("status", status)
+	if result.Error != nil {
+		return 0, result.Error
+	}
+	return 1, nil
+}

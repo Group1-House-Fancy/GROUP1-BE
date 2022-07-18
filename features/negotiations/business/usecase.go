@@ -1,6 +1,9 @@
 package business
 
-import "capstoneproject/features/negotiations"
+import (
+	"capstoneproject/features/negotiations"
+	"fmt"
+)
 
 type negotiationUsecase struct {
 	negotiationData negotiations.Data
@@ -46,4 +49,23 @@ func (uc *negotiationUsecase) GetHouseNegotiators(idHouse, limit, offset int) (r
 		}
 	}
 	return resp, totalPage, err
+}
+
+func (uc *negotiationUsecase) PostNewNegotiation(input negotiations.Core) (row int, err error) {
+	check, errCheck := uc.negotiationData.CheckAlreadyNegotiation(input.User.ID, input.House.ID)
+	if check == 0 {
+		if input.Nego == 0 || input.User.ID == 0 || input.House.ID == 0 {
+			return -1, fmt.Errorf("all input must be filled")
+		}
+		row, err = uc.negotiationData.InsertNewNegotiation(input)
+		rowHouse, errHouse := uc.negotiationData.UpdateHouseStatus(input.House.ID, "Negotiation")
+		if errHouse != nil {
+			return rowHouse, errHouse
+		}
+	} else if check == 1 {
+		return -2, fmt.Errorf("already nego")
+	} else {
+		return 0, errCheck
+	}
+	return row, err
 }
