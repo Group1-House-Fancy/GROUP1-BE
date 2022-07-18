@@ -39,4 +39,5 @@ type Data interface {
 	SelectNegotiationsByIdHouse(idHouse, limit, offset int) (data []Core, err error)
 	InsertNewNegotiation(data Core) (row int, err error)
 	CheckAlreadyNegotiation(idUser, idHouse int) (row int, err error)
+	UpdateHouseStatus(idHouse int, status string) (row int, err error)
 }

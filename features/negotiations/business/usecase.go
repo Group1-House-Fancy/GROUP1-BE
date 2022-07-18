@@ -58,6 +58,10 @@ func (uc *negotiationUsecase) PostNewNegotiation(input negotiations.Core) (row i
 			return -1, fmt.Errorf("all input must be filled")
 		}
 		row, err = uc.negotiationData.InsertNewNegotiation(input)
+		rowHouse, errHouse := uc.negotiationData.UpdateHouseStatus(input.House.ID, "Negotiation")
+		if errHouse != nil {
+			return rowHouse, errHouse
+		}
 	} else if check == 1 {
 		return -2, fmt.Errorf("already nego")
 	} else {

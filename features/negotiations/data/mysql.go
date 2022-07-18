@@ -50,3 +50,11 @@ func (repo *mysqlNegotiationRepository) CheckAlreadyNegotiation(idUser, idHouse 
 	}
 	return int(result.RowsAffected), nil
 }
+
+func (repo *mysqlNegotiationRepository) UpdateHouseStatus(idHouse int, status string) (int, error) {
+	result := repo.db.Model(&House{}).Where("id = ? ", idHouse).Update("status", status)
+	if result.Error != nil {
+		return 0, result.Error
+	}
+	return 1, nil
+}
