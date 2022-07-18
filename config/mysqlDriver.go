@@ -4,6 +4,8 @@ import (
 	_mContractors "capstoneproject/features/contractors/data"
 	_mHouseImages "capstoneproject/features/houseImages/data"
 	_mHouses "capstoneproject/features/houses/data"
+	_mPortfolioImages "capstoneproject/features/portfolioImages/data"
+	_mPortfolios "capstoneproject/features/portfolios/data"
 	_mUsers "capstoneproject/features/users/data"
 	"fmt"
 	"os"
@@ -39,4 +41,6 @@ func InitMigrate(db *gorm.DB) {
 	db.AutoMigrate(&_mContractors.Contractor{})
 	db.AutoMigrate(&_mHouses.House{})
 	db.AutoMigrate(&_mHouseImages.HouseImage{})
+	db.AutoMigrate(&_mPortfolios.Portfolio{})
+	db.AutoMigrate(&_mPortfolioImages.PortfolioImage{})
 }
