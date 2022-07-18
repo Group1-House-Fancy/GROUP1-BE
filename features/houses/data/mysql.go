@@ -18,7 +18,7 @@ func NewHouseRepository(conn *gorm.DB) houses.Data {
 
 func (repo *mysqlHouseRepository) SelectAllHouse(limit, offset int) ([]houses.Core, error) {
 	var dataHouses []House
-	result := repo.db.Preload("User").Preload("HouseImage").Limit(limit).Offset(offset).Find(&dataHouses)
+	result := repo.db.Preload("User").Preload("HouseImage").Not("status = ?", "Sold Out").Limit(limit).Offset(offset).Find(&dataHouses)
 	if result.Error != nil {
 		return nil, result.Error
 	}
@@ -36,7 +36,7 @@ func (repo *mysqlHouseRepository) InsertNewHouse(data houses.Core) (int, int, er
 
 func (repo *mysqlHouseRepository) SelectHouseByIdHouse(idHouse int) (houses.Core, error) {
 	var dataHouses House
-	result := repo.db.Preload("User").Where("id = ?", idHouse).First(&dataHouses)
+	result := repo.db.Preload("User").Preload("HouseImage").Where("id = ?", idHouse).First(&dataHouses)
 	if result.Error != nil {
 		return houses.Core{}, result.Error
 	}
@@ -45,7 +45,7 @@ func (repo *mysqlHouseRepository) SelectHouseByIdHouse(idHouse int) (houses.Core
 
 func (repo *mysqlHouseRepository) SelectHouseByIdUser(idUser, limit, offset int) ([]houses.Core, error) {
 	var dataHouses []House
-	result := repo.db.Preload("User").Where("user_id = ?", idUser).Limit(limit).Offset(offset).Find(&dataHouses)
+	result := repo.db.Preload("User").Preload("HouseImage").Where("user_id = ?", idUser).Limit(limit).Offset(offset).Find(&dataHouses)
 	if result.Error != nil {
 		return nil, result.Error
 	}

@@ -36,7 +36,6 @@ type User struct {
 
 type HouseImage struct {
 	ID       int    `json:"id" form:"id"`
-	HouseID  uint   `json:"house_id" form:"house_id"`
 	ImageURL string `json:"image_url" form:"image_url"`
 }
 
