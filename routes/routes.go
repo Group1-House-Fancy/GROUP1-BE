@@ -43,5 +43,8 @@ func New(presenter factory.Presenter) *echo.Echo {
 	e.POST("portfolios", presenter.PortfolioPresenter.InsertNewPortfolio, middlewares.JWTMiddleware())
 	e.POST("portfolios/images/:idPortfolio", presenter.PortfolioImagePresenter.PostNewPortfolioImage, middlewares.JWTMiddleware())
 	e.DELETE("portfolios/images/:idImage", presenter.PortfolioImagePresenter.DeletePortfolioImage, middlewares.JWTMiddleware())
+	//negotiations
+	e.GET("negotiations", presenter.NegotiationPresenter.GetHistoryUser, middlewares.JWTMiddleware())
+
 	return e
 }

@@ -10,6 +10,9 @@ import (
 	_houseBusiness "capstoneproject/features/houses/business"
 	_houseData "capstoneproject/features/houses/data"
 	_housePresentation "capstoneproject/features/houses/presentation"
+	_negotiationBusiness "capstoneproject/features/negotiations/business"
+	_negotiationData "capstoneproject/features/negotiations/data"
+	_negotiationPresentation "capstoneproject/features/negotiations/presentation"
 	_portfolioImageBusiness "capstoneproject/features/portfolioImages/business"
 	_portfolioImageData "capstoneproject/features/portfolioImages/data"
 	_portfolioImagePresentation "capstoneproject/features/portfolioImages/presentation"
@@ -28,6 +31,7 @@ type Presenter struct {
 	ContractorPresenter     *_contractorPresentation.ContractorHandler
 	HousePresenter          *_housePresentation.HouseHandler
 	HouseImagePresenter     *_houseImagePresentation.HouseImageHandler
+	NegotiationPresenter    *_negotiationPresentation.NegotiationHandler
 	PortfolioPresenter      *_portfolioPresentation.PortfolioHandler
 	PortfolioImagePresenter *_portfolioImagePresentation.PortfolioImageHandler
 }
@@ -51,12 +55,16 @@ func InitFactory(dbConn *gorm.DB) Presenter {
 	portfolioImageData := _portfolioImageData.NewPortfolioImageRepository(dbConn)
 	portfolioImageBusiness := _portfolioImageBusiness.NewPortfolioImageBusiness(portfolioImageData)
 	portfolioImagePresentation := _portfolioImagePresentation.NewPortfolioImageHandler(portfolioImageBusiness)
+	negotiationData := _negotiationData.NewNegotiationRepository(dbConn)
+	negotiationBusiness := _negotiationBusiness.NewNegotiationBusiness(negotiationData)
+	negotiationPresentation := _negotiationPresentation.NewNegotiationHandler(negotiationBusiness)
 
 	return Presenter{
 		UserPresenter:           UserPresentation,
 		ContractorPresenter:     contractorPresentation,
 		HousePresenter:          housePresentation,
 		HouseImagePresenter:     houseImagePresentation,
+		NegotiationPresenter:    negotiationPresentation,
 		PortfolioPresenter:      portfolioPresentation,
 		PortfolioImagePresenter: portfolioImagePresentation,
 	}
