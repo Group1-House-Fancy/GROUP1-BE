@@ -39,5 +39,8 @@ func New(presenter factory.Presenter) *echo.Echo {
 	e.POST("houses/images/:idHouse", presenter.HouseImagePresenter.PostNewHouseImage, middlewares.JWTMiddleware())
 	e.DELETE("houses/images/:idImage", presenter.HouseImagePresenter.DeleteHouseImage, middlewares.JWTMiddleware())
 
+	//negotiations
+	e.GET("negotiations", presenter.NegotiationPresenter.GetAllHouse, middlewares.JWTMiddleware())
+
 	return e
 }
