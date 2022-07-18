@@ -43,3 +43,31 @@ func (h *NegotiationHandler) GetHistoryUser(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, helpers.ResponseSuccesWithData("success to get all data", resp))
 }
+
+func (h *NegotiationHandler) GetHouseNegotiators(c echo.Context) error {
+	idToken, errToken := middlewares.ExtractToken(c)
+	if errToken != nil {
+		c.JSON(http.StatusBadRequest, helpers.ResponseFailed("invalid token"))
+	}
+	if idToken == 0 {
+		return c.JSON(http.StatusUnauthorized, helpers.ResponseFailed("unauthorized"))
+	}
+	idHouse := c.Param("idHouse")
+	idHouseInt, errIdHouse := strconv.Atoi(idHouse)
+	if errIdHouse != nil {
+		return c.JSON(http.StatusBadRequest, helpers.ResponseFailed("failed id house not recognize"))
+	}
+	limit := c.QueryParam("limit")
+	offset := c.QueryParam("offset")
+	limitInt, _ := strconv.Atoi(limit)
+	offsetInt, _ := strconv.Atoi(offset)
+	result, totalPage, err := h.NegotiationBusiness.GetHouseNegotiators(idHouseInt, limitInt, offsetInt)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, helpers.ResponseFailed("failed to get all data"))
+	}
+	var resp = map[string]interface{}{
+		"data":       _responseNegotiation.FromCoreNegotiatorList(result),
+		"total_page": totalPage,
+	}
+	return c.JSON(http.StatusOK, helpers.ResponseSuccesWithData("success to get all data", resp))
+}
