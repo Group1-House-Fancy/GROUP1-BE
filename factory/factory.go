@@ -13,6 +13,12 @@ import (
 	_negotiationBusiness "capstoneproject/features/negotiations/business"
 	_negotiationData "capstoneproject/features/negotiations/data"
 	_negotiationPresentation "capstoneproject/features/negotiations/presentation"
+	_portfolioImageBusiness "capstoneproject/features/portfolioImages/business"
+	_portfolioImageData "capstoneproject/features/portfolioImages/data"
+	_portfolioImagePresentation "capstoneproject/features/portfolioImages/presentation"
+	_portfolioBusiness "capstoneproject/features/portfolios/business"
+	_portfolioData "capstoneproject/features/portfolios/data"
+	_portfolioPresentation "capstoneproject/features/portfolios/presentation"
 	_userBusiness "capstoneproject/features/users/business"
 	_userData "capstoneproject/features/users/data"
 	_userPresentation "capstoneproject/features/users/presentation"
@@ -21,11 +27,13 @@ import (
 )
 
 type Presenter struct {
-	UserPresenter        *_userPresentation.UserHandler
-	ContractorPresenter  *_contractorPresentation.ContractorHandler
-	HousePresenter       *_housePresentation.HouseHandler
-	HouseImagePresenter  *_houseImagePresentation.HouseImageHandler
-	NegotiationPresenter *_negotiationPresentation.NegotiationHandler
+	UserPresenter           *_userPresentation.UserHandler
+	ContractorPresenter     *_contractorPresentation.ContractorHandler
+	HousePresenter          *_housePresentation.HouseHandler
+	HouseImagePresenter     *_houseImagePresentation.HouseImageHandler
+	NegotiationPresenter    *_negotiationPresentation.NegotiationHandler
+	PortfolioPresenter      *_portfolioPresentation.PortfolioHandler
+	PortfolioImagePresenter *_portfolioImagePresentation.PortfolioImageHandler
 }
 
 func InitFactory(dbConn *gorm.DB) Presenter {
@@ -41,15 +49,23 @@ func InitFactory(dbConn *gorm.DB) Presenter {
 	houseImageData := _houseImageData.NewHouseImageRepository(dbConn)
 	houseImageBusiness := _houseImageBusiness.NewHouseImageBusiness(houseImageData)
 	houseImagePresentation := _houseImagePresentation.NewHouseImageHandler(houseImageBusiness)
+	portfolioData := _portfolioData.NewPortfolioRepository(dbConn)
+	portfolioBusiness := _portfolioBusiness.NewPortfolioBusiness(portfolioData)
+	portfolioPresentation := _portfolioPresentation.NewPortfolioHandler(portfolioBusiness)
+	portfolioImageData := _portfolioImageData.NewPortfolioImageRepository(dbConn)
+	portfolioImageBusiness := _portfolioImageBusiness.NewPortfolioImageBusiness(portfolioImageData)
+	portfolioImagePresentation := _portfolioImagePresentation.NewPortfolioImageHandler(portfolioImageBusiness)
 	negotiationData := _negotiationData.NewNegotiationRepository(dbConn)
 	negotiationBusiness := _negotiationBusiness.NewNegotiationBusiness(negotiationData)
 	negotiationPresentation := _negotiationPresentation.NewNegotiationHandler(negotiationBusiness)
 
 	return Presenter{
-		UserPresenter:        UserPresentation,
-		ContractorPresenter:  contractorPresentation,
-		HousePresenter:       housePresentation,
-		HouseImagePresenter:  houseImagePresentation,
-		NegotiationPresenter: negotiationPresentation,
+		UserPresenter:           UserPresentation,
+		ContractorPresenter:     contractorPresentation,
+		HousePresenter:          housePresentation,
+		HouseImagePresenter:     houseImagePresentation,
+		NegotiationPresenter:    negotiationPresentation,
+		PortfolioPresenter:      portfolioPresentation,
+		PortfolioImagePresenter: portfolioImagePresentation,
 	}
 }
