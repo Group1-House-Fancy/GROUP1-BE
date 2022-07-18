@@ -2,26 +2,27 @@ package response
 
 import (
 	"capstoneproject/features/houses"
+	"strconv"
 	"time"
 )
 
 type House struct {
-	ID           int          `json:"id" form:"id"`
-	Title        string       `json:"title" form:"title"`
-	Price        int          `json:"price" form:"price"`
-	Location     string       `json:"location" form:"location"`
-	Longitude    float64      `json:"longitude" form:"longitude"`
-	Latitude     float64      `json:"latitude" form:"latitude"`
-	SurfaceArea  int          `json:"surface_area" form:"surface_area"`
-	BuildingArea int          `json:"building_area" form:"building_area"`
-	Bathroom     int          `json:"bathroom" form:"bathroom"`
-	Bedroom      int          `json:"bedroom" form:"bedroom"`
-	Certificate  string       `json:"certificate" form:"certificate"`
-	Description  string       `json:"description" form:"decsription"`
-	Status       string       `json:"status" form:"status"`
-	CreatedAt    time.Time    `json:"created_at" form:"created_at"`
-	User         User         `json:"user" form:"user"`
-	HouseImage   []HouseImage `json:"image_url" form:"image_url"`
+	ID           int                   `json:"id" form:"id"`
+	Title        string                `json:"title" form:"title"`
+	Price        int                   `json:"price" form:"price"`
+	Location     string                `json:"location" form:"location"`
+	Longitude    float64               `json:"longitude" form:"longitude"`
+	Latitude     float64               `json:"latitude" form:"latitude"`
+	SurfaceArea  int                   `json:"surface_area" form:"surface_area"`
+	BuildingArea int                   `json:"building_area" form:"building_area"`
+	Bathroom     int                   `json:"bathroom" form:"bathroom"`
+	Bedroom      int                   `json:"bedroom" form:"bedroom"`
+	Certificate  string                `json:"certificate" form:"certificate"`
+	Description  string                `json:"description" form:"decsription"`
+	Status       string                `json:"status" form:"status"`
+	CreatedAt    time.Time             `json:"created_at" form:"created_at"`
+	User         User                  `json:"user" form:"user"`
+	HouseImage   map[string]HouseImage `json:"image_url" form:"image_url"`
 }
 
 type User struct {
@@ -78,15 +79,17 @@ func FromCoreList(data []houses.Core) []House {
 func FromHouseImage(data houses.HouseImage) HouseImage {
 	return HouseImage{
 		ID:       data.ID,
-		HouseID:  uint(data.House.ID),
 		ImageURL: data.ImageURL,
 	}
 }
 
-func FromHouseImageList(data []houses.HouseImage) []HouseImage {
-	result := []HouseImage{}
+func FromHouseImageList(data []houses.HouseImage) map[string]HouseImage {
+	result := map[string]HouseImage{}
+	var index = 1
 	for key := range data {
-		result = append(result, FromHouseImage(data[key]))
+		indexString := strconv.Itoa(index)
+		result[indexString] = FromHouseImage(data[key])
+		index++
 	}
 	return result
 }
