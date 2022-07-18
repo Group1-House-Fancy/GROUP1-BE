@@ -10,6 +10,9 @@ import (
 	_houseBusiness "capstoneproject/features/houses/business"
 	_houseData "capstoneproject/features/houses/data"
 	_housePresentation "capstoneproject/features/houses/presentation"
+	_negotiationBusiness "capstoneproject/features/negotiations/business"
+	_negotiationData "capstoneproject/features/negotiations/data"
+	_negotiationPresentation "capstoneproject/features/negotiations/presentation"
 	_userBusiness "capstoneproject/features/users/business"
 	_userData "capstoneproject/features/users/data"
 	_userPresentation "capstoneproject/features/users/presentation"
@@ -18,10 +21,11 @@ import (
 )
 
 type Presenter struct {
-	UserPresenter       *_userPresentation.UserHandler
-	ContractorPresenter *_contractorPresentation.ContractorHandler
-	HousePresenter      *_housePresentation.HouseHandler
-	HouseImagePresenter *_houseImagePresentation.HouseImageHandler
+	UserPresenter        *_userPresentation.UserHandler
+	ContractorPresenter  *_contractorPresentation.ContractorHandler
+	HousePresenter       *_housePresentation.HouseHandler
+	HouseImagePresenter  *_houseImagePresentation.HouseImageHandler
+	NegotiationPresenter *_negotiationPresentation.NegotiationHandler
 }
 
 func InitFactory(dbConn *gorm.DB) Presenter {
@@ -37,11 +41,15 @@ func InitFactory(dbConn *gorm.DB) Presenter {
 	houseImageData := _houseImageData.NewHouseImageRepository(dbConn)
 	houseImageBusiness := _houseImageBusiness.NewHouseImageBusiness(houseImageData)
 	houseImagePresentation := _houseImagePresentation.NewHouseImageHandler(houseImageBusiness)
+	negotiationData := _negotiationData.NewNegotiationRepository(dbConn)
+	negotiationBusiness := _negotiationBusiness.NewNegotiationBusiness(negotiationData)
+	negotiationPresentation := _negotiationPresentation.NewNegotiationHandler(negotiationBusiness)
 
 	return Presenter{
-		UserPresenter:       UserPresentation,
-		ContractorPresenter: contractorPresentation,
-		HousePresenter:      housePresentation,
-		HouseImagePresenter: houseImagePresentation,
+		UserPresenter:        UserPresentation,
+		ContractorPresenter:  contractorPresentation,
+		HousePresenter:       housePresentation,
+		HouseImagePresenter:  houseImagePresentation,
+		NegotiationPresenter: negotiationPresentation,
 	}
 }
