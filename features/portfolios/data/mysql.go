@@ -33,3 +33,12 @@ func (repo *mysqlPortfolioRepository) SelectAllPortfolio(idCtr, limit, offset in
 	}
 	return toCoreList(dataPrt), nil
 }
+
+func (repo *mysqlPortfolioRepository) SelectPortfolio(idPrtf int) (portfolios.Core, error) {
+	var dataPrtf Portfolio
+	result := repo.db.Where("id = ?", idPrtf).First(&dataPrtf)
+	if result.Error != nil {
+		return portfolios.Core{}, result.Error
+	}
+	return dataPrtf.toCore(), nil
+}
