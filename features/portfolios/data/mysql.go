@@ -24,3 +24,21 @@ func (repo *mysqlPortfolioRepository) InsertPortfolio(data portfolios.Core) (int
 	}
 	return int(dataPortfolio.ID), 1, nil
 }
+
+func (repo *mysqlPortfolioRepository) SelectAllPortfolio(idCtr, limit, offset int) ([]portfolios.Core, error) {
+	var dataPrt []Portfolio
+	result := repo.db.Preload("Contractor").Preload("PortfolioImage").Where("contractor_id = ?", idCtr).Limit(limit).Offset(offset).Find(&dataPrt)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return toCoreList(dataPrt), nil
+}
+
+func (repo *mysqlPortfolioRepository) SelectPortfolio(idPrtf int) (portfolios.Core, error) {
+	var dataPrtf Portfolio
+	result := repo.db.Preload("Contractor").Preload("PortfolioImage").Where("id = ?", idPrtf).First(&dataPrtf)
+	if result.Error != nil {
+		return portfolios.Core{}, result.Error
+	}
+	return dataPrtf.toCore(), nil
+}
