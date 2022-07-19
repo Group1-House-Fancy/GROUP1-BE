@@ -131,3 +131,26 @@ func (h *PortfolioHandler) EditPortfolio(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, helpers.ResponseSuccesNoData("success to update portfolio"))
 }
+
+func (h *PortfolioHandler) DeletePortfolio(c echo.Context) error {
+	idPortfol := c.Param("idPortfolio")
+	idPrtf, errPrtf := strconv.Atoi(idPortfol)
+	if errPrtf != nil {
+		return c.JSON(http.StatusBadRequest, helpers.ResponseFailed("failed id portfolio not recognized"))
+	}
+	idToken, errToken := middlewares.ExtractToken(c)
+	if errToken != nil {
+		return c.JSON(http.StatusBadRequest, helpers.ResponseFailed("invalid token"))
+	}
+	if idToken == 0 {
+		return c.JSON(http.StatusUnauthorized, helpers.ResponseFailed("unauthorized"))
+	}
+	result, err := h.portfolioBusiness.DeletePortfolio(idPrtf)
+	if result == 0 {
+		return c.JSON(http.StatusInternalServerError, helpers.ResponseFailed("failed to delete portfolio"))
+	}
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, helpers.ResponseFailed("failed to delete portfolio"))
+	}
+	return c.JSON(http.StatusOK, helpers.ResponseSuccesNoData("success to delete portfolio"))
+}

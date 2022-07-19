@@ -51,3 +51,12 @@ func (repo *mysqlPortfolioRepository) UpdatePortfolio(idPrtf int, data portfolio
 	}
 	return 1, nil
 }
+
+func (repo *mysqlPortfolioRepository) DeletePortfolio(idPrtf int) (int, error) {
+	var dataPortfolio Portfolio
+	result := repo.db.Where("id = ?", idPrtf).Delete(&dataPortfolio)
+	if result.Error != nil {
+		return 0, result.Error
+	}
+	return 1, nil
+}
