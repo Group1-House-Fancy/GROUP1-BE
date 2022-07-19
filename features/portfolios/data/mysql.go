@@ -42,3 +42,12 @@ func (repo *mysqlPortfolioRepository) SelectPortfolio(idPrtf int) (portfolios.Co
 	}
 	return dataPrtf.toCore(), nil
 }
+
+func (repo *mysqlPortfolioRepository) UpdatePortfolio(idPrtf int, data portfolios.Core) (int, error) {
+	var dataPortfolio = fromCore(data)
+	result := repo.db.Where("id = ?", idPrtf).Updates(&dataPortfolio)
+	if result.Error != nil {
+		return 0, result.Error
+	}
+	return 1, nil
+}
