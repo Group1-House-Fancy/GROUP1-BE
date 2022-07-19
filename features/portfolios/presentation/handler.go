@@ -72,3 +72,26 @@ func (h *PortfolioHandler) GetAllPortfolio(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, helpers.ResponseSuccesWithData("success to get all data ", resp))
 }
+
+func (h *PortfolioHandler) GetPortfolio(c echo.Context) error {
+	idAuth, errAuth := middlewares.ExtractToken(c)
+	if errAuth != nil {
+		return c.JSON(http.StatusBadRequest, helpers.ResponseFailed("invalid token"))
+	}
+	if idAuth == 0 {
+		return c.JSON(http.StatusUnauthorized, helpers.ResponseFailed("unauthorized"))
+	}
+	idPrtf := c.Param("idPortfolio")
+	idPrt, errPrt := strconv.Atoi(idPrtf)
+	if errPrt != nil {
+		return c.JSON(http.StatusBadRequest, helpers.ResponseFailed("failed id portfolio not recognize"))
+	}
+	result, err := h.portfolioBusiness.GetPortfolio(idPrt)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, helpers.ResponseFailed("failed to get data"))
+	}
+	var Respon = map[string]interface{}{
+		"data": _responsePortfolio.FromCore(result),
+	}
+	return c.JSON(http.StatusOK, helpers.ResponseSuccesWithData("success to get data", Respon))
+}

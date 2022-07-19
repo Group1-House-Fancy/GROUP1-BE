@@ -40,3 +40,8 @@ func (uc *portfolioUsecase) GetAllPortfolio(idCtr, limit, offset int) (data []po
 	}
 	return data, totalPage, err
 }
+
+func (uc *portfolioUsecase) GetPortfolio(idPrtf int) (data portfolios.Core, err error) {
+	data, err = uc.portfolioData.SelectPortfolio(idPrtf)
+	return data, err
+}
