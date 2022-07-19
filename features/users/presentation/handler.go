@@ -4,6 +4,7 @@ import (
 	"capstoneproject/features/users"
 	_requestUser "capstoneproject/features/users/presentation/request"
 	_responseUser "capstoneproject/features/users/presentation/response"
+	"capstoneproject/helpers"
 	_helper "capstoneproject/helpers"
 	"capstoneproject/middlewares"
 	"fmt"
@@ -24,28 +25,19 @@ func NewUserHandler(business users.Business) *UserHandler {
 }
 
 func (h *UserHandler) AddUser(c echo.Context) error {
-	fullName := c.FormValue("full_name")
-	password := c.FormValue("password")
-	email := c.FormValue("email")
-	phoneNumber := c.FormValue("phone_number")
-	address := c.FormValue("address")
-
 	link, report, err := _helper.AddImageUser(c)
 	if err != nil {
 		return c.JSON(report["code"].(int), _helper.ResponseFailed(fmt.Sprintf("%s", report["message"])))
 	}
-
-	var newUser = _requestUser.User{
-		FullName:    fullName,
-		Email:       email,
-		Password:    password,
-		PhoneNumber: phoneNumber,
-		Address:     address,
-		ImageURL:    link,
+	var dataUser = _requestUser.User{
+		ImageURL: link,
 	}
-
-	dataUser := _requestUser.ToCore(newUser)
-	row, err := h.userBusiness.InsertUser(dataUser)
+	errBind := c.Bind(&dataUser)
+	if errBind != nil {
+		return c.JSON(http.StatusInternalServerError, helpers.ResponseFailed("failed to bind data"))
+	}
+	dataUsr := _requestUser.ToCore(dataUser)
+	row, err := h.userBusiness.InsertUser(dataUsr)
 	if row == -1 {
 		return c.JSON(http.StatusBadRequest, _helper.ResponseFailed("all input must be filled"))
 	}
