@@ -24,3 +24,12 @@ func (repo *mysqlPortfolioRepository) InsertPortfolio(data portfolios.Core) (int
 	}
 	return int(dataPortfolio.ID), 1, nil
 }
+
+func (repo *mysqlPortfolioRepository) SelectAllPortfolio(idCtr, limit, offset int) ([]portfolios.Core, error) {
+	var dataPrt []Portfolio
+	result := repo.db.Where("contractor_id = ?", idCtr).Limit(limit).Offset(offset).Find(&dataPrt)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return toCoreList(dataPrt), nil
+}
