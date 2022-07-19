@@ -27,7 +27,7 @@ func (repo *mysqlPortfolioRepository) InsertPortfolio(data portfolios.Core) (int
 
 func (repo *mysqlPortfolioRepository) SelectAllPortfolio(idCtr, limit, offset int) ([]portfolios.Core, error) {
 	var dataPrt []Portfolio
-	result := repo.db.Where("contractor_id = ?", idCtr).Limit(limit).Offset(offset).Find(&dataPrt)
+	result := repo.db.Preload("Contractor").Preload("PortfolioImage").Where("contractor_id = ?", idCtr).Limit(limit).Offset(offset).Find(&dataPrt)
 	if result.Error != nil {
 		return nil, result.Error
 	}
@@ -36,7 +36,7 @@ func (repo *mysqlPortfolioRepository) SelectAllPortfolio(idCtr, limit, offset in
 
 func (repo *mysqlPortfolioRepository) SelectPortfolio(idPrtf int) (portfolios.Core, error) {
 	var dataPrtf Portfolio
-	result := repo.db.Where("id = ?", idPrtf).First(&dataPrtf)
+	result := repo.db.Preload("Contractor").Preload("PortfolioImage").Where("id = ?", idPrtf).First(&dataPrtf)
 	if result.Error != nil {
 		return portfolios.Core{}, result.Error
 	}
