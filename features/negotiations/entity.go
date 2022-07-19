@@ -34,6 +34,7 @@ type Business interface {
 	GetHouseNegotiators(idHouse, limit, offset int) (data []Core, totalPage int, err error)
 	PostNewNegotiation(data Core) (row int, err error)
 	UpdateStatus(idNegotiation int, status string) (row int, err error)
+	DeleteNegotiation(idNegotiation int) (row int, err error)
 }
 
 type Data interface {
@@ -45,4 +46,5 @@ type Data interface {
 	UpdateHouseStatus(idHouse int, status string) (row int, err error)
 	UpdateNegotiation(idNegotiation int, status string) (row int, err error)
 	CheckNegotiator(idHouse int) (cond bool)
+	DeleteNegotiation(idNegotiation int) (row int, err error)
 }

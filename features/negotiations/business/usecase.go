@@ -97,3 +97,8 @@ func (uc *negotiationUsecase) UpdateStatus(idNegotiation int, status string) (ro
 	}
 	return row, err
 }
+
+func (uc *negotiationUsecase) DeleteNegotiation(idNegotiation int) (row int, err error) {
+	row, err = uc.negotiationData.DeleteNegotiation(idNegotiation)
+	return row, err
+}
