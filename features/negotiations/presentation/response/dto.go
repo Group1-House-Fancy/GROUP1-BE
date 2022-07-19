@@ -29,9 +29,10 @@ type House struct {
 }
 
 type User struct {
-	ID       int    `json:"id" form:"id"`
-	FullName string `json:"full_name" form:"full_name"`
-	ImageURL string `json:"image_url" form:"image_url"`
+	ID          int    `json:"id" form:"id"`
+	FullName    string `json:"full_name" form:"full_name"`
+	ImageURL    string `json:"image_url" form:"image_url"`
+	PhoneNumber string `json:"phone_number" form:"phone_number"`
 }
 
 func FromCoreHistory(data negotiations.Core) History {
@@ -64,9 +65,10 @@ func FromCoreNegotiator(data negotiations.Core) Negotiator {
 		ID:   data.ID,
 		Nego: data.Nego,
 		User: User{
-			ID:       data.User.ID,
-			FullName: data.User.FullName,
-			ImageURL: data.User.ImageURL,
+			ID:          data.User.ID,
+			FullName:    data.User.FullName,
+			ImageURL:    data.User.ImageURL,
+			PhoneNumber: data.User.PhoneNumber,
 		},
 	}
 }

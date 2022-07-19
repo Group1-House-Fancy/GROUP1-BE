@@ -13,9 +13,10 @@ type Core struct {
 }
 
 type User struct {
-	ID       int
-	FullName string
-	ImageURL string
+	ID          int
+	FullName    string
+	ImageURL    string
+	PhoneNumber string
 }
 
 type House struct {
