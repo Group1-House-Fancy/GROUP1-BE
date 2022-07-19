@@ -45,3 +45,11 @@ func (uc *portfolioUsecase) GetPortfolio(idPrtf int) (data portfolios.Core, err 
 	data, err = uc.portfolioData.SelectPortfolio(idPrtf)
 	return data, err
 }
+
+func (uc *portfolioUsecase) PutPortfolio(idPrtf int, input portfolios.Core) (row int, err error) {
+	if input.ClientName == "" || input.Latitude == 0 || input.Longitude == 0 || input.Price == 0 || input.Description == "" {
+		return -1, fmt.Errorf("all input must be filled")
+	}
+	row, err = uc.portfolioData.UpdatePortfolio(idPrtf, input)
+	return row, err
+}

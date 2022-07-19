@@ -95,3 +95,39 @@ func (h *PortfolioHandler) GetPortfolio(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, helpers.ResponseSuccesWithData("success to get data", Respon))
 }
+
+func (h *PortfolioHandler) EditPortfolio(c echo.Context) error {
+	idPrtflo := c.Param("idPortfolio")
+	// idCrtr := c.QueryParam("idContractor")
+	// idCrt, errCtr := strconv.Atoi(idCrtr)
+	// if errCtr != nil {
+	// 	return c.JSON(http.StatusBadRequest, helpers.ResponseFailed("failed id contractor not recognize"))
+	// }
+	idPortfol, errPortfol := strconv.Atoi(idPrtflo)
+	if errPortfol != nil {
+		return c.JSON(http.StatusBadRequest, helpers.ResponseFailed("failed id portfolio not recognize"))
+	}
+	idPrt, errPrt := middlewares.ExtractToken(c)
+	if errPrt != nil {
+		return c.JSON(http.StatusBadRequest, helpers.ResponseFailed("invalid token"))
+	}
+	if idPrt == 0 {
+		return c.JSON(http.StatusUnauthorized, helpers.ResponseFailed("Unauthorized"))
+	}
+	var dataPortfolio = _requestPortfolio.Portfolio{}
+	errBind := c.Bind(&dataPortfolio)
+	if errBind != nil {
+		return c.JSON(http.StatusInternalServerError, helpers.ResponseFailed("failed to bind data"))
+	}
+	result, err := h.portfolioBusiness.PutPortfolio(idPortfol, _requestPortfolio.ToCore(dataPortfolio))
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, helpers.ResponseFailed("failed to update portfolio"))
+	}
+	if result == -1 {
+		return c.JSON(http.StatusBadRequest, helpers.ResponseFailed("all input must be filled"))
+	}
+	if result == 0 {
+		return c.JSON(http.StatusInternalServerError, helpers.ResponseFailed("failed to update portfolio"))
+	}
+	return c.JSON(http.StatusOK, helpers.ResponseSuccesNoData("success to update portfolio"))
+}
