@@ -80,3 +80,11 @@ func (repo *mysqlNegotiationRepository) CheckNegotiator(idHouse int) bool {
 	result := repo.db.Where("house_id = ? ", idHouse).Not("status = ?", "Cancel").First(&Negotiation{})
 	return result.RowsAffected == 0
 }
+
+func (repo *mysqlNegotiationRepository) DeleteNegotiation(idNegotiation int) (int, error) {
+	result := repo.db.Where("id = ?", idNegotiation).Delete(&Negotiation{})
+	if result.Error != nil {
+		return 0, result.Error
+	}
+	return 1, nil
+}
