@@ -44,7 +44,7 @@ func (repo *mysqlNegotiationRepository) InsertNewNegotiation(data negotiations.C
 }
 
 func (repo *mysqlNegotiationRepository) CheckAlreadyNegotiation(idUser, idHouse int) (row int, err error) {
-	result := repo.db.Where("user_id = ? AND house_id = ? ", idUser, idHouse).First(&Negotiation{})
+	result := repo.db.Where("user_id = ? AND house_id = ? ", idUser, idHouse).Not("status = ?", "Cancel").First(&Negotiation{})
 	if result.RowsAffected == 0 {
 		return 0, nil
 	}
@@ -77,6 +77,6 @@ func (repo *mysqlNegotiationRepository) SelectNegotiation(idNegotiation int) neg
 }
 
 func (repo *mysqlNegotiationRepository) CheckNegotiator(idHouse int) bool {
-	result := repo.db.Where("house_id = ? ", idHouse).First(&Negotiation{})
+	result := repo.db.Where("house_id = ? ", idHouse).Not("status = ?", "Cancel").First(&Negotiation{})
 	return result.RowsAffected == 0
 }
