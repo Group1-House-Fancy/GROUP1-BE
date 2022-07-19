@@ -20,6 +20,7 @@ type User struct {
 	gorm.Model
 	FullName    string `json:"full_name" form:"full_name"`
 	ImageURL    string `json:"image_url" form:"image_url"`
+	PhoneNumber string `json:"phone_number" form:"phone_number"`
 	Negotiation []Negotiation
 }
 
@@ -42,9 +43,10 @@ func (data *Negotiation) toCore() negotiations.Core {
 		CreatedAt: data.CreatedAt,
 		UpdatedAt: data.UpdatedAt,
 		User: negotiations.User{
-			ID:       int(data.UserID),
-			FullName: data.User.FullName,
-			ImageURL: data.User.ImageURL,
+			ID:          int(data.UserID),
+			FullName:    data.User.FullName,
+			ImageURL:    data.User.ImageURL,
+			PhoneNumber: data.User.PhoneNumber,
 		},
 		House: negotiations.House{
 			ID:           int(data.HouseID),

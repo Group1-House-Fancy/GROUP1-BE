@@ -67,3 +67,33 @@ func (uc *negotiationUsecase) PostNewNegotiation(input negotiations.Core) (row i
 	}
 	return row, err
 }
+
+func (uc *negotiationUsecase) UpdateStatus(idNegotiation int, status string) (row int, err error) {
+	row, err = uc.negotiationData.UpdateNegotiation(idNegotiation, status)
+	data := uc.negotiationData.SelectNegotiation(idNegotiation)
+	fmt.Println(data)
+	if status == "owned" || status == "Owned" {
+		dataNegotiator, _ := uc.negotiationData.SelectNegotiationsByIdHouse(data.House.ID, 0, 0)
+		for _, v := range dataNegotiator {
+			if v.ID != idNegotiation {
+				_, errUpdate := uc.negotiationData.UpdateNegotiation(v.ID, "Cancel")
+				if errUpdate != nil {
+					return 0, errUpdate
+				}
+			}
+		}
+		_, errHouse := uc.negotiationData.UpdateHouseStatus(data.House.ID, "Sold Out")
+		if errHouse != nil {
+			return 0, errHouse
+		}
+	} else if status == "cancel" || status == "Cancel" {
+		fmt.Println(uc.negotiationData.CheckNegotiator(data.House.ID))
+		if uc.negotiationData.CheckNegotiator(data.House.ID) {
+			_, errHouse := uc.negotiationData.UpdateHouseStatus(data.House.ID, "Available")
+			if errHouse != nil {
+				return 0, errHouse
+			}
+		}
+	}
+	return row, err
+}
