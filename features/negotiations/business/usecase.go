@@ -52,7 +52,7 @@ func (uc *negotiationUsecase) GetHouseNegotiators(idHouse, limit, offset int) (r
 }
 
 func (uc *negotiationUsecase) PostNewNegotiation(input negotiations.Core) (row int, err error) {
-	check, errCheck := uc.negotiationData.CheckAlreadyNegotiation(input.User.ID, input.House.ID)
+	check, _ := uc.negotiationData.CheckAlreadyNegotiation(input.User.ID, input.House.ID)
 	if check == 0 {
 		if input.Nego == 0 || input.User.ID == 0 || input.House.ID == 0 {
 			return -1, fmt.Errorf("all input must be filled")
@@ -62,10 +62,8 @@ func (uc *negotiationUsecase) PostNewNegotiation(input negotiations.Core) (row i
 		if errHouse != nil {
 			return rowHouse, errHouse
 		}
-	} else if check == 1 {
-		return -2, fmt.Errorf("already nego")
 	} else {
-		return 0, errCheck
+		return -2, fmt.Errorf("already nego")
 	}
 	return row, err
 }

@@ -45,8 +45,8 @@ func (repo *mysqlNegotiationRepository) InsertNewNegotiation(data negotiations.C
 
 func (repo *mysqlNegotiationRepository) CheckAlreadyNegotiation(idUser, idHouse int) (row int, err error) {
 	result := repo.db.Where("user_id = ? AND house_id = ? ", idUser, idHouse).First(&Negotiation{})
-	if result.Error != nil {
-		return -1, result.Error
+	if result.RowsAffected == 0 {
+		return 0, nil
 	}
 	return int(result.RowsAffected), nil
 }
