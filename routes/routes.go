@@ -45,10 +45,12 @@ func New(presenter factory.Presenter) *echo.Echo {
 	e.GET("portfolios/details/:idPortfolio", presenter.PortfolioPresenter.GetPortfolio, middlewares.JWTMiddleware())
 	e.POST("portfolios/images/:idPortfolio", presenter.PortfolioImagePresenter.PostNewPortfolioImage, middlewares.JWTMiddleware())
 	e.DELETE("portfolios/images/:idImage", presenter.PortfolioImagePresenter.DeletePortfolioImage, middlewares.JWTMiddleware())
+
 	//negotiations
 	e.GET("negotiations", presenter.NegotiationPresenter.GetHistoryUser, middlewares.JWTMiddleware())
 	e.GET("negotiations/:idHouse", presenter.NegotiationPresenter.GetHouseNegotiators, middlewares.JWTMiddleware())
 	e.POST("negotiations/:idHouse", presenter.NegotiationPresenter.PostNewNegotiation, middlewares.JWTMiddleware())
+	e.PUT("negotiations/:idNegotiation", presenter.NegotiationPresenter.PutNegotiation, middlewares.JWTMiddleware())
 
 	return e
 }
