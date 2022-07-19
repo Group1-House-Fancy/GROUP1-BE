@@ -51,6 +51,7 @@ func New(presenter factory.Presenter) *echo.Echo {
 	e.GET("negotiations/:idHouse", presenter.NegotiationPresenter.GetHouseNegotiators, middlewares.JWTMiddleware())
 	e.POST("negotiations/:idHouse", presenter.NegotiationPresenter.PostNewNegotiation, middlewares.JWTMiddleware())
 	e.PUT("negotiations/:idNegotiation", presenter.NegotiationPresenter.PutNegotiation, middlewares.JWTMiddleware())
+	e.DELETE("negotiations/:idNegotiation", presenter.NegotiationPresenter.DeleteNegotiation, middlewares.JWTMiddleware())
 
 	return e
 }

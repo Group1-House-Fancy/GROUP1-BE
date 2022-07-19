@@ -138,3 +138,26 @@ func (h *NegotiationHandler) PutNegotiation(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, helpers.ResponseSuccesNoData("success to update negotiation"))
 }
+
+func (h *NegotiationHandler) DeleteNegotiation(c echo.Context) error {
+	idToken, errToken := middlewares.ExtractToken(c)
+	if errToken != nil {
+		c.JSON(http.StatusBadRequest, helpers.ResponseFailed("invalid token"))
+	}
+	if idToken == 0 {
+		return c.JSON(http.StatusUnauthorized, helpers.ResponseFailed("unauthorized"))
+	}
+	idNego := c.Param("idNegotiation")
+	idNegoInt, errIdNego := strconv.Atoi(idNego)
+	if errIdNego != nil {
+		return c.JSON(http.StatusBadRequest, helpers.ResponseFailed("failed id negotiation not recognize"))
+	}
+	result, err := h.NegotiationBusiness.DeleteNegotiation(idNegoInt)
+	if result == 0 {
+		return c.JSON(http.StatusInternalServerError, helpers.ResponseFailed("failed to delete negotiation"))
+	}
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, helpers.ResponseFailed("failed to delete negotiation"))
+	}
+	return c.JSON(http.StatusOK, helpers.ResponseSuccesNoData("success to delete negotiation"))
+}
