@@ -110,3 +110,31 @@ func (h *NegotiationHandler) PostNewNegotiation(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, helpers.ResponseSuccesNoData("success to insert negotiation"))
 }
+
+func (h *NegotiationHandler) PutNegotiation(c echo.Context) error {
+	idToken, errToken := middlewares.ExtractToken(c)
+	if errToken != nil {
+		c.JSON(http.StatusBadRequest, helpers.ResponseFailed("invalid token"))
+	}
+	if idToken == 0 {
+		return c.JSON(http.StatusUnauthorized, helpers.ResponseFailed("unauthorized"))
+	}
+	idNego := c.Param("idNegotiation")
+	idNegoInt, errIdNego := strconv.Atoi(idNego)
+	if errIdNego != nil {
+		return c.JSON(http.StatusBadRequest, helpers.ResponseFailed("failed id negotiation not recognize"))
+	}
+	var dataNegotiation = _requestNegotiation.Negotiation{}
+	errBind := c.Bind(&dataNegotiation)
+	if errBind != nil {
+		return c.JSON(http.StatusInternalServerError, helpers.ResponseFailed("failed to bind data"))
+	}
+	result, err := h.NegotiationBusiness.UpdateStatus(idNegoInt, dataNegotiation.Status)
+	if result == 0 {
+		return c.JSON(http.StatusInternalServerError, helpers.ResponseFailed("failed to update negotiation"))
+	}
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, helpers.ResponseFailed("failed to update negotiation"))
+	}
+	return c.JSON(http.StatusOK, helpers.ResponseSuccesNoData("success to update negotiation"))
+}

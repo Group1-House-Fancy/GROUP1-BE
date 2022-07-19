@@ -27,7 +27,7 @@ func (repo *mysqlNegotiationRepository) SelectNegotiationsByIdUser(idUser, limit
 
 func (repo *mysqlNegotiationRepository) SelectNegotiationsByIdHouse(idHouse, limit, offset int) ([]negotiations.Core, error) {
 	var dataNegotiations = []Negotiation{}
-	result := repo.db.Preload("User").Preload("House").Where("house_id = ?", idHouse).Limit(limit).Offset(offset).Find(&dataNegotiations)
+	result := repo.db.Preload("User").Preload("House").Where("house_id = ?", idHouse).Not("status = ?", "Cancel").Order("nego desc").Limit(limit).Offset(offset).Find(&dataNegotiations)
 	if result.Error != nil {
 		return nil, result.Error
 	}
@@ -57,4 +57,26 @@ func (repo *mysqlNegotiationRepository) UpdateHouseStatus(idHouse int, status st
 		return 0, result.Error
 	}
 	return 1, nil
+}
+
+func (repo *mysqlNegotiationRepository) UpdateNegotiation(idNegotiation int, status string) (int, error) {
+	result := repo.db.Model(&Negotiation{}).Where("id = ? ", idNegotiation).Update("status", status)
+	if result.Error != nil {
+		return 0, result.Error
+	}
+	return 1, nil
+}
+
+func (repo *mysqlNegotiationRepository) SelectNegotiation(idNegotiation int) negotiations.Core {
+	var dataNegotiation = Negotiation{}
+	result := repo.db.Where("id = ?", idNegotiation).First(&dataNegotiation)
+	if result.Error != nil {
+		return negotiations.Core{}
+	}
+	return dataNegotiation.toCore()
+}
+
+func (repo *mysqlNegotiationRepository) CheckNegotiator(idHouse int) bool {
+	result := repo.db.Where("house_id = ? ", idHouse).First(&Negotiation{})
+	return result.RowsAffected == 0
 }
