@@ -32,6 +32,7 @@ type Business interface {
 	GetAllPortfolio(idCtr, limit, offset int) (data []Core, totalPage int, err error)
 	GetPortfolio(idPrtf int) (data Core, err error)
 	PutPortfolio(idPrtf int, data Core) (row int, err error)
+	DeletePortfolio(idPrtf int) (row int, err error)
 }
 
 type Data interface {
@@ -39,4 +40,5 @@ type Data interface {
 	SelectAllPortfolio(idCtr, limit, offset int) (data []Core, err error)
 	SelectPortfolio(idPrtf int) (data Core, err error)
 	UpdatePortfolio(idPrtf int, data Core) (row int, err error)
+	DeletePortfolio(idPrtf int) (row int, err error)
 }

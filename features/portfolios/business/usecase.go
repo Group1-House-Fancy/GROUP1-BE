@@ -53,3 +53,8 @@ func (uc *portfolioUsecase) PutPortfolio(idPrtf int, input portfolios.Core) (row
 	row, err = uc.portfolioData.UpdatePortfolio(idPrtf, input)
 	return row, err
 }
+
+func (uc *portfolioUsecase) DeletePortfolio(idPrtf int) (row int, err error) {
+	row, err = uc.portfolioData.DeletePortfolio(idPrtf)
+	return row, err
+}
