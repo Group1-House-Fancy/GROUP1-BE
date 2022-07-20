@@ -60,10 +60,20 @@ func (repo *mysqlHouseRepository) UpdateHouse(idHouse int, data houses.Core) (in
 	}
 	return 1, nil
 }
+
 func (repo *mysqlHouseRepository) DeleteHouse(idHouse int) (int, error) {
 	result := repo.db.Where("id = ?", idHouse).Delete(&House{})
 	if result.Error != nil {
 		return 0, result.Error
 	}
 	return 1, nil
+}
+
+func (repo *mysqlHouseRepository) SelectSearchHouse(keywords string, limit, offset int) ([]houses.Core, error) {
+	var dataHouses []House
+	result := repo.db.Preload("User").Preload("HouseImage").Where("title LIKE ? OR location LIKE ? OR description LIKE ?", "%"+keywords+"%", "%"+keywords+"%", "%"+keywords+"%").Not("status = ?", "Sold Out").Limit(limit).Offset(offset).Find(&dataHouses)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return toCoreList(dataHouses), nil
 }

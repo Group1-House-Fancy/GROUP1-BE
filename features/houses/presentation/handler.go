@@ -138,6 +138,7 @@ func (h *HouseHandler) PutHouse(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, helpers.ResponseSuccesNoData("success to update house"))
 }
+
 func (h *HouseHandler) DeleteHouse(c echo.Context) error {
 	idHouse := c.Param("idHouse")
 	idHouseInt, errIdHouse := strconv.Atoi(idHouse)
@@ -159,4 +160,28 @@ func (h *HouseHandler) DeleteHouse(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, helpers.ResponseFailed("failed to delete house"))
 	}
 	return c.JSON(http.StatusOK, helpers.ResponseSuccesNoData("success to delete house"))
+}
+
+func (h *HouseHandler) GetSearchHouse(c echo.Context) error {
+	limit := c.QueryParam("limit")
+	offset := c.QueryParam("offset")
+	limitInt, _ := strconv.Atoi(limit)
+	offsetInt, _ := strconv.Atoi(offset)
+	type search struct {
+		Keyword string `json:"keyword"`
+	}
+	var find = search{}
+	errBind := c.Bind(&find)
+	if errBind != nil {
+		return c.JSON(http.StatusInternalServerError, helpers.ResponseFailed("failed to bind data"))
+	}
+	result, totalPage, err := h.houseBusiness.GetSearchHouse(find.Keyword, limitInt, offsetInt)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, helpers.ResponseFailed("failed to get all data"))
+	}
+	var resp = map[string]interface{}{
+		"data":       _responseHouse.FromCoreList(result),
+		"total_page": totalPage,
+	}
+	return c.JSON(http.StatusOK, helpers.ResponseSuccesWithData("success to get all data", resp))
 }

@@ -70,7 +70,26 @@ func (uc *houseUsecase) PutHouse(idHouse int, input houses.Core) (row int, err e
 	row, err = uc.houseData.UpdateHouse(idHouse, input)
 	return row, err
 }
+
 func (uc *houseUsecase) DeleteHouse(idHouse int) (row int, err error) {
 	row, err = uc.houseData.DeleteHouse(idHouse)
 	return row, err
+}
+
+func (uc *houseUsecase) GetSearchHouse(keywords string, limit, offset int) (resp []houses.Core, totalPage int, err error) {
+	resp, err = uc.houseData.SelectSearchHouse(keywords, limit, offset)
+	total := len(resp)
+	if total == 0 {
+		totalPage = 0
+	} else {
+		if limit == 0 {
+			limit = total
+		}
+		if total%limit != 0 {
+			totalPage = (total / limit) + 1
+		} else {
+			totalPage = total / limit
+		}
+	}
+	return resp, totalPage, err
 }
