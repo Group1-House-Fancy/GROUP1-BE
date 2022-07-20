@@ -119,7 +119,7 @@ func (h *NegotiationHandler) PutNegotiation(c echo.Context) error {
 	if idToken == 0 {
 		return c.JSON(http.StatusUnauthorized, helpers.ResponseFailed("unauthorized"))
 	}
-	idNego := c.Param("idNegotiation")
+	idNego := c.Param("idHouse")
 	idNegoInt, errIdNego := strconv.Atoi(idNego)
 	if errIdNego != nil {
 		return c.JSON(http.StatusBadRequest, helpers.ResponseFailed("failed id negotiation not recognize"))
@@ -147,7 +147,7 @@ func (h *NegotiationHandler) DeleteNegotiation(c echo.Context) error {
 	if idToken == 0 {
 		return c.JSON(http.StatusUnauthorized, helpers.ResponseFailed("unauthorized"))
 	}
-	idNego := c.Param("idNegotiation")
+	idNego := c.Param("idHouse")
 	idNegoInt, errIdNego := strconv.Atoi(idNego)
 	if errIdNego != nil {
 		return c.JSON(http.StatusBadRequest, helpers.ResponseFailed("failed id negotiation not recognize"))
