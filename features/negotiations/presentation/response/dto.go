@@ -2,6 +2,7 @@ package response
 
 import (
 	"capstoneproject/features/negotiations"
+	"strconv"
 	"time"
 )
 
@@ -22,12 +23,13 @@ type Negotiator struct {
 }
 
 type House struct {
-	ID           int    `json:"id" form:"id"`
-	Title        string `json:"title" form:"title"`
-	Price        int    `json:"price" form:"price"`
-	Location     string `json:"location" form:"location"`
-	SurfaceArea  int    `json:"surface_area" form:"surface_area"`
-	BuildingArea int    `json:"building_area" form:"building_area"`
+	ID           int                   `json:"id" form:"id"`
+	Title        string                `json:"title" form:"title"`
+	Price        int                   `json:"price" form:"price"`
+	Location     string                `json:"location" form:"location"`
+	SurfaceArea  int                   `json:"surface_area" form:"surface_area"`
+	BuildingArea int                   `json:"building_area" form:"building_area"`
+	HouseImage   map[string]HouseImage `json:"image_url" form:"image_url"`
 }
 
 type User struct {
@@ -35,6 +37,11 @@ type User struct {
 	FullName    string `json:"full_name" form:"full_name"`
 	ImageURL    string `json:"image_url" form:"image_url"`
 	PhoneNumber string `json:"phone_number" form:"phone_number"`
+}
+
+type HouseImage struct {
+	ID       int    `json:"id" form:"id"`
+	ImageURL string `json:"image_url" form:"image_url"`
 }
 
 func FromCoreHistory(data negotiations.Core) History {
@@ -50,6 +57,7 @@ func FromCoreHistory(data negotiations.Core) History {
 			Location:     data.House.Location,
 			SurfaceArea:  data.House.SurfaceArea,
 			BuildingArea: data.House.BuildingArea,
+			HouseImage:   FromHouseImageList(data.House.HouseImage),
 		},
 	}
 }
@@ -81,6 +89,24 @@ func FromCoreNegotiatorList(data []negotiations.Core) []Negotiator {
 	result := []Negotiator{}
 	for key := range data {
 		result = append(result, FromCoreNegotiator(data[key]))
+	}
+	return result
+}
+
+func FromHouseImage(data negotiations.HouseImage) HouseImage {
+	return HouseImage{
+		ID:       data.ID,
+		ImageURL: data.ImageURL,
+	}
+}
+
+func FromHouseImageList(data []negotiations.HouseImage) map[string]HouseImage {
+	result := map[string]HouseImage{}
+	var index = 1
+	for key := range data {
+		indexString := strconv.Itoa(index)
+		result[indexString] = FromHouseImage(data[key])
+		index++
 	}
 	return result
 }
