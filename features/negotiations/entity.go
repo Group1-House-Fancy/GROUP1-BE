@@ -27,6 +27,13 @@ type House struct {
 	SurfaceArea  int
 	BuildingArea int
 	Status       string
+	HouseImage   []HouseImage
+}
+
+type HouseImage struct {
+	ID       int
+	ImageURL string
+	House    House
 }
 
 type Business interface {

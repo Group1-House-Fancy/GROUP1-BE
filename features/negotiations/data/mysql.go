@@ -18,7 +18,7 @@ func NewNegotiationRepository(conn *gorm.DB) negotiations.Data {
 
 func (repo *mysqlNegotiationRepository) SelectNegotiationsByIdUser(idUser, limit, offset int) ([]negotiations.Core, error) {
 	var dataNegotiations = []Negotiation{}
-	result := repo.db.Preload("User").Preload("House").Where("user_id = ?", idUser).Limit(limit).Offset(offset).Find(&dataNegotiations)
+	result := repo.db.Preload("User").Preload("House").Preload("House.HouseImage").Where("user_id = ?", idUser).Limit(limit).Offset(offset).Find(&dataNegotiations)
 	if result.Error != nil {
 		return nil, result.Error
 	}
