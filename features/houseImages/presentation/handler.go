@@ -64,7 +64,7 @@ func (h *HouseImageHandler) DeleteHouseImage(c echo.Context) error {
 	if idToken == 0 {
 		return c.JSON(http.StatusUnauthorized, helpers.ResponseFailed("unauthorized"))
 	}
-	idImage := c.Param("idImage")
+	idImage := c.Param("idHouse")
 	idImageInt, errIdImage := strconv.Atoi(idImage)
 	if errIdImage != nil {
 		return c.JSON(http.StatusBadRequest, helpers.ResponseFailed("failed id image not recognize"))
