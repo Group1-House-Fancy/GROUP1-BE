@@ -71,7 +71,8 @@ func (repo *mysqlHouseRepository) DeleteHouse(idHouse int) (int, error) {
 
 func (repo *mysqlHouseRepository) SelectSearchHouse(keywords string, limit, offset int) ([]houses.Core, error) {
 	var dataHouses []House
-	result := repo.db.Preload("User").Preload("HouseImage").Where("title LIKE ? OR location LIKE ? OR description LIKE ?", "%"+keywords+"%", "%"+keywords+"%", "%"+keywords+"%").Not("status = ?", "Sold Out").Limit(limit).Offset(offset).Find(&dataHouses)
+	//result := repo.db.Preload("User").Preload("HouseImage").Where("title LIKE ? OR location LIKE ? OR description LIKE ?", "%"+keywords+"%", "%"+keywords+"%", "%"+keywords+"%").Not("status = ?", "Sold Out").Limit(limit).Offset(offset).Find(&dataHouses)
+	result := repo.db.Preload("User").Preload("HouseImage").Where(keywords).Not("status = ?", "Sold Out").Limit(limit).Offset(offset).Find(&dataHouses)
 	if result.Error != nil {
 		return nil, result.Error
 	}

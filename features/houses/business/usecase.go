@@ -76,8 +76,34 @@ func (uc *houseUsecase) DeleteHouse(idHouse int) (row int, err error) {
 	return row, err
 }
 
-func (uc *houseUsecase) GetSearchHouse(keywords string, limit, offset int) (resp []houses.Core, totalPage int, err error) {
-	resp, err = uc.houseData.SelectSearchHouse(keywords, limit, offset)
+func (uc *houseUsecase) GetSearchHouse(keywords, location, minPrice, maxPrice string, limit, offset int) (resp []houses.Core, totalPage int, err error) {
+	var query string = ""
+	if minPrice != "" || maxPrice != "" {
+		query += "( "
+		if minPrice != "" {
+			query += "price >= " + minPrice
+		} else if maxPrice != "" {
+			query += "price <= " + maxPrice
+		} else if minPrice != "" && maxPrice != "" {
+			query += "price BETWEEN " + minPrice + " AND " + maxPrice + ""
+		}
+		query += " )"
+	}
+	if location != "" {
+		if minPrice != "" || maxPrice != "" {
+			query += " AND ( "
+		} else {
+			query += "( "
+		}
+		query += "location LIKE '%" + location + "%'"
+		query += " )"
+	}
+	if minPrice != "" || maxPrice != "" || location != "" {
+		query += " AND (title LIKE '%" + keywords + "%' OR location LIKE '%" + keywords + "%' OR description LIKE '%" + keywords + "%')"
+	} else {
+		query += "(title LIKE '%" + keywords + "%' OR location LIKE '%" + keywords + "%' OR description LIKE '%" + keywords + "%')"
+	}
+	resp, err = uc.houseData.SelectSearchHouse(query, limit, offset)
 	total := len(resp)
 	if total == 0 {
 		totalPage = 0

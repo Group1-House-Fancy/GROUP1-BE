@@ -44,7 +44,7 @@ type Business interface {
 	GetMyListHouse(idUser, limit, offset int) (data []Core, totalPage int, err error)
 	PutHouse(idHouse int, data Core) (row int, err error)
 	DeleteHouse(idHouse int) (row int, err error)
-	GetSearchHouse(keywords string, limit, offset int) (data []Core, totalPage int, err error)
+	GetSearchHouse(keywords, location, minPrice, maxPrice string, limit, offset int) (data []Core, totalPage int, err error)
 }
 
 type Data interface {
