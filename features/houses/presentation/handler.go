@@ -167,6 +167,9 @@ func (h *HouseHandler) GetSearchHouse(c echo.Context) error {
 	offset := c.QueryParam("offset")
 	limitInt, _ := strconv.Atoi(limit)
 	offsetInt, _ := strconv.Atoi(offset)
+	minPrice := c.QueryParam("min_price")
+	maxPrice := c.QueryParam("max_price")
+	location := c.QueryParam("location")
 	type search struct {
 		Keyword string `json:"keyword"`
 	}
@@ -175,7 +178,7 @@ func (h *HouseHandler) GetSearchHouse(c echo.Context) error {
 	if errBind != nil {
 		return c.JSON(http.StatusInternalServerError, helpers.ResponseFailed("failed to bind data"))
 	}
-	result, totalPage, err := h.houseBusiness.GetSearchHouse(find.Keyword, limitInt, offsetInt)
+	result, totalPage, err := h.houseBusiness.GetSearchHouse(find.Keyword, location, minPrice, maxPrice, limitInt, offsetInt)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, helpers.ResponseFailed("failed to get all data"))
 	}
