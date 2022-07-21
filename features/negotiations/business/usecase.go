@@ -2,6 +2,7 @@ package business
 
 import (
 	"capstoneproject/features/negotiations"
+	"capstoneproject/plugins"
 	"fmt"
 )
 
@@ -85,6 +86,12 @@ func (uc *negotiationUsecase) UpdateStatus(idNegotiation int, status string) (ro
 		_, errHouse := uc.negotiationData.UpdateHouseStatus(data.House.ID, "Sold Out")
 		if errHouse != nil {
 			return 0, errHouse
+		}
+		result, errUser := uc.negotiationData.SelectUser(data.User.ID)
+		if errUser != nil {
+			return 0, errUser
+		} else {
+			go plugins.SendingEmail(result.Email)
 		}
 	} else if status == "cancel" || status == "Cancel" {
 		fmt.Println(uc.negotiationData.CheckNegotiator(data.House.ID))

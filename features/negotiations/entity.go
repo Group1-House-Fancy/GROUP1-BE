@@ -1,6 +1,9 @@
 package negotiations
 
-import "time"
+import (
+	"capstoneproject/features/users"
+	"time"
+)
 
 type Core struct {
 	ID        int
@@ -54,4 +57,5 @@ type Data interface {
 	UpdateNegotiation(idNegotiation int, status string) (row int, err error)
 	CheckNegotiator(idHouse int) (cond bool)
 	DeleteNegotiation(idNegotiation int) (row int, err error)
+	SelectUser(idUser int) (data users.Core, err error)
 }
