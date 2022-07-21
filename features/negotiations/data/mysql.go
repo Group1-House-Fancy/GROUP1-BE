@@ -69,7 +69,7 @@ func (repo *mysqlNegotiationRepository) UpdateNegotiation(idNegotiation int, sta
 
 func (repo *mysqlNegotiationRepository) SelectNegotiation(idNegotiation int) negotiations.Core {
 	var dataNegotiation = Negotiation{}
-	result := repo.db.Where("id = ?", idNegotiation).First(&dataNegotiation)
+	result := repo.db.Preload("User").Where("id = ?", idNegotiation).First(&dataNegotiation)
 	if result.Error != nil {
 		return negotiations.Core{}
 	}
