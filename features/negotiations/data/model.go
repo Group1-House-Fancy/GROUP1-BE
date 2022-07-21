@@ -2,7 +2,6 @@ package data
 
 import (
 	"capstoneproject/features/negotiations"
-	"capstoneproject/features/users"
 
 	"gorm.io/gorm"
 )
@@ -57,6 +56,7 @@ func (data *Negotiation) toCore() negotiations.Core {
 			FullName:    data.User.FullName,
 			ImageURL:    data.User.ImageURL,
 			PhoneNumber: data.User.PhoneNumber,
+			Email:       data.User.Email,
 		},
 		House: negotiations.House{
 			ID:           int(data.HouseID),
@@ -104,11 +104,4 @@ func toCoreListHouseImages(data []HouseImage) []negotiations.HouseImage {
 		result = append(result, data[key].toCoreHouseImages())
 	}
 	return result
-}
-
-func (data *User) toCoreUser() users.Core {
-	return users.Core{
-		ID:    int(data.ID),
-		Email: data.Email,
-	}
 }

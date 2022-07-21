@@ -2,7 +2,6 @@ package data
 
 import (
 	"capstoneproject/features/negotiations"
-	"capstoneproject/features/users"
 
 	"gorm.io/gorm"
 )
@@ -88,13 +87,4 @@ func (repo *mysqlNegotiationRepository) DeleteNegotiation(idNegotiation int) (in
 		return 0, result.Error
 	}
 	return 1, nil
-}
-
-func (repo *mysqlNegotiationRepository) SelectUser(idUser int) (users.Core, error) {
-	var dataEmail = User{}
-	result := repo.db.Where("id = ? ", idUser).First(&dataEmail)
-	if result.Error != nil {
-		return users.Core{}, result.Error
-	}
-	return dataEmail.toCoreUser(), nil
 }

@@ -72,7 +72,6 @@ func (uc *negotiationUsecase) PostNewNegotiation(input negotiations.Core) (row i
 func (uc *negotiationUsecase) UpdateStatus(idNegotiation int, status string) (row int, err error) {
 	row, err = uc.negotiationData.UpdateNegotiation(idNegotiation, status)
 	data := uc.negotiationData.SelectNegotiation(idNegotiation)
-	fmt.Println(data)
 	if status == "owned" || status == "Owned" {
 		dataNegotiator, _ := uc.negotiationData.SelectNegotiationsByIdHouse(data.House.ID, 0, 0)
 		for _, v := range dataNegotiator {
@@ -87,12 +86,7 @@ func (uc *negotiationUsecase) UpdateStatus(idNegotiation int, status string) (ro
 		if errHouse != nil {
 			return 0, errHouse
 		}
-		result, errUser := uc.negotiationData.SelectUser(data.User.ID)
-		if errUser != nil {
-			return 0, errUser
-		} else {
-			go plugins.SendingEmail(result.Email)
-		}
+		go plugins.SendingEmail(data.User.Email)
 	} else if status == "cancel" || status == "Cancel" {
 		fmt.Println(uc.negotiationData.CheckNegotiator(data.House.ID))
 		if uc.negotiationData.CheckNegotiator(data.House.ID) {

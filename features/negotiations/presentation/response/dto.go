@@ -82,6 +82,7 @@ func FromCoreNegotiator(data negotiations.Core) Negotiator {
 			FullName:    data.User.FullName,
 			ImageURL:    data.User.ImageURL,
 			PhoneNumber: data.User.PhoneNumber,
+			Email:       data.User.Email,
 		},
 	}
 }
