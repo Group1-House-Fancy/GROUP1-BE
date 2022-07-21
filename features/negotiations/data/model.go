@@ -21,7 +21,7 @@ type User struct {
 	FullName    string `json:"full_name" form:"full_name"`
 	ImageURL    string `json:"image_url" form:"image_url"`
 	PhoneNumber string `json:"phone_number" form:"phone_number"`
-	Email       string `json:"email"`
+	Email       string `gorm:"unique" json:"email"`
 	Negotiation []Negotiation
 }
 
