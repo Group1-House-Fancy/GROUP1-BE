@@ -22,4 +22,4 @@ jobs:
             docker rm projectcapsContainer
             docker rmi projectcaps-images:latest
             docker build -t projectcaps-images:latest .
-            docker run -d -p 80:80 -e DB_Username=${{ secrets.DB_USERNAME }} -e DB_Password=${{ secrets.DB_PASSWORD }} -e DB_Port=${{ secrets.DB_PORT }} -e DB_Host=${{ secrets.DB_HOST }} -e DB_Name=${{ secrets.DB_NAME }} -e DB_BUCKET=${{ secrets.DB_BUCKET }} -e DB_SECRET=${{ secrets.DB_SECRET }} --name projectcapsContainer projectcaps-images:latest
+            docker run -d -p 80:80 -e DB_Username=${{ secrets.DB_USERNAME }} -e DB_Password=${{ secrets.DB_PASSWORD }} -e DB_Port=${{ secrets.DB_PORT }} -e DB_Host=${{ secrets.DB_HOST }} -e DB_Name=${{ secrets.DB_NAME }} -e DB_BUCKET=${{ secrets.DB_BUCKET }} -e DB_SECRET=${{ secrets.DB_SECRET }} -e API_KEY=${{ secrets.API_KEY }} --name projectcapsContainer projectcaps-images:latest
