@@ -2,6 +2,7 @@ package data
 
 import (
 	"capstoneproject/features/negotiations"
+	"capstoneproject/features/users"
 
 	"gorm.io/gorm"
 )
@@ -21,6 +22,7 @@ type User struct {
 	FullName    string `json:"full_name" form:"full_name"`
 	ImageURL    string `json:"image_url" form:"image_url"`
 	PhoneNumber string `json:"phone_number" form:"phone_number"`
+	Email       string `json:"email"`
 	Negotiation []Negotiation
 }
 
@@ -102,4 +104,11 @@ func toCoreListHouseImages(data []HouseImage) []negotiations.HouseImage {
 		result = append(result, data[key].toCoreHouseImages())
 	}
 	return result
+}
+
+func (data *User) toCoreUser() users.Core {
+	return users.Core{
+		ID:    int(data.ID),
+		Email: data.Email,
+	}
 }
