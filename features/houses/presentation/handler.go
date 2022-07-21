@@ -6,6 +6,8 @@ import (
 	_responseHouse "capstoneproject/features/houses/presentation/response"
 	"capstoneproject/helpers"
 	"capstoneproject/middlewares"
+	"capstoneproject/plugins"
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -76,11 +78,19 @@ func (h *HouseHandler) GetHouseDetail(c echo.Context) error {
 	if errIdHouse != nil {
 		return c.JSON(http.StatusBadRequest, helpers.ResponseFailed("failed id house not recognize"))
 	}
+	latSource := c.QueryParam("latitude")
+	longSource := c.QueryParam("longitude")
 	result, err := h.houseBusiness.GetHouseDetail(idHouseInt)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, helpers.ResponseFailed("failed to get data"))
 	}
-	return c.JSON(http.StatusOK, helpers.ResponseSuccesWithData("success to get data", _responseHouse.FromCore(result)))
+	latDest := fmt.Sprintf("%f", result.Latitude)
+	longDest := fmt.Sprintf("%f", result.Longitude)
+	var resp = map[string]interface{}{
+		"data":     _responseHouse.FromCore(result),
+		"distance": plugins.DistanceMatrix(latSource, longSource, latDest, longDest),
+	}
+	return c.JSON(http.StatusOK, helpers.ResponseSuccesWithData("success to get data", resp))
 }
 
 func (h *HouseHandler) GetMyListHouse(c echo.Context) error {
