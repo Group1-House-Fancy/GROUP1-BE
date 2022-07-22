@@ -83,7 +83,7 @@ func (h *UserHandler) Login(c echo.Context) error {
 	// }
 	token, fullName, imageURL, isContractor, e := h.userBusiness.LoginUser(userLogin.Email, userLogin.Password)
 	if e != nil {
-		return c.JSON(http.StatusBadRequest, _helper.ResponseFailed("email incorrect"))
+		return c.JSON(http.StatusBadRequest, _helper.ResponseFailed("email or password incorrect"))
 	}
 	data := map[string]interface{}{
 		"full_name":     fullName,
