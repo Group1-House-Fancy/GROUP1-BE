@@ -143,7 +143,7 @@ func (h *UserHandler) EditData(c echo.Context) error {
 	}
 
 	if user.Password == "" {
-		user.Password = data.Password
+		return c.JSON(http.StatusBadRequest, _helper.ResponseFailed("password must be filled"))
 	}
 
 	if user.PhoneNumber == "" {
