@@ -57,4 +57,6 @@ type Data interface {
 	UpdateNegotiation(idNegotiation int, status string) (row int, err error)
 	CheckNegotiator(idHouse int) (cond bool)
 	DeleteNegotiation(idNegotiation int) (row int, err error)
+	CountHistoryData(idUser int) (count int, err error)
+	CountNegotiatorData(idHouse int) (count int, err error)
 }
