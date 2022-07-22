@@ -37,4 +37,5 @@ type Data interface {
 	SelectContractor(idCtr int) (data Core, err error)
 	DeleteContractor(idUser int) (row int, err error)
 	UpdateContractor(idCtr int, idUser int, data Core) (row int, err error)
+	CountContractorData() (count int, err error)
 }
