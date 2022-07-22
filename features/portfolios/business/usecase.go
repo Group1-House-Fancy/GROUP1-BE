@@ -25,7 +25,7 @@ func (uc *portfolioUsecase) PostPortfolio(input portfolios.Core) (idPortfolio in
 
 func (uc *portfolioUsecase) GetAllPortfolio(idCtr, limit, offset int) (data []portfolios.Core, totalPage int, err error) {
 	data, err = uc.portfolioData.SelectAllPortfolio(idCtr, limit, offset)
-	total := len(data)
+	total, _ := uc.portfolioData.CountPortfolioData(idCtr)
 	if total == 0 {
 		totalPage = 0
 	} else {

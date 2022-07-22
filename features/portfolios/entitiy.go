@@ -41,4 +41,5 @@ type Data interface {
 	SelectPortfolio(idPrtf int) (data Core, err error)
 	UpdatePortfolio(idPrtf int, data Core) (row int, err error)
 	DeletePortfolio(idPrtf int) (row int, err error)
+	CountPortfolioData(idCtr int) (count int, err error)
 }

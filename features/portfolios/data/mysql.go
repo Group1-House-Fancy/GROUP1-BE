@@ -60,3 +60,12 @@ func (repo *mysqlPortfolioRepository) DeletePortfolio(idPrtf int) (int, error) {
 	}
 	return 1, nil
 }
+
+func (repo *mysqlPortfolioRepository) CountPortfolioData(idCtr int) (int, error) {
+	var count int64
+	result := repo.db.Model(&Portfolio{}).Where("contractor_id = ?", idCtr).Count(&count)
+	if result.Error != nil {
+		return -1, result.Error
+	}
+	return int(count), nil
+}
