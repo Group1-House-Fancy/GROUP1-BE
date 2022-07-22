@@ -81,12 +81,12 @@ func (uc *houseUsecase) GetSearchHouse(keywords, location, minPrice, maxPrice st
 	var query string = ""
 	if minPrice != "" || maxPrice != "" {
 		query += "( "
-		if minPrice != "" {
+		if minPrice != "" && maxPrice != "" {
+			query += "price BETWEEN " + minPrice + " AND " + maxPrice
+		} else if minPrice != "" {
 			query += "price >= " + minPrice
 		} else if maxPrice != "" {
 			query += "price <= " + maxPrice
-		} else if minPrice != "" && maxPrice != "" {
-			query += "price BETWEEN " + minPrice + " AND " + maxPrice + ""
 		}
 		query += " )"
 	}
