@@ -34,7 +34,7 @@ func (uc *houseUsecase) GetAllHouse(limit, offset int) (resp []houses.Core, tota
 }
 
 func (uc *houseUsecase) PostNewHouse(input houses.Core) (idHouse int, row int, err error) {
-	if input.Title == "" || input.Latitude == 0 || input.Longitude == 0 {
+	if input.Title == "" || input.Latitude == 0 || input.Longitude == 0 || input.Location == "" || input.BuildingArea == 0 || input.SurfaceArea == 0 || input.Price == 0 || input.Bedroom == 0 || input.Bathroom == 0 || input.Certificate == "" {
 		return 0, -1, fmt.Errorf("all input must be filled")
 	}
 	idHouse, row, err = uc.houseData.InsertNewHouse(input)
