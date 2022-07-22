@@ -266,7 +266,7 @@ func TestGetAllHouse(t *testing.T) {
 	})
 	t.Run("Test Get All House Success When Limit is Odd", func(t *testing.T) {
 		houseBusiness := NewHouseBusiness(mockHouseData{})
-		result, totalPage, err := houseBusiness.GetAllHouse(1, 0)
+		result, totalPage, err := houseBusiness.GetAllHouse(3, 0)
 		assert.Nil(t, err)
 		assert.Equal(t, []houses.Core{
 			{
@@ -297,7 +297,7 @@ func TestGetAllHouse(t *testing.T) {
 				},
 			},
 		}, result)
-		assert.Equal(t, 20, totalPage)
+		assert.Equal(t, 7, totalPage)
 	})
 	t.Run("Test Get All House Success When Limit is Even", func(t *testing.T) {
 		houseBusiness := NewHouseBusiness(mockHouseData{})
@@ -698,6 +698,28 @@ func TestPutHouse(t *testing.T) {
 		assert.NotNil(t, err)
 		assert.Equal(t, 0, row)
 	})
+	t.Run("Test Put House Failed When Title is Empty", func(t *testing.T) {
+		houseBusiness := NewHouseBusiness(mockHouseDataFailed{})
+		var data = houses.Core{
+			Price:        250000000,
+			Location:     "Sentul, Bogor",
+			Longitude:    106.82181,
+			Latitude:     -6.193125,
+			SurfaceArea:  64,
+			BuildingArea: 124,
+			Bathroom:     2,
+			Bedroom:      4,
+			Certificate:  "SHM",
+			Status:       "Available",
+			Description:  "Rumah Dijual di Bogor RUMAH TAMAN DARMO PERMAI UTARA  LT 135 LB 90 KT 3 KM 2 2LANTAI AC 2 UNIT 2200W SUDAH RENOV HARGA 50JT/TH (NETT)",
+			User: houses.User{
+				ID: 1,
+			},
+		}
+		row, err := houseBusiness.PutHouse(1, data)
+		assert.NotNil(t, err)
+		assert.Equal(t, -1, row)
+	})
 }
 
 func TestDeleteHouse(t *testing.T) {
@@ -753,7 +775,7 @@ func TestGetSearchHouse(t *testing.T) {
 	})
 	t.Run("Test Get Search House Success When Limit is Odd", func(t *testing.T) {
 		houseBusiness := NewHouseBusiness(mockHouseData{})
-		result, totalPage, err := houseBusiness.GetSearchHouse("Rumah", "Bogor", "100000000", "3000000000", 1, 0)
+		result, totalPage, err := houseBusiness.GetSearchHouse("", "", "", "", 1, 0)
 		assert.Nil(t, err)
 		assert.Equal(t, []houses.Core{
 			{
