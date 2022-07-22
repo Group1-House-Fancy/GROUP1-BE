@@ -78,3 +78,30 @@ func (repo *mysqlHouseRepository) SelectSearchHouse(keywords string, limit, offs
 	}
 	return toCoreList(dataHouses), nil
 }
+
+func (repo *mysqlHouseRepository) CountHouseData() (int, error) {
+	var count int64
+	result := repo.db.Model(&House{}).Count(&count)
+	if result.Error != nil {
+		return -1, result.Error
+	}
+	return int(count), nil
+}
+
+func (repo *mysqlHouseRepository) CountMyListHouseData(idUser int) (int, error) {
+	var count int64
+	result := repo.db.Model(&House{}).Where("user_id = ? ", idUser).Count(&count)
+	if result.Error != nil {
+		return -1, result.Error
+	}
+	return int(count), nil
+}
+
+func (repo *mysqlHouseRepository) CountSearchHouseData(query string) (int, error) {
+	var count int64
+	result := repo.db.Model(&House{}).Where(query).Count(&count)
+	if result.Error != nil {
+		return -1, result.Error
+	}
+	return int(count), nil
+}

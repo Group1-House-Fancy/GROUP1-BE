@@ -17,7 +17,7 @@ func NewHouseBusiness(housData houses.Data) houses.Business {
 
 func (uc *houseUsecase) GetAllHouse(limit, offset int) (resp []houses.Core, totalPage int, err error) {
 	resp, err = uc.houseData.SelectAllHouse(limit, offset)
-	total := len(resp)
+	total, _ := uc.houseData.CountHouseData()
 	if total == 0 {
 		totalPage = 0
 	} else {
@@ -48,7 +48,7 @@ func (uc *houseUsecase) GetHouseDetail(idHouse int) (resp houses.Core, err error
 
 func (uc *houseUsecase) GetMyListHouse(idUser, limit, offset int) (resp []houses.Core, totalPage int, err error) {
 	resp, err = uc.houseData.SelectHouseByIdUser(idUser, limit, offset)
-	total := len(resp)
+	total, _ := uc.houseData.CountMyListHouseData(idUser)
 	if total == 0 {
 		totalPage = 0
 	} else {
@@ -63,6 +63,7 @@ func (uc *houseUsecase) GetMyListHouse(idUser, limit, offset int) (resp []houses
 	}
 	return resp, totalPage, err
 }
+
 func (uc *houseUsecase) PutHouse(idHouse int, input houses.Core) (row int, err error) {
 	if input.Title == "" || input.Latitude == 0 || input.Longitude == 0 {
 		return -1, fmt.Errorf("all input must be filled")
@@ -104,7 +105,7 @@ func (uc *houseUsecase) GetSearchHouse(keywords, location, minPrice, maxPrice st
 		query += "(title LIKE '%" + keywords + "%' OR location LIKE '%" + keywords + "%' OR description LIKE '%" + keywords + "%')"
 	}
 	resp, err = uc.houseData.SelectSearchHouse(query, limit, offset)
-	total := len(resp)
+	total, _ := uc.houseData.CountSearchHouseData(query)
 	if total == 0 {
 		totalPage = 0
 	} else {

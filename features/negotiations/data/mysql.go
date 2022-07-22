@@ -88,3 +88,21 @@ func (repo *mysqlNegotiationRepository) DeleteNegotiation(idNegotiation int) (in
 	}
 	return 1, nil
 }
+
+func (repo *mysqlNegotiationRepository) CountHistoryData(idUser int) (int, error) {
+	var count int64
+	result := repo.db.Model(&Negotiation{}).Where("user_id = ? ", idUser).Count(&count)
+	if result.Error != nil {
+		return -1, result.Error
+	}
+	return int(count), nil
+}
+
+func (repo *mysqlNegotiationRepository) CountNegotiatorData(idHouse int) (int, error) {
+	var count int64
+	result := repo.db.Model(&Negotiation{}).Where("house_id = ? ", idHouse).Not("status = ?", "Cancel").Count(&count)
+	if result.Error != nil {
+		return -1, result.Error
+	}
+	return int(count), nil
+}

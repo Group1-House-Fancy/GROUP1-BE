@@ -55,4 +55,7 @@ type Data interface {
 	UpdateHouse(idHouse int, data Core) (row int, err error)
 	DeleteHouse(idHouse int) (row int, err error)
 	SelectSearchHouse(keywords string, limit, offset int) (data []Core, err error)
+	CountHouseData() (count int, err error)
+	CountMyListHouseData(idUser int) (count int, err error)
+	CountSearchHouseData(query string) (count int, err error)
 }
