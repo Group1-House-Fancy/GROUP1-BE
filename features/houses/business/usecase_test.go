@@ -264,6 +264,76 @@ func TestGetAllHouse(t *testing.T) {
 		}, result)
 		assert.Equal(t, 1, totalPage)
 	})
+	t.Run("Test Get All House Success When Limit is Odd", func(t *testing.T) {
+		houseBusiness := NewHouseBusiness(mockHouseData{})
+		result, totalPage, err := houseBusiness.GetAllHouse(1, 0)
+		assert.Nil(t, err)
+		assert.Equal(t, []houses.Core{
+			{
+				ID:           1,
+				Title:        "Rumah Taman Darmo Permai Utara",
+				Price:        250000000,
+				Location:     "Sentul, Bogor",
+				Longitude:    106.82181,
+				Latitude:     -6.193125,
+				SurfaceArea:  64,
+				BuildingArea: 124,
+				Bathroom:     2,
+				Bedroom:      4,
+				Certificate:  "SHM",
+				Status:       "Available",
+				Description:  "Rumah Dijual di Bogor RUMAH TAMAN DARMO PERMAI UTARA  LT 135 LB 90 KT 3 KM 2 2LANTAI AC 2 UNIT 2200W SUDAH RENOV HARGA 50JT/TH (NETT)",
+				HouseImage: []houses.HouseImage{
+					{ID: 1, ImageURL: "https://storage.googleapis.com/bucket-project-capstone/tampak-depan.jpg"},
+					{ID: 2, ImageURL: "https://storage.googleapis.com/bucket-project-capstone/tampak-samping.jpg"},
+				},
+				User: houses.User{
+					ID:          1,
+					FullName:    "Adi Setiawan",
+					Email:       "adi@mail.com",
+					PhoneNumber: "085345654123",
+					Address:     "Yogyakarta",
+					ImageURL:    "https://storage.googleapis.com/bucket-project-capstone/default_profile.png",
+				},
+			},
+		}, result)
+		assert.Equal(t, 20, totalPage)
+	})
+	t.Run("Test Get All House Success When Limit is Even", func(t *testing.T) {
+		houseBusiness := NewHouseBusiness(mockHouseData{})
+		result, totalPage, err := houseBusiness.GetAllHouse(2, 0)
+		assert.Nil(t, err)
+		assert.Equal(t, []houses.Core{
+			{
+				ID:           1,
+				Title:        "Rumah Taman Darmo Permai Utara",
+				Price:        250000000,
+				Location:     "Sentul, Bogor",
+				Longitude:    106.82181,
+				Latitude:     -6.193125,
+				SurfaceArea:  64,
+				BuildingArea: 124,
+				Bathroom:     2,
+				Bedroom:      4,
+				Certificate:  "SHM",
+				Status:       "Available",
+				Description:  "Rumah Dijual di Bogor RUMAH TAMAN DARMO PERMAI UTARA  LT 135 LB 90 KT 3 KM 2 2LANTAI AC 2 UNIT 2200W SUDAH RENOV HARGA 50JT/TH (NETT)",
+				HouseImage: []houses.HouseImage{
+					{ID: 1, ImageURL: "https://storage.googleapis.com/bucket-project-capstone/tampak-depan.jpg"},
+					{ID: 2, ImageURL: "https://storage.googleapis.com/bucket-project-capstone/tampak-samping.jpg"},
+				},
+				User: houses.User{
+					ID:          1,
+					FullName:    "Adi Setiawan",
+					Email:       "adi@mail.com",
+					PhoneNumber: "085345654123",
+					Address:     "Yogyakarta",
+					ImageURL:    "https://storage.googleapis.com/bucket-project-capstone/default_profile.png",
+				},
+			},
+		}, result)
+		assert.Equal(t, 10, totalPage)
+	})
 	t.Run("Test Get All House Failed", func(t *testing.T) {
 		houseBusiness := NewHouseBusiness(mockHouseDataFailed{})
 		result, totalPage, err := houseBusiness.GetAllHouse(0, 0)
@@ -450,6 +520,128 @@ func TestGetMyListHouse(t *testing.T) {
 		}, result)
 		assert.Equal(t, 1, totalPage)
 	})
+	t.Run("Test Get My List House Success When Limit is Odd", func(t *testing.T) {
+		houseBusiness := NewHouseBusiness(mockHouseData{})
+		result, totalPage, err := houseBusiness.GetMyListHouse(1, 1, 0)
+		assert.Nil(t, err)
+		assert.Equal(t, []houses.Core{
+			{
+				ID:           1,
+				Title:        "Rumah Taman Darmo Permai Utara",
+				Price:        250000000,
+				Location:     "Sentul, Bogor",
+				Longitude:    106.82181,
+				Latitude:     -6.193125,
+				SurfaceArea:  64,
+				BuildingArea: 124,
+				Bathroom:     2,
+				Bedroom:      4,
+				Certificate:  "SHM",
+				Status:       "Available",
+				Description:  "Rumah Dijual di Bogor RUMAH TAMAN DARMO PERMAI UTARA  LT 135 LB 90 KT 3 KM 2 2LANTAI AC 2 UNIT 2200W SUDAH RENOV HARGA 50JT/TH (NETT)",
+				HouseImage: []houses.HouseImage{
+					{ID: 1, ImageURL: "https://storage.googleapis.com/bucket-project-capstone/tampak-depan.jpg"},
+					{ID: 2, ImageURL: "https://storage.googleapis.com/bucket-project-capstone/tampak-samping.jpg"},
+				},
+				User: houses.User{
+					ID:          1,
+					FullName:    "Adi Setiawan",
+					Email:       "adi@mail.com",
+					PhoneNumber: "085345654123",
+					Address:     "Yogyakarta",
+					ImageURL:    "https://storage.googleapis.com/bucket-project-capstone/default_profile.png",
+				},
+			}, {
+				ID:           2,
+				Title:        "Rumah Taman Darmo Permai Utara",
+				Price:        250000000,
+				Location:     "Sentul, Bogor",
+				Longitude:    106.82183,
+				Latitude:     -6.193122,
+				SurfaceArea:  64,
+				BuildingArea: 124,
+				Bathroom:     2,
+				Bedroom:      4,
+				Certificate:  "SHM",
+				Status:       "Available",
+				Description:  "Rumah Dijual di Bogor RUMAH TAMAN DARMO PERMAI UTARA  LT 135 LB 90 KT 3 KM 2 2LANTAI AC 2 UNIT 2200W SUDAH RENOV HARGA 50JT/TH (NETT)",
+				HouseImage: []houses.HouseImage{
+					{ID: 1, ImageURL: "https://storage.googleapis.com/bucket-project-capstone/tampak-depan.jpg"},
+					{ID: 2, ImageURL: "https://storage.googleapis.com/bucket-project-capstone/tampak-samping.jpg"},
+				},
+				User: houses.User{
+					ID:          1,
+					FullName:    "Adi Setiawan",
+					Email:       "adi@mail.com",
+					PhoneNumber: "085345654123",
+					Address:     "Yogyakarta",
+					ImageURL:    "https://storage.googleapis.com/bucket-project-capstone/default_profile.png",
+				},
+			},
+		}, result)
+		assert.Equal(t, 5, totalPage)
+	})
+	t.Run("Test Get My List House Success When Limit is Even", func(t *testing.T) {
+		houseBusiness := NewHouseBusiness(mockHouseData{})
+		result, totalPage, err := houseBusiness.GetMyListHouse(1, 2, 0)
+		assert.Nil(t, err)
+		assert.Equal(t, []houses.Core{
+			{
+				ID:           1,
+				Title:        "Rumah Taman Darmo Permai Utara",
+				Price:        250000000,
+				Location:     "Sentul, Bogor",
+				Longitude:    106.82181,
+				Latitude:     -6.193125,
+				SurfaceArea:  64,
+				BuildingArea: 124,
+				Bathroom:     2,
+				Bedroom:      4,
+				Certificate:  "SHM",
+				Status:       "Available",
+				Description:  "Rumah Dijual di Bogor RUMAH TAMAN DARMO PERMAI UTARA  LT 135 LB 90 KT 3 KM 2 2LANTAI AC 2 UNIT 2200W SUDAH RENOV HARGA 50JT/TH (NETT)",
+				HouseImage: []houses.HouseImage{
+					{ID: 1, ImageURL: "https://storage.googleapis.com/bucket-project-capstone/tampak-depan.jpg"},
+					{ID: 2, ImageURL: "https://storage.googleapis.com/bucket-project-capstone/tampak-samping.jpg"},
+				},
+				User: houses.User{
+					ID:          1,
+					FullName:    "Adi Setiawan",
+					Email:       "adi@mail.com",
+					PhoneNumber: "085345654123",
+					Address:     "Yogyakarta",
+					ImageURL:    "https://storage.googleapis.com/bucket-project-capstone/default_profile.png",
+				},
+			}, {
+				ID:           2,
+				Title:        "Rumah Taman Darmo Permai Utara",
+				Price:        250000000,
+				Location:     "Sentul, Bogor",
+				Longitude:    106.82183,
+				Latitude:     -6.193122,
+				SurfaceArea:  64,
+				BuildingArea: 124,
+				Bathroom:     2,
+				Bedroom:      4,
+				Certificate:  "SHM",
+				Status:       "Available",
+				Description:  "Rumah Dijual di Bogor RUMAH TAMAN DARMO PERMAI UTARA  LT 135 LB 90 KT 3 KM 2 2LANTAI AC 2 UNIT 2200W SUDAH RENOV HARGA 50JT/TH (NETT)",
+				HouseImage: []houses.HouseImage{
+					{ID: 1, ImageURL: "https://storage.googleapis.com/bucket-project-capstone/tampak-depan.jpg"},
+					{ID: 2, ImageURL: "https://storage.googleapis.com/bucket-project-capstone/tampak-samping.jpg"},
+				},
+				User: houses.User{
+					ID:          1,
+					FullName:    "Adi Setiawan",
+					Email:       "adi@mail.com",
+					PhoneNumber: "085345654123",
+					Address:     "Yogyakarta",
+					ImageURL:    "https://storage.googleapis.com/bucket-project-capstone/default_profile.png",
+				},
+			},
+		}, result)
+		assert.Equal(t, 3, totalPage)
+	})
 	t.Run("Test Get My List House Failed", func(t *testing.T) {
 		houseBusiness := NewHouseBusiness(mockHouseDataFailed{})
 		result, totalPage, err := houseBusiness.GetMyListHouse(1, 0, 0)
@@ -505,5 +697,275 @@ func TestPutHouse(t *testing.T) {
 		row, err := houseBusiness.PutHouse(1, data)
 		assert.NotNil(t, err)
 		assert.Equal(t, 0, row)
+	})
+}
+
+func TestDeleteHouse(t *testing.T) {
+	t.Run("Test Delete House Success", func(t *testing.T) {
+		houseBusiness := NewHouseBusiness(mockHouseData{})
+		row, err := houseBusiness.DeleteHouse(1)
+		assert.Nil(t, err)
+		assert.Equal(t, 1, row)
+	})
+	t.Run("Test Delete House Failed", func(t *testing.T) {
+		houseBusiness := NewHouseBusiness(mockHouseDataFailed{})
+		row, err := houseBusiness.DeleteHouse(1)
+		assert.NotNil(t, err)
+		assert.Equal(t, 0, row)
+	})
+}
+
+func TestGetSearchHouse(t *testing.T) {
+	t.Run("Test Get Search House Success", func(t *testing.T) {
+		houseBusiness := NewHouseBusiness(mockHouseData{})
+		result, totalPage, err := houseBusiness.GetSearchHouse("Rumah", "Bogor", "100000000", "3000000000", 0, 0)
+		assert.Nil(t, err)
+		assert.Equal(t, []houses.Core{
+			{
+				ID:           1,
+				Title:        "Rumah Taman Darmo Permai Utara",
+				Price:        250000000,
+				Location:     "Sentul, Bogor",
+				Longitude:    106.82181,
+				Latitude:     -6.193125,
+				SurfaceArea:  64,
+				BuildingArea: 124,
+				Bathroom:     2,
+				Bedroom:      4,
+				Certificate:  "SHM",
+				Status:       "Available",
+				Description:  "Rumah Dijual di Bogor RUMAH TAMAN DARMO PERMAI UTARA  LT 135 LB 90 KT 3 KM 2 2LANTAI AC 2 UNIT 2200W SUDAH RENOV HARGA 50JT/TH (NETT)",
+				HouseImage: []houses.HouseImage{
+					{ID: 1, ImageURL: "https://storage.googleapis.com/bucket-project-capstone/tampak-depan.jpg"},
+					{ID: 2, ImageURL: "https://storage.googleapis.com/bucket-project-capstone/tampak-samping.jpg"},
+				},
+				User: houses.User{
+					ID:          1,
+					FullName:    "Adi Setiawan",
+					Email:       "adi@mail.com",
+					PhoneNumber: "085345654123",
+					Address:     "Yogyakarta",
+					ImageURL:    "https://storage.googleapis.com/bucket-project-capstone/default_profile.png",
+				},
+			},
+		}, result)
+		assert.Equal(t, 1, totalPage)
+	})
+	t.Run("Test Get Search House Success When Limit is Odd", func(t *testing.T) {
+		houseBusiness := NewHouseBusiness(mockHouseData{})
+		result, totalPage, err := houseBusiness.GetSearchHouse("Rumah", "Bogor", "100000000", "3000000000", 1, 0)
+		assert.Nil(t, err)
+		assert.Equal(t, []houses.Core{
+			{
+				ID:           1,
+				Title:        "Rumah Taman Darmo Permai Utara",
+				Price:        250000000,
+				Location:     "Sentul, Bogor",
+				Longitude:    106.82181,
+				Latitude:     -6.193125,
+				SurfaceArea:  64,
+				BuildingArea: 124,
+				Bathroom:     2,
+				Bedroom:      4,
+				Certificate:  "SHM",
+				Status:       "Available",
+				Description:  "Rumah Dijual di Bogor RUMAH TAMAN DARMO PERMAI UTARA  LT 135 LB 90 KT 3 KM 2 2LANTAI AC 2 UNIT 2200W SUDAH RENOV HARGA 50JT/TH (NETT)",
+				HouseImage: []houses.HouseImage{
+					{ID: 1, ImageURL: "https://storage.googleapis.com/bucket-project-capstone/tampak-depan.jpg"},
+					{ID: 2, ImageURL: "https://storage.googleapis.com/bucket-project-capstone/tampak-samping.jpg"},
+				},
+				User: houses.User{
+					ID:          1,
+					FullName:    "Adi Setiawan",
+					Email:       "adi@mail.com",
+					PhoneNumber: "085345654123",
+					Address:     "Yogyakarta",
+					ImageURL:    "https://storage.googleapis.com/bucket-project-capstone/default_profile.png",
+				},
+			},
+		}, result)
+		assert.Equal(t, 10, totalPage)
+	})
+	t.Run("Test Get Search House Success When Limit is Even", func(t *testing.T) {
+		houseBusiness := NewHouseBusiness(mockHouseData{})
+		result, totalPage, err := houseBusiness.GetSearchHouse("Rumah", "Bogor", "100000000", "3000000000", 6, 0)
+		assert.Nil(t, err)
+		assert.Equal(t, []houses.Core{
+			{
+				ID:           1,
+				Title:        "Rumah Taman Darmo Permai Utara",
+				Price:        250000000,
+				Location:     "Sentul, Bogor",
+				Longitude:    106.82181,
+				Latitude:     -6.193125,
+				SurfaceArea:  64,
+				BuildingArea: 124,
+				Bathroom:     2,
+				Bedroom:      4,
+				Certificate:  "SHM",
+				Status:       "Available",
+				Description:  "Rumah Dijual di Bogor RUMAH TAMAN DARMO PERMAI UTARA  LT 135 LB 90 KT 3 KM 2 2LANTAI AC 2 UNIT 2200W SUDAH RENOV HARGA 50JT/TH (NETT)",
+				HouseImage: []houses.HouseImage{
+					{ID: 1, ImageURL: "https://storage.googleapis.com/bucket-project-capstone/tampak-depan.jpg"},
+					{ID: 2, ImageURL: "https://storage.googleapis.com/bucket-project-capstone/tampak-samping.jpg"},
+				},
+				User: houses.User{
+					ID:          1,
+					FullName:    "Adi Setiawan",
+					Email:       "adi@mail.com",
+					PhoneNumber: "085345654123",
+					Address:     "Yogyakarta",
+					ImageURL:    "https://storage.googleapis.com/bucket-project-capstone/default_profile.png",
+				},
+			},
+		}, result)
+		assert.Equal(t, 2, totalPage)
+	})
+	t.Run("Test Get Search House Success When Location Not Empty", func(t *testing.T) {
+		houseBusiness := NewHouseBusiness(mockHouseData{})
+		result, totalPage, err := houseBusiness.GetSearchHouse("Rumah", "Bogor", "", "", 0, 0)
+		assert.Nil(t, err)
+		assert.Equal(t, []houses.Core{
+			{
+				ID:           1,
+				Title:        "Rumah Taman Darmo Permai Utara",
+				Price:        250000000,
+				Location:     "Sentul, Bogor",
+				Longitude:    106.82181,
+				Latitude:     -6.193125,
+				SurfaceArea:  64,
+				BuildingArea: 124,
+				Bathroom:     2,
+				Bedroom:      4,
+				Certificate:  "SHM",
+				Status:       "Available",
+				Description:  "Rumah Dijual di Bogor RUMAH TAMAN DARMO PERMAI UTARA  LT 135 LB 90 KT 3 KM 2 2LANTAI AC 2 UNIT 2200W SUDAH RENOV HARGA 50JT/TH (NETT)",
+				HouseImage: []houses.HouseImage{
+					{ID: 1, ImageURL: "https://storage.googleapis.com/bucket-project-capstone/tampak-depan.jpg"},
+					{ID: 2, ImageURL: "https://storage.googleapis.com/bucket-project-capstone/tampak-samping.jpg"},
+				},
+				User: houses.User{
+					ID:          1,
+					FullName:    "Adi Setiawan",
+					Email:       "adi@mail.com",
+					PhoneNumber: "085345654123",
+					Address:     "Yogyakarta",
+					ImageURL:    "https://storage.googleapis.com/bucket-project-capstone/default_profile.png",
+				},
+			},
+		}, result)
+		assert.Equal(t, 1, totalPage)
+	})
+	t.Run("Test Get Search House Success When Min Price Not Empty", func(t *testing.T) {
+		houseBusiness := NewHouseBusiness(mockHouseData{})
+		result, totalPage, err := houseBusiness.GetSearchHouse("Rumah", "", "100000000", "", 0, 0)
+		assert.Nil(t, err)
+		assert.Equal(t, []houses.Core{
+			{
+				ID:           1,
+				Title:        "Rumah Taman Darmo Permai Utara",
+				Price:        250000000,
+				Location:     "Sentul, Bogor",
+				Longitude:    106.82181,
+				Latitude:     -6.193125,
+				SurfaceArea:  64,
+				BuildingArea: 124,
+				Bathroom:     2,
+				Bedroom:      4,
+				Certificate:  "SHM",
+				Status:       "Available",
+				Description:  "Rumah Dijual di Bogor RUMAH TAMAN DARMO PERMAI UTARA  LT 135 LB 90 KT 3 KM 2 2LANTAI AC 2 UNIT 2200W SUDAH RENOV HARGA 50JT/TH (NETT)",
+				HouseImage: []houses.HouseImage{
+					{ID: 1, ImageURL: "https://storage.googleapis.com/bucket-project-capstone/tampak-depan.jpg"},
+					{ID: 2, ImageURL: "https://storage.googleapis.com/bucket-project-capstone/tampak-samping.jpg"},
+				},
+				User: houses.User{
+					ID:          1,
+					FullName:    "Adi Setiawan",
+					Email:       "adi@mail.com",
+					PhoneNumber: "085345654123",
+					Address:     "Yogyakarta",
+					ImageURL:    "https://storage.googleapis.com/bucket-project-capstone/default_profile.png",
+				},
+			},
+		}, result)
+		assert.Equal(t, 1, totalPage)
+	})
+	t.Run("Test Get Search House Success When Max Price Not Empty", func(t *testing.T) {
+		houseBusiness := NewHouseBusiness(mockHouseData{})
+		result, totalPage, err := houseBusiness.GetSearchHouse("Rumah", "", "", "300000000", 0, 0)
+		assert.Nil(t, err)
+		assert.Equal(t, []houses.Core{
+			{
+				ID:           1,
+				Title:        "Rumah Taman Darmo Permai Utara",
+				Price:        250000000,
+				Location:     "Sentul, Bogor",
+				Longitude:    106.82181,
+				Latitude:     -6.193125,
+				SurfaceArea:  64,
+				BuildingArea: 124,
+				Bathroom:     2,
+				Bedroom:      4,
+				Certificate:  "SHM",
+				Status:       "Available",
+				Description:  "Rumah Dijual di Bogor RUMAH TAMAN DARMO PERMAI UTARA  LT 135 LB 90 KT 3 KM 2 2LANTAI AC 2 UNIT 2200W SUDAH RENOV HARGA 50JT/TH (NETT)",
+				HouseImage: []houses.HouseImage{
+					{ID: 1, ImageURL: "https://storage.googleapis.com/bucket-project-capstone/tampak-depan.jpg"},
+					{ID: 2, ImageURL: "https://storage.googleapis.com/bucket-project-capstone/tampak-samping.jpg"},
+				},
+				User: houses.User{
+					ID:          1,
+					FullName:    "Adi Setiawan",
+					Email:       "adi@mail.com",
+					PhoneNumber: "085345654123",
+					Address:     "Yogyakarta",
+					ImageURL:    "https://storage.googleapis.com/bucket-project-capstone/default_profile.png",
+				},
+			},
+		}, result)
+		assert.Equal(t, 1, totalPage)
+	})
+	t.Run("Test Get Search House Success When Min and Max Price Not Empty", func(t *testing.T) {
+		houseBusiness := NewHouseBusiness(mockHouseData{})
+		result, totalPage, err := houseBusiness.GetSearchHouse("Rumah", "", "100000000", "300000000", 0, 0)
+		assert.Nil(t, err)
+		assert.Equal(t, []houses.Core{
+			{
+				ID:           1,
+				Title:        "Rumah Taman Darmo Permai Utara",
+				Price:        250000000,
+				Location:     "Sentul, Bogor",
+				Longitude:    106.82181,
+				Latitude:     -6.193125,
+				SurfaceArea:  64,
+				BuildingArea: 124,
+				Bathroom:     2,
+				Bedroom:      4,
+				Certificate:  "SHM",
+				Status:       "Available",
+				Description:  "Rumah Dijual di Bogor RUMAH TAMAN DARMO PERMAI UTARA  LT 135 LB 90 KT 3 KM 2 2LANTAI AC 2 UNIT 2200W SUDAH RENOV HARGA 50JT/TH (NETT)",
+				HouseImage: []houses.HouseImage{
+					{ID: 1, ImageURL: "https://storage.googleapis.com/bucket-project-capstone/tampak-depan.jpg"},
+					{ID: 2, ImageURL: "https://storage.googleapis.com/bucket-project-capstone/tampak-samping.jpg"},
+				},
+				User: houses.User{
+					ID:          1,
+					FullName:    "Adi Setiawan",
+					Email:       "adi@mail.com",
+					PhoneNumber: "085345654123",
+					Address:     "Yogyakarta",
+					ImageURL:    "https://storage.googleapis.com/bucket-project-capstone/default_profile.png",
+				},
+			},
+		}, result)
+		assert.Equal(t, 1, totalPage)
+	})
+	t.Run("Test Get Search House Failed", func(t *testing.T) {
+		houseBusiness := NewHouseBusiness(mockHouseDataFailed{})
+		result, totalPage, err := houseBusiness.GetSearchHouse("Rumah", "", "", "", 0, 0)
+		assert.NotNil(t, err)
+		assert.Nil(t, result)
+		assert.Equal(t, 0, totalPage)
 	})
 }
