@@ -38,10 +38,10 @@ func (h *UserHandler) AddUser(c echo.Context) error {
 	}
 	v := validator.New()
 	errValidator := v.Struct(dataUser)
-	errFullName := v.Var(dataUser.FullName, "required,alpha")
-	if errFullName != nil {
-		return c.JSON(http.StatusBadRequest, _helper.ResponseFailed("fullname can only contains alphabet"))
-	}
+	// errFullName := v.Var(dataUser.FullName, "required,alpha")
+	// if errFullName != nil {
+	// 	return c.JSON(http.StatusBadRequest, _helper.ResponseFailed("fullname can only contains alphabet"))
+	// }
 	if len(dataUser.FullName) == 0 {
 		return c.JSON(http.StatusBadRequest, _helper.ResponseFailed("fullname must be filled"))
 	}
@@ -129,10 +129,10 @@ func (h *UserHandler) EditData(c echo.Context) error {
 	if user.FullName == "" {
 		user.FullName = data.FullName
 	}
-	errFullName := v.Var(user.FullName, "required,alpha")
-	if errFullName != nil {
-		return c.JSON(http.StatusBadRequest, _helper.ResponseFailed("fullname can only contains alphabet"))
-	}
+	// errFullName := v.Var(user.FullName, "required,alpha")
+	// if errFullName != nil {
+	// 	return c.JSON(http.StatusBadRequest, _helper.ResponseFailed("fullname can only contains alphabet"))
+	// }
 	if user.Email == "" {
 		user.Email = data.Email
 	}
