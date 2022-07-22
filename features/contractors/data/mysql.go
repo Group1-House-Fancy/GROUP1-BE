@@ -85,3 +85,12 @@ func (repo *mysqlContractorRepository) UpdateContractor(idCtr int, idUser int, i
 	}
 	return int(result.RowsAffected), nil
 }
+
+func (repo *mysqlContractorRepository) CountContractorData() (int, error) {
+	var count int64
+	result := repo.db.Model(&Contractor{}).Count(&count)
+	if result.Error != nil {
+		return -1, result.Error
+	}
+	return int(count), nil
+}

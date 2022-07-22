@@ -37,7 +37,7 @@ func (uc *contractorUsecase) CreateContractor(input contractors.Core) (row int, 
 
 func (uc *contractorUsecase) GetAllContractor(limit, offset int) (data []contractors.Core, totalPage int, err error) {
 	data, err = uc.contractorData.SelectAllContractor(limit, offset)
-	total := len(data)
+	total, _ := uc.contractorData.CountContractorData()
 	if total == 0 {
 		totalPage = 0
 	} else {
