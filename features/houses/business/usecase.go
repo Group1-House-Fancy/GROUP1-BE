@@ -101,12 +101,14 @@ func (uc *houseUsecase) GetSearchHouse(keywords, location, minPrice, maxPrice st
 		query += " )"
 	}
 	temp := strings.Split(keywords, " ")
-	tempKeyword := ""
-	for i := 0; i < len(temp)-1; i++ {
-		tempKeyword += temp[i] + "%' OR "
+	if len(temp) != 1 {
+		tempKeyword := ""
+		for i := 0; i < len(temp)-1; i++ {
+			tempKeyword += temp[i] + "%' OR '%"
+		}
+		tempKeyword += temp[len(temp)-1]
+		keywords = tempKeyword
 	}
-	tempKeyword += "'%" + temp[len(temp)-1]
-	keywords = tempKeyword
 	if minPrice != "" || maxPrice != "" || location != "" {
 		query += " AND (title LIKE '%" + keywords + "%' ) OR ( location LIKE '%" + keywords + "%' ) OR ( description LIKE '%" + keywords + "%')"
 	} else {
