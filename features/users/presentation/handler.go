@@ -199,7 +199,7 @@ func (h *UserHandler) DeleteDataUser(c echo.Context) error {
 	}
 
 	if idTok == 0 {
-		return c.JSON(http.StatusUnauthorized, _helper.ResponseFailed("Unauthorized"))
+		return c.JSON(http.StatusUnauthorized, _helper.ResponseFailed("unauthorized"))
 	}
 	_, err := h.userBusiness.DeleteUser(idTok)
 	if err != nil {
