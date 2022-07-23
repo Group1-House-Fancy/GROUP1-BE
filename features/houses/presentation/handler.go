@@ -180,15 +180,8 @@ func (h *HouseHandler) GetSearchHouse(c echo.Context) error {
 	minPrice := c.QueryParam("min_price")
 	maxPrice := c.QueryParam("max_price")
 	location := c.QueryParam("location")
-	type search struct {
-		Keyword string `json:"keyword"`
-	}
-	var find = search{}
-	errBind := c.Bind(&find)
-	if errBind != nil {
-		return c.JSON(http.StatusInternalServerError, helpers.ResponseFailed("failed to bind data"))
-	}
-	result, totalPage, err := h.houseBusiness.GetSearchHouse(find.Keyword, location, minPrice, maxPrice, limitInt, offsetInt)
+	keyword := c.QueryParam("keyword")
+	result, totalPage, err := h.houseBusiness.GetSearchHouse(keyword, location, minPrice, maxPrice, limitInt, offsetInt)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, helpers.ResponseFailed("failed to get all data"))
 	}
