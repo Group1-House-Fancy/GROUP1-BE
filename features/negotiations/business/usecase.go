@@ -18,8 +18,8 @@ func NewNegotiationBusiness(negoData negotiations.Data) negotiations.Business {
 
 func (uc *negotiationUsecase) GetHistoryUser(idUser, limit, offset int) (resp []negotiations.Core, totalPage int, err error) {
 	resp, err = uc.negotiationData.SelectNegotiationsByIdUser(idUser, limit, offset)
-	total, errCount := uc.negotiationData.CountHistoryData(idUser)
-	if errCount != nil {
+	total, _ := uc.negotiationData.CountHistoryData(idUser)
+	if total == 0 {
 		totalPage = 0
 	} else {
 		if limit == 0 {
@@ -36,8 +36,8 @@ func (uc *negotiationUsecase) GetHistoryUser(idUser, limit, offset int) (resp []
 
 func (uc *negotiationUsecase) GetHouseNegotiators(idHouse, limit, offset int) (resp []negotiations.Core, totalPage int, err error) {
 	resp, err = uc.negotiationData.SelectNegotiationsByIdHouse(idHouse, limit, offset)
-	total, errCount := uc.negotiationData.CountNegotiatorData(idHouse)
-	if errCount != nil {
+	total, _ := uc.negotiationData.CountNegotiatorData(idHouse)
+	if total == 0 {
 		totalPage = 0
 	} else {
 		if limit == 0 {
