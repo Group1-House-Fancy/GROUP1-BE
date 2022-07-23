@@ -8,9 +8,9 @@ import (
 	"gopkg.in/gomail.v2"
 )
 
-var config_smtp_host = os.Getenv("CONFIG_SMTP_HOST")
-var config_smtp_port = os.Getenv("CONFIG_SMTP_PORT")
-var config_sender_name = os.Getenv("CONFIG_SENDER_NAME")
+var config_smtp_host = "smtp.gmail.com"
+var config_smtp_port = "587"
+var config_sender_name = "PT. House Fancy <housefancy950@gmail.com>"
 var config_auth_email = os.Getenv("CONFIG_AUTH_EMAIL")
 var config_auth_password = os.Getenv("CONFIG_AUTH_PASSWORD")
 
