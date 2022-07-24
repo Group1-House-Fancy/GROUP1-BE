@@ -1,0 +1,3228 @@
+openapi: 3.0.3
+info:
+  version: 1.0.0
+  title: HouseFancy
+  description: Aplikasi Jual Beli Rumah
+  contact:
+    name: Group1
+    email: support@alterra.id
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/faizalsundara/Kelompok1/1.0.0
+  - description: Domain Name Server
+    url: https://housefancy.site
+tags:
+  - name: Auth
+    description: Authentication
+  - name: Users
+    description: User data management
+  - name: Houses
+    description: House data management
+  - name: Negotiations
+    description: Negotiation data management
+  - name: Contractors
+    description: Contractor data management
+  - name: Portfolios
+    description: Portfolio data management
+ 
+paths:
+  /login:
+    post:
+      tags:
+        - Auth
+      description: Login user bisa digunakan ketika user sudah registrasi
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/requestLogin'
+            examples:
+              userData1:
+                description: "Example data  user 1"
+                value: {
+                  email: "andrigunawan@gmail.com",
+                  password: "andri12"
+                }
+      responses:
+        '200':
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseUserSuccess'
+              examples:
+                responseData1:
+                  description: response success 1
+                  value: {
+                      "data": {
+                          "full_name": "andri gunawan",
+                          "image_url": "https://storage.googleapis.com/bucket-project-capstone/default_profile.png",
+                          "is_contractor": false,
+                          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2NTg1MDM2MjQsInVzZXJJZCI6N30.DFxWe18OoFhRAIt41dIDWPQPORI8S5rAkTylJiolnbc"
+                      },
+                      "message": "LOGIN SUCCES",
+                      "status": "success"
+                  }
+        '400':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "email or password incorrect"
+                  }
+                responseData2:
+                  description: response failed 2
+                  value: {
+                    status: "error",
+                    message: "failed to bind data, check your input"
+                  }
+  /users:
+    post:
+      tags:
+        - Users
+      description: Saat registrasi user harus input semua field
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/requestRegistrasi'
+            examples:
+              userData1:
+                description: "Example data  user 1"
+                value: {
+                  "full_name": "andri gunawan",
+                  "email": "andrigunawan@gmail.com",
+                  "password": "andri12",
+                  "phone_number": "08123247689",
+                  "address": "Jln. Baru No.4, Jakarta - Indonesia",
+                }
+      responses:
+        '200':
+          description: Success Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response success 1
+                  value: {
+                      "message": "Succes to insert data",
+                      "status": "success"
+                  }
+        '400':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "fullname must be filled",
+                  }
+                responseData2:
+                  description: response failed 2
+                  value: {
+                    status: "error",
+                    message: "invalid format email",
+                  }
+                responseData3:
+                  description: response failed 3
+                  value: {
+                    status: "error",
+                    message: "password must be filled",
+                  }
+                responseData4:
+                  description: response failed 4
+                  value: {
+                    status: "error",
+                    message: "phone number must be in numeric",
+                  }
+                responseData5:
+                  description: response failed 5
+                  value: {
+                    status: "error",
+                    message: "email already exist",
+                  }
+        '500':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "failed to bind data, check your input",
+                  }
+    get:
+      tags:
+        - "Users"
+      description: Bisa diaplikasikan ketika user ingin melihat profilnya
+      security:
+        - JWTAuth: []
+      responses:
+        '200':
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseUserSuccess'
+              examples:
+                responseData1:
+                  description: response success 1
+                  value: {
+                    "data": {
+                          "id": 7,
+                          "full_name": "andri gunawan",
+                          "email": "andrigunawan@gmail.com",
+                          "phone_number": "0811116666",
+                          "address": "Cijoho",
+                          "image_url": "https://storage.googleapis.com/bucket-project-capstone/default_profile.png",
+                          "is_contractor": false,
+                          "created_at": "2022-07-22T14:24:18.971Z"
+                    },
+                    "message": "success",
+                    "status": "success"
+                  }
+        '400':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "invalid token",
+                  }
+                responseData2:
+                  description: response failed 2
+                  value: {
+                    status: "error",
+                    message: "missing or malformed jwt",
+                  }
+        '401':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "unauthorized",
+                  }
+                responseData2:
+                  description: response failed 2
+                  value: {
+                    status: "error",
+                    message: "invalid or expired jwt",
+                  }
+        '500':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "failed to get data user",
+                  }
+        
+    put:
+      tags:
+        - Users
+      description: Bisa diaplikasikan ketika user ingin update profilnya
+      security:
+        - JWTAuth: []     
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/requestUpdate'
+            examples:
+              userData1:
+                description: "Example data  user 1"
+                value: {
+                  "full_name": "andri gunawan",
+                  "email": "andrigunawan@gmail.com",
+                  "password": "andri12",
+                  "phone_number": "08123247689",
+                  "address": "Jln. Baru No.4, Jakarta - Indonesia",
+                  "file": "new-profil1.jpg"
+                }
+      responses:
+        '200':
+          description: Success Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response success 1
+                  value: {
+                    "message": "success update data",
+                    "status": "success"
+                  }
+        '400':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "invalid token",
+                  }
+                responseData2:
+                  description: response failed 2
+                  value: {
+                    status: "error",
+                    message: "missing or malformed jwt",
+                  }
+                responseData3:
+                  description: respon failed 3
+                  value: {
+                    status: "error",
+                    message: "invalid format email"
+                  }
+                responseData4:
+                  description: respon failed 4
+                  value: {
+                    status: "error",
+                    message: "password must be filled"
+                  }
+                responseData5:
+                  description: respon failed 5
+                  value: {
+                    status: "error",
+                    message: "phone number must be in numeric"
+                  }
+                responseData6:
+                  description: respon failed 6
+                  value: {
+                    status: "error",
+                    message: "failed to update data"
+                  }
+        '401':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "unauthorized",
+                  }
+                responseData2:
+                  description: response failed 2
+                  value: {
+                    status: "error",
+                    message: "invalid or expired jwt",
+                  }          
+    delete:
+      tags:
+        - Users
+      description: Bisa diaplikasikan ketika user ingin menghapus profilnya
+      security:
+        - JWTAuth: []
+      responses:
+        '200':
+          description: Success Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response success 1
+                  value: {
+                    "message": "success to delete user",
+                    "status": "success"
+                  }
+        '400':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    "message": "invalid token",
+                  }
+                responseData2:
+                  description: response failed 2
+                  value: {
+                    status: "error",
+                    message: "missing or malformed jwt",
+                  }
+        '401':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    "message": "unauthorized",
+                  }
+                responseData2:
+                  description: response failed 2
+                  value: {
+                    status: "error",
+                    message: "invalid or expired jwt",
+                  }
+        '500':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    "status": "error",
+                    "message": "failed to delete user",
+                  }
+  /houses:
+    post:
+      tags:
+        - Houses
+      description: User bisa menambahkan rumah yang dijual
+      security:
+        - JWTAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/requestHouse'
+            examples:
+              userData1:
+                description: "Example data  user 1"
+                value: {
+                  "title": "Rumah Taman Darmo Permai Utara",
+                  "price": 250000000,
+                  "location": "Sentul, Bogor",
+                  "longitude": 106.821810,
+                  "latitude":  -6.193125,
+                  "surface_area": 64,
+                  "building_area": 124,
+                  "bathroom": 2,
+                  "bedroom": 4,
+                  "certificate": "SHM",
+                  "description": "Rumah Dijual di Bogor RUMAH TAMAN DARMO PERMAI UTARA LT 135 LB 90 KT 3 KM 2 2LANTAI AC 2 UNIT 2200W SUDAH RENOV HARGA 50JT/TH (NETT)",
+                }
+      responses:
+        '200':
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseHouseSuccess'
+              examples:
+                responseData1:
+                  description: response success 1
+                  value: {
+                    "data": {
+                        "id_house": 49
+                    },
+                    "message": "Succes to insert house",
+                    "status": "success"
+                  }
+        '400':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    "message": "invalid token",
+                  }
+                responseData2:
+                  description: response failed 2
+                  value: {
+                    status: "error",
+                    message: "missing or malformed jwt",
+                  }
+                responseData3:
+                  description: response failed 3
+                  value: {
+                    status: "error",
+                    message: "all input must be filled",
+                  }
+        '401':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    "message": "unauthorized",
+                  }
+                responseData2:
+                  description: response failed 2
+                  value: {
+                    status: "error",
+                    message: "invalid or expired jwt",
+                  }
+        '500':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    "message": "failed to bind data",
+                  }
+                responseData2:
+                  description: response failed 2
+                  value: {
+                    status: "error",
+                    message: "failed to insert house",
+                  }
+                responseData3:
+                  description: response failed 3
+                  value: {
+                    status: "error",
+                    message: "failed to insert house",
+                  }
+    get:
+      tags:
+        - "Houses"
+      description: Menampilkan semua rumah yang ada
+      parameters:
+        - in: query
+          name: limit
+          required: false
+          schema:
+            type: number
+            example: 1
+          description: limit
+        - in: query
+          name: offset
+          required: false
+          schema:
+            type: number
+            example: 1
+          description: offset
+      responses:
+        '200':
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseHouseSuccess'
+              examples:
+                responseData1:
+                  description: response success 1
+                  value: {
+                      "data": {
+                          "data": [
+                              {
+                                  "id": 5,
+                                  "title": "Rumah Strategis",
+                                  "price": 12000000000,
+                                  "location": "Semarang",
+                                  "longitude": 106.83654050027233,
+                                  "latitude": -6.176224966990518,
+                                  "surface_area": 200,
+                                  "building_area": 200,
+                                  "bathroom": 5,
+                                  "bedroom": 6,
+                                  "certificate": "SHM",
+                                  "description": "",
+                                  "status": "Available",
+                                  "created_at": "2022-07-21T07:35:13.303Z",
+                                  "user": {
+                                      "id": 1,
+                                      "full_name": "Vera Soniya",
+                                      "email": "vera@gmail.com",
+                                      "phone_number": "08123247689",
+                                      "address": "Jln. Baru No.4, Jakarta - Indonesia",
+                                      "image_url": "https://storage.googleapis.com/bucket-project-capstone/default_profile.png"
+                                  },
+                                  "image_url": {
+                                      "1": {
+                                          "id": 19,
+                                          "image_url": "https://storage.googleapis.com/bucket-project-capstone/8b279d4c-3820-45a1-b4eb-0b9a1792e85c.jpg"
+                                      },
+                                      "2": {
+                                          "id": 20,
+                                          "image_url": "https://storage.googleapis.com/bucket-project-capstone/e925b505-9071-464d-b6b5-5364b191095f.png"
+                                      }
+                                  }
+                              },
+                              {
+                                  "id": 6,
+                                  "title": "Rumah Permai Selatan",
+                                  "price": 150000000,
+                                  "location": "Priok, Jakarta Utara",
+                                  "longitude": 106.82181,
+                                  "latitude": -6.193125,
+                                  "surface_area": 56,
+                                  "building_area": 50,
+                                  "bathroom": 1,
+                                  "bedroom": 2,
+                                  "certificate": "SHM",
+                                  "description": "Rumah Dijual di Jakarta Utara RUMAH PERMAI SELATAN LT 56 LB 90 KT 2 KM 1 1LANTAI AC 2 UNIT 2200W SUDAH RENOV HARGA 150JT/TH (NETT)",
+                                  "status": "Available",
+                                  "created_at": "2022-07-21T07:40:55.416Z",
+                                  "user": {
+                                      "id": 4,
+                                      "full_name": "tyas",
+                                      "email": "tyas@gmail.com",
+                                      "phone_number": "087678",
+                                      "address": "jogja",
+                                      "image_url": "https://storage.googleapis.com/bucket-project-capstone/default_profile.png"
+                                  },
+                                  "image_url": {
+                                      "1": {
+                                          "id": 8,
+                                          "image_url": "https://storage.googleapis.com/bucket-project-capstone/37b45efc-a95b-42cd-981d-ada9db229f8a.jpg"
+                                      },
+                                      "2": {
+                                          "id": 20,
+                                          "image_url": "https://storage.googleapis.com/bucket-project-capstone/e925b505-9071-464d-b6b5-5364b191095f.png"
+                                      }
+                                  }
+                              }
+                          ],
+                          "total_page": 9
+                      },
+                      "message": "success to get all data",
+                      "status": "success"
+                  }
+        '500':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "failed to get all data",
+                  }
+  /houses/images/{idHouse}:
+    post:
+      tags:
+        - Houses
+      description: User bisa menambahkan images rumah yang dijual
+      security:
+        - JWTAuth: []
+      parameters:
+        - in: path
+          name: idHouse
+          required: true
+          schema:
+            type: number
+            example: 1
+          description: house_id
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/requestImageHouse'
+            examples:
+              userData1:
+                description: "Example data  user 1"
+                value: {
+                  "files": "tampak-depan.png",
+                }
+      responses:
+        '200':
+          description: Success Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response success 1
+                  value: {
+                    "status": "success",
+                    "message": "success to insert images house",
+                  }
+        '400':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "invalid token",
+                  }
+                responseData2:
+                  description: response failed 2
+                  value: {
+                    status: "error",
+                    message: "missing or malformed jwt",
+                  }
+                responseData3:
+                  description: response failed 3
+                  value: {
+                    status: "error",
+                    message: "failed id house not recognize",
+                  }
+                responseData4:
+                  description: when token empty
+                  value: {
+                    status: "error",
+                    message: "all input must be filled",
+                  }
+        '401':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "unauthorized",
+                  }
+                responseData2:
+                  description: response failed 2
+                  value: {
+                    status: "error",
+                    message: "invalid or expired jwt",
+                  }
+        '500':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "failed to insert image house",
+                  }
+  /houses/images/{idImage}:
+    delete:
+      tags:
+        - "Houses"
+      description: Ketika user ingin menghapus images rumah yang dijual olehnya
+      security:
+        - JWTAuth: []
+      parameters:
+        - in: path
+          name: idImage
+          required: true
+          schema:
+            type: number
+            example: 1
+          description: image_id
+      responses:
+        '200':
+          description: Success Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response success 1
+                  value: {
+                    "status": "success",
+                    "message": "success to delete images house",
+                  }
+        '400':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "invalid token",
+                  }
+                responseData2:
+                  description: response failed 2
+                  value: {
+                    status: "error",
+                    message: "missing or malformed jwt",
+                  }
+                responseData3:
+                  description: response failed 3
+                  value: {
+                    "status": "error",
+                    "message": "failed id image not recognize",
+                  }
+        '401':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "unauthorized",
+                  }
+                responseData2:
+                  description: response failed 2
+                  value: {
+                    status: "error",
+                    message: "invalid or expired jwt",
+                  }
+        '500':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    "status": "error",
+                    "message": "failed to delete image house",
+                  }
+  /houses/{idHouse}:
+    put:
+      tags:
+        - Houses
+      description: Bisa diaplikasikan ketika user ingin update/edit rumah yang dijual
+      security:
+        - JWTAuth: []  
+      parameters:
+        - in: path
+          name: idHouse
+          required: true
+          schema:
+            type: number
+            example: 1
+          description: house_id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/requestHouse'
+            examples:
+              userData1:
+                description: "Example data  user 1"
+                value: {
+                   "title": "Rumah Taman Darmo Permai Utara",
+                  "price": 250000000,
+                  "location": "Sentul, Bogor",
+                  "longitude": 106.821810 ,
+                  "latitude": -6.193125,
+                  "surface_area": 64,
+                  "building_area": 124,
+                  "bathroom": 2,
+                  "bedroom": 4,
+                  "certificate": "SHM",
+                  "description": "Rumah Dijual di Bogor RUMAH TAMAN DARMO PERMAI UTARA 
+                                  LT 135 LB 90 KT 3 KM 2 2LANTAI AC 2 UNIT 2200W SUDAH RENOV HARGA 50JT/TH (NETT)",
+                }
+      responses:
+        '200':
+          description: Success Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response success 1
+                  value: {
+                    status: "success",
+                    message: "success to update house",
+                  }
+        '400':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "invalid token",
+                  }
+                responseData2:
+                  description: response failed 2
+                  value: {
+                    status: "error",
+                    message: "missing or malformed jwt",
+                  }
+                responseData3:
+                  description: response failed 3
+                  value: {
+                    status: "error",
+                    message: "failed id house not recognize",
+                  }
+                responseData4:
+                  description: response failed 4
+                  value: {
+                    status: "error",
+                    message: "all input must be filled",
+                  }
+        '401':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "unauthorized",
+                  }
+                responseData2:
+                  description: response failed 2
+                  value: {
+                    status: "error",
+                    message: "invalid or expired jwt",
+                  }
+        '500':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "failed to bind data",
+                  }
+                responseData2:
+                  description: response failed 2
+                  value: {
+                    status: "error",
+                    message: "failed to update house",
+                  }
+    get:
+      tags:
+        - "Houses"
+      description: Bisa diaplikasikan ketika user ingin melihat detail rumah yang dijual olehnya
+      parameters:
+        - in: path
+          name: idHouse
+          required: true
+          schema:
+            type: number
+            example: 1
+          description: house_id
+        - in: query
+          name: latitude
+          required: false
+          schema:
+            type: number
+            example: -6.200000
+          description: latitude
+        - in: query
+          name: longitude
+          required: false
+          schema:
+            type: number
+            example: 106.816666
+          description: longitude
+      responses:
+        '200':
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseHouseSuccess'
+              examples:
+                responseData1:
+                  description: response success 1
+                  value: {
+                      "data": {
+                          "data": {
+                              "id": 45,
+                              "title": "Rumah Gelora Permata",
+                              "price": 200000000,
+                              "location": "Tangerang",
+                              "longitude": 106.8269,
+                              "latitude": -6.1774,
+                              "surface_area": 300,
+                              "building_area": 200,
+                              "bathroom": 4,
+                              "bedroom": 5,
+                              "certificate": "SHM",
+                              "description": "Rumah Layak Huni di Kawasan Perkotaan dekat kampus Negeri",
+                              "status": "Available",
+                              "created_at": "2022-07-22T01:43:41.031Z",
+                              "user": {
+                                  "id": 1,
+                                  "full_name": "Vera Soniya",
+                                  "email": "vera@gmail.com",
+                                  "phone_number": "08123247689",
+                                  "address": "Jln. Baru No.4, Jakarta - Indonesia",
+                                  "image_url": "https://storage.googleapis.com/bucket-project-capstone/default_profile.png"
+                              },
+                              "image_url": {
+                                  "1": {
+                                      "id": 36,
+                                      "image_url": "https://storage.googleapis.com/bucket-project-capstone/85301d7a-27f6-4fba-97d3-bf459a1fcca3.jpg"
+                                  },
+                                  "2": {
+                                      "id": 37,
+                                      "image_url": "https://storage.googleapis.com/bucket-project-capstone/033838c2-7548-41cd-a99d-3da98122ff74.png"
+                                  }
+                              }
+                          },
+                          "distance": "60.5 km"
+                      },
+                      "message": "success to get data",
+                      "status": "success"
+                  }
+                responseData2:
+                  description: response success 2
+                  value: {
+                      "data": {
+                          "data": {
+                              "id": 45,
+                              "title": "Rumah Cisauk Tangerang",
+                              "price": 200000000,
+                              "location": "Tangerang",
+                              "longitude": 106.8269,
+                              "latitude": -6.1774,
+                              "surface_area": 300,
+                              "building_area": 200,
+                              "bathroom": 4,
+                              "bedroom": 5,
+                              "certificate": "SHM",
+                              "description": "Rumah Dijual di Bogor RUMAH TAMAN DARMO PERMAI UTARA LT 135 LB 90 KT 3 KM 2 2LANTAI AC 2 UNIT 2200W SUDAH RENOV HARGA 50JT/TH (NETT)",
+                              "status": "Negotiation",
+                              "created_at": "2022-07-22T01:43:41.031Z",
+                              "user": {
+                                  "id": 1,
+                                  "full_name": "Vera Soniya",
+                                  "email": "vera@gmail.com",
+                                  "phone_number": "08123247689",
+                                  "address": "Jln. Baru No.4, Jakarta - Indonesia",
+                                  "image_url": "https://storage.googleapis.com/bucket-project-capstone/default_profile.png"
+                              },
+                              "image_url": {
+                                  "1": {
+                                      "id": 36,
+                                      "image_url": "https://storage.googleapis.com/bucket-project-capstone/85301d7a-27f6-4fba-97d3-bf459a1fcca3.jpg"
+                                  },
+                                  "2": {
+                                      "id": 37,
+                                      "image_url": "https://storage.googleapis.com/bucket-project-capstone/033838c2-7548-41cd-a99d-3da98122ff74.png"
+                                  }
+                              }
+                          },
+                          "distance": "60.5 km"
+                      },
+                      "message": "success to get data",
+                      "status": "success"
+                  }
+        '400':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "failed id house not recognize",
+                  }
+        '500':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "failed to get data",
+                  }
+    
+    delete:
+      tags:
+        - Houses
+      description: Bisa diaplikasikan ketika user ingin menghapus rumah yang dijual
+      security:
+        - JWTAuth: []
+      parameters:
+        - in: path
+          name: idHouse
+          required: true
+          schema:
+            type: number
+            example: 1
+          description: house_id
+      responses:
+        '200':
+          description: Success Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response success 1
+                  value: {
+                    "status": "succes",
+                    "message": "success to delete house",
+                  }
+        '400':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "invalid token",
+                  }
+                responseData2:
+                  description: response failed 2
+                  value: {
+                    status: "error",
+                    message: "missing or malformed jwt",
+                  }
+                responseData3:
+                  description: response failed 3
+                  value: {
+                    "status": "error",
+                    "message": "failed id house not recognize",
+                  }
+        '401':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "unauthorized",
+                  }
+                responseData2:
+                  description: response failed 2
+                  value: {
+                    status: "error",
+                    message: "invalid or expired jwt",
+                  }
+        '500':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    "status": "error",
+                    "message": "failed to delete house",
+                  }
+  /houses/mylisthouses:
+    get:
+      tags:
+        - "Houses"
+      description: Bisa diaplikasikan ketika user ingin melihat seluruh rumah yang dijual olehnya
+      security:
+        - JWTAuth: []
+      parameters:
+        - in: query
+          name: limit
+          required: false
+          schema:
+            type: number
+            example: 1
+          description: limit
+        - in: query
+          name: offset
+          required: false
+          schema:
+            type: number
+            example: 1
+          description: offset
+      responses:
+        '200':
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseHouseSuccess'
+              examples:
+                responseData1:
+                  description: response success 1
+                  value: {
+                      "data": {
+                          "data": [
+                              {
+                                  "id": 49,
+                                  "title": "Rumah Jaya Kusuma",
+                                  "price": 50000000,
+                                  "location": "Irian, Papua",
+                                  "longitude": 106.82181,
+                                  "latitude": -6.193125,
+                                  "surface_area": 64,
+                                  "building_area": 124,
+                                  "bathroom": 2,
+                                  "bedroom": 4,
+                                  "certificate": "SHM",
+                                  "description": "Rumah Dijual di Papua  LT 135 LB 90 KT 3 KM 2 2LANTAI AC 2 UNIT 2200W SUDAH RENOV HARGA 50JT/TH (NETT)",
+                                  "status": "Available",
+                                  "created_at": "2022-07-22T14:50:39.421Z",
+                                  "user": {
+                                      "id": 6,
+                                      "full_name": "faizal ramadhan",
+                                      "email": "faizalramadhan@gmail.com",
+                                      "phone_number": "0812345",
+                                      "address": "Ciamis",
+                                      "image_url": "https://storage.googleapis.com/bucket-project-capstone/a1767c37-54ad-483e-ae68-e89431f1fb22.png"
+                                  },
+                                  "image_url": {
+                                      "1": {
+                                          "id": 44,
+                                          "image_url": "https://storage.googleapis.com/bucket-project-capstone/eaa77755-4920-4865-a726-2ad504e41634.jpg"
+                                      },
+                                      "2": {
+                                          "id": 45,
+                                          "image_url": "https://storage.googleapis.com/bucket-project-capstone/3cda546a-7bbf-4abd-82a5-e6fa5ffc6a5b.jpg"
+                                      }
+                                  }
+                              },
+                              {
+                                  "id": 50,
+                                  "title": "Rumah Indah Permata",
+                                  "price": 30000000,
+                                  "location": "Bekasi, Jawa Barat",
+                                  "longitude": 106.82181,
+                                  "latitude": -6.193125,
+                                  "surface_area": 64,
+                                  "building_area": 124,
+                                  "bathroom": 2,
+                                  "bedroom": 4,
+                                  "certificate": "SHM",
+                                  "description": "Rumah Dijual di Papua  LT 135 LB 90 KT 3 KM 2 2LANTAI AC 2 UNIT 2200W SUDAH RENOV HARGA 50JT/TH (NETT)",
+                                  "status": "Available",
+                                  "created_at": "2022-07-22T15:36:48.533Z",
+                                  "user": {
+                                      "id": 6,
+                                      "full_name": "faizal ramadhan",
+                                      "email": "faizalramadhan@gmail.com",
+                                      "phone_number": "0812345",
+                                      "address": "Ciamis",
+                                      "image_url": "https://storage.googleapis.com/bucket-project-capstone/a1767c37-54ad-483e-ae68-e89431f1fb22.png"
+                                  },
+                                  "image_url": {
+                                      "1": {
+                                          "id": 46,
+                                          "image_url": "https://storage.googleapis.com/bucket-project-capstone/45d069d9-8584-421f-b954-f2c2c42a5278.jpg"
+                                      },
+                                      "2": {
+                                          "id": 47,
+                                          "image_url": "https://storage.googleapis.com/bucket-project-capstone/2a1141fe-4e78-4ac2-87d0-5611fad1284f.jpg"
+                                      }
+                                  }
+                              }
+                          ],
+                          "total_page": 1
+                      },
+                      "message": "success to get all data",
+                      "status": "success"
+                  }
+        '400':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "invalid token",
+                  }
+                responseData2:
+                  description: response failed 2
+                  value: {
+                    status: "error",
+                    message: "missing or malformed jwt",
+                  }
+        '401':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "unauthorized",
+                  }
+                responseData2:
+                  description: response failed 2
+                  value: {
+                    status: "error",
+                    message: "invalid or expired jwt",
+                  }
+        '500':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "failed to get all data",
+                  }
+  /houses/searches:
+    get:
+      tags:
+        - "Houses"
+      description: Menampilkan rumah yang dicari user melalui fitur search & advance search 
+      parameters:
+        - in: query
+          name: min_price
+          required: false
+          schema:
+            type: number
+            example: 200000000
+          description: min_price
+        - in: query
+          name: max_price
+          required: false
+          schema:
+            type: number
+            example: 300000000
+          description: max_price
+        - in: query
+          name: location
+          required: false
+          schema:
+            type: string
+            example: "Jakarta"
+          description: location
+        - in: query
+          name: keyword
+          required: false
+          schema:
+            type: string
+            example: "Rumah"
+          description: keyword
+        - in: query
+          name: limit
+          required: false
+          schema:
+            type: number
+            example: 1
+          description: limit
+        - in: query
+          name: offset
+          required: false
+          schema:
+            type: number
+            example: 1
+          description: offset
+      responses:
+        '200':
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseHouseSuccess'
+              examples:
+                responseData1:
+                  description: response success 1
+                  value: {
+                      "data": {
+                          "data": [
+                              {
+                                  "id": 2,
+                                  "title": "Rumah Taman Darmo Permai Selatan",
+                                  "price": 300000000,
+                                  "location": "Sentul, Bogor",
+                                  "longitude": -6.193125,
+                                  "latitude": 106.82181,
+                                  "surface_area": 64,
+                                  "building_area": 124,
+                                  "bathroom": 2,
+                                  "bedroom": 4,
+                                  "certificate": "SHM",
+                                  "description": "Rumah Dijual di Bogor RUMAH TAMAN DARMO PERMAI UTARA  LT 135 LB 90 KT 3 KM 2 2LANTAI AC 2 UNIT 2200W SUDAH RENOV HARGA 50JT/TH (NETT)",
+                                  "status": "Available",
+                                  "created_at": "2022-07-20T02:52:13.776Z",
+                                  "user": {
+                                      "id": 4,
+                                      "full_name": "tyas",
+                                      "email": "tyas@mail.com",
+                                      "phone_number": "087678",
+                                      "address": "jogja",
+                                      "image_url": "https://storage.googleapis.com/bucket-project-capstone/default_profile.png"
+                                  },
+                                  "image_url": {
+                                      "1": {
+                                          "id": 3,
+                                          "image_url": "https://storage.googleapis.com/bucket-project-capstone/2465bad6-7787-46a6-928e-3363f5940117.jpg"
+                                      },
+                                      "2": {
+                                          "id": 4,
+                                          "image_url": "https://storage.googleapis.com/bucket-project-capstone/ec767025-6e13-49bf-9cce-eb813a7f4bb1.jpg"
+                                      }
+                                  }
+                              },
+                              {
+                                  "id": 6,
+                                  "title": "Rumah Permai Selatan",
+                                  "price": 150000000,
+                                  "location": "Priok, Jakarta Utara",
+                                  "longitude": 106.82181,
+                                  "latitude": -6.193125,
+                                  "surface_area": 56,
+                                  "building_area": 50,
+                                  "bathroom": 1,
+                                  "bedroom": 2,
+                                  "certificate": "SHM",
+                                  "description": "Rumah Dijual di Jakarta Utara RUMAH PERMAI SELATAN LT 56 LB 90 KT 2 KM 1 1LANTAI AC 2 UNIT 2200W SUDAH RENOV HARGA 150JT/TH (NETT)",
+                                  "status": "Available",
+                                  "created_at": "2022-07-21T07:40:55.416Z",
+                                  "user": {
+                                      "id": 4,
+                                      "full_name": "tyas",
+                                      "email": "tyas@mail.com",
+                                      "phone_number": "087678",
+                                      "address": "jogja",
+                                      "image_url": "https://storage.googleapis.com/bucket-project-capstone/default_profile.png"
+                                  },
+                                  "image_url": {
+                                      "1": {
+                                          "id": 8,
+                                          "image_url": "https://storage.googleapis.com/bucket-project-capstone/37b45efc-a95b-42cd-981d-ada9db229f8a.jpg"
+                                      }
+                                  }
+                              }
+                          ],
+                          "total_page": 1
+                      },
+                      "message": "success to get all data",
+                      "status": "success"
+                  }
+        '500':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "failed to bind data",
+                  }
+                responseData2:
+                  description: response failed 2
+                  value: {
+                    status: "error",
+                    message: "failed to get all data",
+                  }
+
+  /negotiations:
+    get:
+      tags:
+        - Negotiations
+      description: Ketika user melihat history negosiasi atas rumah yang diminati
+      security:
+        - JWTAuth: []
+      parameters:
+        - in: query
+          name: limit
+          required: false
+          schema:
+            type: number
+            example: 1
+          description: limit
+        - in: query
+          name: offset
+          required: false
+          schema:
+            type: number
+            example: 1
+          description: offset
+      responses:
+        '200':
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseNegotiation'
+              examples:
+                responseData1:
+                  description: response success 1
+                  value: {
+                    status: "success",
+                    message: "success to get all data",
+                    data: 
+                    [{
+                      "id": 1,
+                      "status": "Negotiation",
+                      "house": {
+                        "id": 1,
+                        "title": "Rumah Idaman Bogor",
+                        "price": 275000000000,
+                        "surface_area": 64,
+                        "location": "Sentul, Bogor",
+                        "image_url": {
+                          1: "https://storage.googleapis.com/bucket-project-3/tampak-depan.png",
+                          2: "https://storage.googleapis.com/bucket-project-3/tampak-belakang.png",
+                          3: "https://storage.googleapis.com/bucket-project-3/tampak-samping-kanan.png",
+                          4: "https://storage.googleapis.com/bucket-project-3/tampak-samping-kiri.png",
+                          5: "https://storage.googleapis.com/bucket-project-3/tempat-parkir.png",
+                        }
+                      }
+                      },
+                      {
+                      "id": 2,
+                      "status": "Owned",
+                      "house": {
+                        "id": 1,
+                        "title": "Rumah Istana Indah Yogyakarta",
+                        "price": 275000000000,
+                        "surface_area": 64,
+                        "location": "Sleman, Yogyakarta",
+                        "image_url": {
+                          1: "https://storage.googleapis.com/bucket-project-3/tampak-depan.png",
+                          2: "https://storage.googleapis.com/bucket-project-3/tampak-belakang.png",
+                          3: "https://storage.googleapis.com/bucket-project-3/tampak-samping-kanan.png",
+                          4: "https://storage.googleapis.com/bucket-project-3/tampak-samping-kiri.png",
+                          5: "https://storage.googleapis.com/bucket-project-3/tempat-parkir.png",
+                        }
+                      }
+                      }
+                    ],
+                    "total_page": 1
+                  }
+        '400':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "invalid token",
+                  }
+                responseData2:
+                  description: response failed 2
+                  value: {
+                    status: "error",
+                    message: "missing or malformed jwt",
+                  }
+        '401':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "unauthorized",
+                  }
+                responseData2:
+                  description: response failed 2
+                  value: {
+                    status: "error",
+                    message: "invalid or expired jwt",
+                  }
+        '500':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "failed to get all data",
+                  }
+  /negotiations/{idHouse}:
+    post:
+      tags:
+        - Negotiations
+      description: ketika user melakukan negotiations untuk rumah yang diminati
+      security:
+        - JWTAuth: []
+      parameters:
+        - in: path
+          name: idHouse
+          required: true
+          schema:
+            type: number
+            example: 1
+          description: house_id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/requestNegotiation'
+            examples:
+              userData1:
+                description: "Example data  user 1"
+                value: {
+                  "id_house": 1,
+                  "nego": 2750000000,
+                  "status": "negotiation",
+                }
+              userData2:
+                description: "Example data  user 2"
+                value: {
+                  "id_house": 1,
+                  "nego": 2000000000,
+                  "status": "negotiation",
+                }
+      responses:
+        '200':
+          description: Success Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response success 1
+                  value: {
+                    "status": "success",
+                    "message": "Success to insert negotiation",
+                  }
+        '400':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "invalid token",
+                  }
+                responseData2:
+                  description: response failed 2
+                  value: {
+                    status: "error",
+                    message: "missing or malformed jwt",
+                  }
+                responseData3:
+                  description: response failed 3
+                  value: {
+                    status: "error",
+                    message: "failed id house not recognize",
+                  }
+                responseData4:
+                  description: response failed 4
+                  value: {
+                    status: "error",
+                    message: "all input must be filled",
+                  }
+                responseData5:
+                  description: response failed 5
+                  value: {
+                    status: "error",
+                    message: "already nego",
+                  }
+        '401':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "unauthorized",
+                  }
+                responseData2:
+                  description: response failed 2
+                  value: {
+                    status: "error",
+                    message: "invalid or expired jwt",
+                  }
+        '500':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "failed to bind data",
+                  }
+                responseData2:
+                  description: response failed 2
+                  value: {
+                    status: "error",
+                    message: "failed to insert negotiation",
+                  }
+    get:
+      tags:
+        - Negotiations
+      description: Ketika user penjual melihat history negosiasi atas rumah yang dijual
+      security:
+        - JWTAuth: []
+      parameters:
+        - in: path
+          name: idHouse
+          required: true
+          schema:
+            type: number
+            example: 1
+          description: house_id
+        - in: query
+          name: limit
+          required: false
+          schema:
+            type: number
+            example: 1
+          description: limit
+        - in: query
+          name: offset
+          required: false
+          schema:
+            type: number
+            example: 1
+          description: offset
+      responses:
+        '200':
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseNegotiation'
+              examples:
+                responseData1:
+                  description: response success 1
+                  value: {
+                    status: "success",
+                    message: "success to get all data",
+                    data: 
+                    [{
+                      "id": 1,
+                      "nego": "3 miliar",
+                      "user": {
+                        "id": 2,
+                        "full_name": "Ardi Hakim",
+                        "image_url": "https://storage.googleapis.com/bucket-project-3/profil-Ardi.png",
+                      }
+                      },
+                      {
+                      "id": 1,
+                      "nego": "2 miliar",
+                      "user": {
+                        "id": 4,
+                        "full_name": "Hakim",
+                        "image_url": "https://storage.googleapis.com/bucket-project-3/profil-Hakim.png",
+                      }
+                      }
+                    ],
+                    "total_page": 1
+                  }
+        '400':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "invalid token",
+                  }
+                responseData2:
+                  description: response failed 2
+                  value: {
+                    status: "error",
+                    message: "missing or malformed jwt",
+                  }
+                responseData3:
+                  description: response failed 3
+                  value: {
+                    status: "error",
+                    message: "failed id house not recognize",
+                  }
+        '401':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "unauthorized",
+                  }
+                responseData2:
+                  description: response failed 2
+                  value: {
+                    status: "error",
+                    message: "invalid or expired jwt",
+                  }
+        '500':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "failed to get all data",
+                  }
+  /negotiations/{idNegotiation}:
+    delete:
+      tags:
+        - Negotiations
+      description: Bisa diaplikasikan ketika user ingin menghapus negosiasi dari rumah yang diminati
+      security:
+        - JWTAuth: []
+      parameters:
+        - in: path
+          name: idNegotiation
+          required: true
+          schema:
+            type: number
+            example: 1
+          description: negotiation_id
+      responses:
+        '200':
+          description: Success Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response success 1
+                  value: {
+                    "status": "succes",
+                    "message": "success to delete negotiation",
+                  }
+        '400':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "invalid token",
+                  }
+                responseData2:
+                  description: response failed 2
+                  value: {
+                    status: "error",
+                    message: "missing or malformed jwt",
+                  }
+                responseData3:
+                  description: response failed 3
+                  value: {
+                    status: "error",
+                    message: "failed id negotiation not recognize",
+                  }
+        '401':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "unauthorized",
+                  }
+                responseData2:
+                  description: response failed 2
+                  value: {
+                    status: "error",
+                    message: "invalid or expired jwt",
+                  }
+        '500':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    "status": "error",
+                    "message": "failed to delete negotiation",
+                  }
+    put:
+      tags:
+        - Negotiations
+      description: Bisa diaplikasikan ketika user ingin update/edit negosiasi atas rumah yang diminati
+      security:
+        - JWTAuth: []  
+      parameters:
+        - in: path
+          name: idNegotiation
+          required: true
+          schema:
+            type: number
+            example: 1
+          description: negotiation_id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  minLength: 1
+            examples:
+              userData1:
+                description: "Example data  user 1"
+                value: {
+                  "status": "cancel",
+                }
+              userData2:
+                description: "Example data  user 1"
+                value: {
+                  "status": "owned",
+                }
+      responses:
+        '200':
+          description: Success Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response success 1
+                  value: {
+                    status: "success",
+                    message: "success to update negotiation",
+                  }
+        '400':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "invalid token",
+                  }
+                responseData2:
+                  description: response failed 2
+                  value: {
+                    status: "error",
+                    message: "missing or malformed jwt",
+                  }
+                responseData3:
+                  description: response failed 3
+                  value: {
+                    status: "error",
+                    message: "failed id negotiation not recognize",
+                  }
+        '401':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "unauthorized",
+                  }
+                responseData2:
+                  description: response failed 2
+                  value: {
+                    status: "error",
+                    message: "invalid or expired jwt",
+                  }
+        '500':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "failed to bind data",
+                  }
+                responseData2:
+                  description: response failed 2
+                  value: {
+                    status: "error",
+                    message: "failed to update negotiation",
+                  }
+
+  /contractors:
+    post:
+      tags:
+        - Contractors
+      description: ketika User join sebagai kontraktor
+      security:
+        - JWTAuth: []
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/requestContractor'
+            examples:
+              userData1:
+                description: "Example data  user 1"
+                value: {
+                  "contractor_name": "PT. Bintoro Bangun Indonesia",
+                  "number_siujk": "1-867624-3173-2-03481",
+                  "image_file": "image-contractor.png",
+                  "certificate_file": "SIUJK-certificate.pdf",
+                  "phone_number": "0824-6743-1158",
+                  "email": "marketing@bintorobuild.co.id",
+                  "address": Jl. Kebembem Raya No.6 - Jakarta Selatan,
+                  "description": "Menyediakan jasa kontraktor yang membantu Anda dalam menciptakan bangunan yang sesuai
+                                  dengan impian Anda. Karena impian Anda adalah semangat kami untuk bekerja",
+                }
+      responses:
+        '200':
+          description: Success Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response success 1
+                  value: {
+                    "status": "success",
+                    "message": "success to create contractor",
+                  }
+        '400':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "invalid token",
+                  }
+                responseData2:
+                  description: response failed 2
+                  value: {
+                    status: "error",
+                    message: "missing or malformed jwt",
+                  }
+                responseData3:
+                  description: response failed 3
+                  value: {
+                    status: "error",
+                    message: "already as join contractor",
+                  }
+                responseData4:
+                  description: response failed 4
+                  value: {
+                    status: "error",
+                    message: "all input data must be filled",
+                  }
+        '401':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "unauthorized",
+                  }
+                responseData2:
+                  description: response failed 2
+                  value: {
+                    status: "error",
+                    message: "invalid or expired jwt",
+                  }
+        '500':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "failed to create contractor",
+                  }
+    get:
+      tags:
+        - "Contractors"
+      description: Bisa diaplikasikan ketika ingin melihat semua kontraktor yang ada
+      parameters:
+        - in: query
+          name: limit
+          required: false
+          schema:
+            type: number
+            example: 1
+          description: limit
+        - in: query
+          name: offset
+          required: false
+          schema:
+            type: number
+            example: 1
+          description: offset
+      responses:
+        '200':
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseContractor'
+              examples:
+                responseData1:
+                  description: response success 1
+                  value: {
+                    status: "success",
+                    message: "success to get all data",
+                    data: {
+                      data: 
+                    [
+                      {
+                      "id": 1,
+                      "contractor_name": "PT. Bintoro Bangun Indonesia",
+                      "number_siujk": "1-867624-3173-2-03481",
+                      "image_url": "https://storage.googleapis.com/bucket-project-3/image-contractor.png",
+                      "phone_number": "0824-6743-1158",
+                      "email": "marketing@bintorobuild.co.id",
+                      "address": Jl. Kebembem Raya No.6 - Jakarta Selatan,
+                      "description": "Menyediakan jasa kontraktor yang membantu Anda dalam menciptakan bangunan yang sesuai
+                                      dengan impian Anda. Karena impian Anda adalah semangat kami untuk bekerja",
+                      "certificate_siujk_url": "https://storage.googleapis.com/bucket-project-3/certificate-contractor.png"
+                      },
+                    ],
+                    "total_page": 1
+                    }
+                  }
+        '500':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "failed to get all data",
+                  }
+    delete:
+      tags:
+        - Contractors
+      description: Ketika User Delete kontraktor yang dibuatnya
+      security:
+        - JWTAuth: []
+      responses:
+        '200':
+          description: Success Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response success 1
+                  value: {
+                    "status": "success",
+                    "message": "success to delete contractor",
+                  }
+        '400':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "invalid token",
+                  }
+                responseData2:
+                  description: response failed 2
+                  value: {
+                    status: "error",
+                    message: "missing or malformed jwt",
+                  }
+        '401':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "unauthorized",
+                  }
+                responseData2:
+                  description: response failed 2
+                  value: {
+                    status: "error",
+                    message: "invalid or expired jwt",
+                  }
+        '500':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    "status": "error",
+                    "message": "failed to delete contractor",
+                  }
+  /contractors/{idContractor}:
+    get:
+      tags:
+        - "Contractors"
+      description: Melihat kontraktor yang telah dibuat
+      parameters:
+        - in: path
+          name: idContractor
+          required: true
+          schema:
+            type: number
+            example: 1
+          description: contractor_id
+      responses:
+        '200':
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseContractor'
+              examples:
+                responseData1:
+                  description: response success 1
+                  value: {
+                    status: "success",
+                    message: "success to get data",
+                    data: 
+                    {
+                      "id": 1,
+                      "contractor_name": "PT. Bintoro Bangun Indonesia",
+                      "number_siujk": "1-867624-3173-2-03481",
+                      "image_url": "https://storage.googleapis.com/bucket-project-3/image-contractor.png",
+                      "phone_number": "0824-6743-1158",
+                      "email": "marketing@bintorobuild.co.id",
+                      "address": Jl. Kebembem Raya No.6 - Jakarta Selatan,
+                      "description": "Menyediakan jasa kontraktor yang membantu Anda dalam menciptakan bangunan yang sesuai
+                                      dengan impian Anda. Karena impian Anda adalah semangat kami untuk bekerja",
+                      "certificate_siujk_url": "https://storage.googleapis.com/bucket-project-3/certificate-contractor.png"
+                    },
+                  }
+        '400':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "failed id contractor not recognize",
+                  }
+        '500':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "failed to get data",
+                  }
+    put:
+      tags:
+        - "Contractors"
+      description: Ketika user ingin update/edit kontraktor yang telah dibuat
+      security:
+        - JWTAuth: []
+      parameters:
+        - in: path
+          name: idContractor
+          required: true
+          schema:
+            type: number
+            example: 1
+          description: contractor_id
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/requestContractor'
+            examples:
+              userData1:
+                description: "Example data  user 1"
+                value: {
+                  "contractor_name": "PT. Bintoro Bangun Indonesia",
+                  "number_siujk": "1-867624-3173-2-03481",
+                  "image_file": "image-contractor.png",
+                  "certificate_file": "SIUJK-certificate.pdf",
+                  "phone_number": "0824-6743-1158",
+                  "email": "marketing@bintorobuild.co.id",
+                  "address": Jl. Kebembem Raya No.6 - Jakarta Selatan,
+                  "description": "Menyediakan jasa kontraktor yang membantu Anda dalam menciptakan bangunan yang sesuai
+                                  dengan impian Anda. Karena impian Anda adalah semangat kami untuk bekerja",
+                }
+      responses:
+        '200':
+          description: Success Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response success 1
+                  value: {
+                    status: "success",
+                    message: "success to update data",
+                  }
+        '400':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "invalid token",
+                  }
+                responseData2:
+                  description: response failed 2
+                  value: {
+                    status: "error",
+                    message: "missing or malformed jwt",
+                  }
+                responseData3:
+                  description: response failed 3
+                  value: {
+                    status: "error",
+                    message: "all input data must be filled",
+                  }
+        '401':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "unauthorized",
+                  }
+                responseData2:
+                  description: response failed 2
+                  value: {
+                    status: "error",
+                    message: "invalid or expired jwt",
+                  }
+        '500':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "failed to update data",
+                  }    
+  /portfolios:
+    post:
+      tags:
+        - Portfolios
+      description: Ketika kontraktor menambahkan portofolionya
+      security:
+        - JWTAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/requestPortfolio'
+            examples:
+              userData1:
+                description: "Example data 1"
+                value: 
+                  {
+                    "client_name": "Anhar Kusuma",
+                    "location": "Jawa Barat",
+                    "finish_date": "08 Desember 2021",
+                    "longitude": 106.821810,
+                    "latitude": -6.193125,
+                    "price": 100000000,
+                    "description": "Renovasi Rumah",
+                    "contractor_id": 1
+                  }
+      responses:
+        '200':
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responsePortfolio'
+              examples:
+                responseData1:
+                  description: response success 1
+                  value: {
+                    "status": "success",
+                    "message": "success to insert portfolio",
+                    "data": {
+                      "id_portfolio": 1,
+                    }
+                  }
+        '400':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "invalid token",
+                  }
+                responseData2:
+                  description: response failed 2
+                  value: {
+                    status: "error",
+                    message: "missing or malformed jwt",
+                  }
+                responseData3:
+                  description: response failed 3
+                  value: {
+                    status: "error",
+                    message: "all input must be filled",
+                  }
+        '401':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "unauthorized",
+                  }
+                responseData2:
+                  description: response failed 2
+                  value: {
+                    status: "error",
+                    message: "invalid or expired jwt",
+                  }
+        '500':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "failed to bind data",
+                  }
+                responseData2:
+                  description: response failed 2
+                  value: {
+                    status: "error",
+                    message: "failed to insert portfolio",
+                  }
+  /portfolios/images/{idPortfolio}:
+    post:
+      tags:
+        - Portfolios
+      description: Ketika kontraktor menambahkan image portofolionya
+      security:
+        - JWTAuth: []
+      parameters:
+        - in: path
+          name: idPortfolio
+          required: true
+          schema:
+            type: number
+            example: 1
+          description: portfolio_id
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/requestImagePortfolio'
+            examples:
+              userData1:
+                description: "Example data 1"
+                value: 
+                  {
+                    "files": "portfolio1.png",
+                  }
+      responses:
+        '200':
+          description: Success Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response success 1
+                  value: {
+                    "status": "success",
+                    "message": "success to insert image portfolio",
+                  }
+        '400':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "invalid token",
+                  }
+                responseData2:
+                  description: response failed 2
+                  value: {
+                    status: "error",
+                    message: "missing or malformed jwt",
+                  }
+                responseData3:
+                  description: response failed 3
+                  value: {
+                    status: "error",
+                    message: "failed id portfolio not recognize",
+                  }
+                responseData4:
+                  description: response failed 4
+                  value: {
+                    status: "error",
+                    message: "all input must be filled",
+                  }
+        '401':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "unauthorized",
+                  }
+                responseData2:
+                  description: response failed 2
+                  value: {
+                    status: "error",
+                    message: "invalid or expired jwt",
+                  }
+        '500':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "failed to insert image portfolio",
+                  }
+  /portfolios/images/{idImage}:
+    delete:
+      tags:
+        - "Portfolios"
+      description: Ketika kontraktor ingin menghapus images portofolionya
+      security:
+        - JWTAuth: []
+      parameters:
+        - in: path
+          name: idImage
+          required: true
+          schema:
+            type: number
+            example: 1
+          description: image_id
+      responses:
+        '200':
+          description: Success Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response success 1
+                  value: {
+                    "status": "success",
+                    "message": "success to delete image portfolio",
+                  }
+        '400':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "invalid token",
+                  }
+                responseData2:
+                  description: response failed 2
+                  value: {
+                    status: "error",
+                    message: "missing or malformed jwt",
+                  }
+                responseData3:
+                  description: response failed 3
+                  value: {
+                    status: "error",
+                    message: "failed id image not recognize",
+                  }
+        '401':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "unauthorized",
+                  }
+                responseData2:
+                  description: response failed 2
+                  value: {
+                    status: "error",
+                    message: "invalid or expired jwt",
+                  }
+        '500':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    "status": "error",
+                    "message": "failed to delete image portfolio",
+                  }
+  /portfolios/contractors/{idContractor}:
+    get:
+      tags:
+        - "Portfolios"
+      description: Ketika user ingin melihat seluruh portfolio dari kontraktor
+      parameters:
+        - in: path
+          name: idContractor
+          required: true
+          schema:
+            type: number
+            example: 1
+          description: contractor_id
+        - in: query
+          name: limit
+          required: false
+          schema:
+            type: number
+            example: 1
+          description: limit
+        - in: query
+          name: offset
+          required: false
+          schema:
+            type: number
+            example: 1
+          description: offset
+      responses:
+        '200':
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responsePortfolio'
+              examples:
+                responseData1:
+                  description: response success 1
+                  value: {
+                      "data": {
+                          "data": [
+                              {
+                                  "id": 1,
+                                  "client_name": "Azka",
+                                  "location": "Pekalongan",
+                                  "finish_date": "2 Mei 2021",
+                                  "longitude": 106.82181,
+                                  "latitude": -6.193125,
+                                  "price": 20000000,
+                                  "description": "renovasi rumah",
+                                  "created_at": "2022-07-20T03:25:36.728Z",
+                                  "contractor": {
+                                      "id": 1
+                                  },
+                                  "image_url": {
+                                      "1": {
+                                          "id": 1,
+                                          "image_url": "https://storage.googleapis.com/bucket-project-capstone/ad0a0d9e-8bfa-4e72-85ef-ab6e79336a88.jpg"
+                                      },
+                                      "2": {
+                                          "id": 2,
+                                          "image_url": "https://storage.googleapis.com/bucket-project-capstone/ad0a0d9e-8bfa-4e72-85ef-ab6e79336a88.jpg"
+                                      }
+                                  }
+                              }
+                          ],
+                          "total_page": 1
+                      },
+                      "message": "success to get all data ",
+                      "status": "success"
+                  }
+        '400':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "id contractor not recognize",
+                  }
+        '500':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "failed to get data",
+                  }
+  /portfolios/details/{idPortfolio}:
+    get:
+      tags:
+        - "Portfolios"
+      description: Ketika kontraktor ingin melihat detail portofolio dari kontraktor
+      security:
+        - JWTAuth: []
+      parameters:
+        - in: path
+          name: idPortfolio
+          required: true
+          schema:
+            type: number
+            example: 1
+          description: portfolio_id
+      responses:
+        '200':
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responsePortfolio'
+              examples:
+                responseData1:
+                  description: response success 1
+                  value: {
+                    status: "success",
+                    message: "success to get data",
+                    data: 
+                    {
+                      "id": 2,
+                      "client_name": "Anhar Kusuma",
+                      "location": "Jawa Barat",
+                      "finish_date": "08 Desember 2021",
+                      "longitude": 106.821810,
+                      "latitude": -6.193125,
+                      "price": 100000000,
+                      "description": "Renovasi Rumah",
+                      "image_url": {
+                        "1" : "https://storage.googleapis.com/bucket-project-3/portfolio1.png",
+                        "2" : "https://storage.googleapis.com/bucket-project-3/portfolio2.png",
+                        "3" : "https://storage.googleapis.com/bucket-project-3/portfolio3.png",
+                        "4" : "https://storage.googleapis.com/bucket-project-3/portfolio4.png",
+                        "5" : "https://storage.googleapis.com/bucket-project-3/portfolio5.png",
+                        }, 
+                    }
+                  }
+        '400':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "invalid token",
+                  }
+                responseData2:
+                  description: response failed 2
+                  value: {
+                    status: "error",
+                    message: "missing or malformed jwt",
+                  }
+                responseData3:
+                  description: response failed 3
+                  value: {
+                    status: "error",
+                    message: "failed id portfolio not recognize",
+                  }
+        '401':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "unauthorized",
+                  }
+                responseData2:
+                  description: response failed 2
+                  value: {
+                    status: "error",
+                    message: "invalid or expired jwt",
+                  }
+        '500':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "failed to get data",
+                  }
+    put:
+      tags:
+        - "Portfolios"
+      description: Ketika kontraktor ingin update/edit portofolionya
+      security:
+        - JWTAuth: []
+      parameters:
+        - in: path
+          name: idPortfolio
+          required: true
+          schema:
+            type: number
+            example: 1
+          description: portfolio_id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/requestPortfolio'
+            examples:
+              userData1:
+                description: "Example data 1"
+                value: 
+                  {
+                    "client_name": "Aji perdana",
+                    "location": "Jawa Barat",
+                    "finish_date": "08 Desember 2021",
+                    "longitude": 106.821810,
+                    "latitude": -6.193125,
+                    "price": 100000000,
+                    "description": "Renovasi Rumah"
+                  }
+      responses:
+        '200':
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                type: number
+                example: 1
+                description: portfolio_id
+              examples:
+                responseData1:
+                  description: response success 1
+                  value: {
+                    status: "success",
+                    id_portfolio: 1,
+                    message: "success to update portfolio",
+                  }
+        '400':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "invalid token",
+                  }
+                responseData2:
+                  description: response failed 2
+                  value: {
+                    status: "error",
+                    message: "missing or malformed jwt",
+                  }
+                responseData3:
+                  description: response failed 3
+                  value: {
+                    status: "error",
+                    message: "failed id portfolio not recognize",
+                  }
+        '401':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "unauthorized",
+                  }
+                responseData2:
+                  description: response failed 2
+                  value: {
+                    status: "error",
+                    message: "invalid or expired jwt",
+                  }
+        '500':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "failed to bind data",
+                  }
+                responseData2:
+                  description: response failed 2
+                  value: {
+                    status: "error",
+                    message: "all input must be filled",
+                  }
+                responseData3:
+                  description: response failed 3
+                  value: {
+                    status: "error",
+                    message: "failed to update portfolio",
+                  }
+    delete:
+      tags:
+        - Portfolios
+      description: Ketika Kontraktor Delete portofolio yang dibuatnya
+      security:
+        - JWTAuth: []
+      parameters:
+        - in: path
+          name: idPortfolio
+          required: true
+          schema:
+            type: number
+            example: 1
+          description: portfolio_id
+      responses:
+        '200':
+          description: Success Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response success 1
+                  value: {
+                      "message": "success to delete portfolio",
+                      "status": "success"
+                  }
+        '400':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "invalid token",
+                  }
+                responseData2:
+                  description: response failed 2
+                  value: {
+                    status: "error",
+                    message: "missing or malformed jwt",
+                  }
+                responseData3:
+                  description: response failed 3
+                  value: {
+                    status: "error",
+                    message: "failed id portfolio not recognized",
+                  }
+        '401':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    status: "error",
+                    message: "unauthorized",
+                  }
+                responseData2:
+                  description: response failed 2
+                  value: {
+                    status: "error",
+                    message: "invalid or expired jwt",
+                  }
+        '500':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    "status": "error",
+                    "message": "failed to delete portfolio",
+                  }
+
+
+        
+
+              
+
+components:
+  securitySchemes:
+    JWTAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: "use Token"
+  schemas:
+    requestLogin:
+      type: object
+      properties:
+        "email":
+          type: string
+          minLength: 1
+        "password":
+          type: string
+          minLength: 1
+
+    responseUserSuccess:
+      type: object
+      properties: {
+        "status": {
+          type: string
+        },
+        "message": {
+          type: string
+        },
+        "data":{
+          type: object
+        }
+      }
+    
+    requestRegistrasi:
+      type: object
+      properties:
+        "full_name":
+          type: string
+          minLength: 1
+        "email":
+          type: string
+          minLength: 1
+        "password":
+          type: string
+          minLength: 1
+        "phone_number":
+          type: string
+          minLength: 1
+        "address":
+          type: string
+          minLength: 1
+
+    requestUpdate:
+      type: object
+      properties:
+        "full_name":
+          type: string
+          minLength: 1
+        "email":
+          type: string
+          minLength: 1
+        "password":
+          type: string
+          minLength: 1
+        "phone_number":
+          type: string
+          minLength: 1
+        "address":
+          type: string
+          minLength: 1
+        "file":
+          type: string
+          format: binary
+    requestHouse:
+      type: object
+      properties:
+        "title":
+          type: string
+          minLength: 1
+        "price":
+          type: number
+          minLength: 1
+        "location":
+          type: string
+          minLength: 1
+        "longitude":
+          type: number
+          minLength: 1
+        "latidude":
+          type: number
+          minLength: 1
+        "surface_area":
+          type: number
+          minLength: 1
+        "buiding_area":
+          type: number
+          minLength: 1
+        "bathroom":
+          type: number
+          minLength: 1
+        "bedroom":
+          type: number
+          minLength: 1
+        "certificate":
+          type: string
+          minLength: 1
+        "description":
+          type: string
+          minLength: 1
+    requestImageHouse:
+      type: object
+      properties:
+        "files":
+          type: string
+          format: binary
+    responseHouseSuccess:
+      type: object
+      properties: {
+        "status": {
+          type: string
+        },
+        "message": {
+          type: string
+        },
+        "data":{
+          type: object
+        }
+      }
+    requestContractor:
+      type: object
+      properties:
+        "contractor_name":
+          type: string
+          minLength: 1
+        "number_siujk":
+          type: string
+          minLength: 1
+        "image_file":
+          type: string
+          format: binary
+        "certificate_file":
+          type: string
+          format: binary
+        "phone_number":
+          type: string
+          minLength: 1
+        "email":
+          type: string
+          minLength: 1
+        "address":
+          type: string
+          minLength: 1
+        "description":
+          type: string
+          minLength: 1
+    responseContractor:
+      type: object
+      properties: {
+        "status": {
+          type: string
+        },
+        "message": {
+          type: string
+        },
+        "data":{
+          type: object
+        }
+      }
+    requestNegotiation:
+      type: object
+      properties:
+        "id_house":
+          type: number
+          minLength: 1
+        "nego":
+          type: number
+          minLength: 1
+        "status":
+          type: string
+          minLength: 1
+    requestPortfolio:
+      type: object
+      properties:
+        "client_name":
+          type: string
+          minLength: 1
+        "location":
+          type: string
+        "finish_date":
+          type: string
+        "longitude":
+          type: number
+        "latitude":
+          type: number
+        "price":
+          type: number
+        "description":
+          type: string
+        "contractor_id":
+          type: number
+    requestImagePortfolio:
+      type: object
+      properties:
+        "files":
+          type: string
+          format: binary
+    responsePortfolio:
+      type: object
+      properties: {
+        "status": {
+          type: string
+        },
+        "message": {
+          type: string
+        },
+        "data":{
+          type: object
+        }
+      }
+    responseNegotiation:
+      type: object
+      properties: {
+        "status": {
+          type: string
+        },
+        "message": {
+          type: string
+        },
+        "data":{
+          type: object
+        }
+      }
