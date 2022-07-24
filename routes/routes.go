@@ -28,6 +28,7 @@ func New(presenter factory.Presenter) *echo.Echo {
 	e.GET("contractors/:idContractor", presenter.ContractorPresenter.GetContractor)
 	e.DELETE("contractors", presenter.ContractorPresenter.DeleteContractor, middlewares.JWTMiddleware())
 	e.PUT("contractors/:idContractor", presenter.ContractorPresenter.EditContractor, middlewares.JWTMiddleware())
+	e.GET("contractors/mycontractor", presenter.ContractorPresenter.GetOwnContractor, middlewares.JWTMiddleware())
 
 	//houses
 	e.GET("houses", presenter.HousePresenter.GetAllHouse)

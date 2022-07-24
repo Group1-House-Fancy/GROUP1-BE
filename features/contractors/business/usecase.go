@@ -70,3 +70,8 @@ func (uc *contractorUsecase) PutContractor(idCtr int, idUser int, data contracto
 	row, err = uc.contractorData.UpdateContractor(idCtr, idUser, data)
 	return row, err
 }
+
+func (uc *contractorUsecase) GetOwnContractor(id int) (data contractors.Core, err error) {
+	data, err = uc.contractorData.SelectOwnContractor(id)
+	return data, err
+}
