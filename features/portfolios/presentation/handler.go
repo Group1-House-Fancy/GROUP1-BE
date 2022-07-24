@@ -119,7 +119,7 @@ func (h *PortfolioHandler) EditPortfolio(c echo.Context) error {
 	if errBind != nil {
 		return c.JSON(http.StatusInternalServerError, helpers.ResponseFailed("failed to bind data"))
 	}
-	result, err := h.portfolioBusiness.PutPortfolio(idPortfol, _requestPortfolio.ToCore(dataPortfolio))
+	result, resData, err := h.portfolioBusiness.PutPortfolio(idPortfol, _requestPortfolio.ToCore(dataPortfolio))
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, helpers.ResponseFailed("failed to update portfolio"))
 	}
@@ -129,7 +129,10 @@ func (h *PortfolioHandler) EditPortfolio(c echo.Context) error {
 	if result == 0 {
 		return c.JSON(http.StatusInternalServerError, helpers.ResponseFailed("failed to update portfolio"))
 	}
-	return c.JSON(http.StatusOK, helpers.ResponseSuccesNoData("success to update portfolio"))
+	var Respon = map[string]interface{}{
+		"id_contractor": resData,
+	}
+	return c.JSON(http.StatusOK, helpers.ResponseSuccesWithData("success to update portfolio", Respon))
 }
 
 func (h *PortfolioHandler) DeletePortfolio(c echo.Context) error {

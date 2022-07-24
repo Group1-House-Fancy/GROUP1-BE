@@ -43,13 +43,13 @@ func (repo *mysqlPortfolioRepository) SelectPortfolio(idPrtf int) (portfolios.Co
 	return dataPrtf.toCore(), nil
 }
 
-func (repo *mysqlPortfolioRepository) UpdatePortfolio(idPrtf int, data portfolios.Core) (int, error) {
+func (repo *mysqlPortfolioRepository) UpdatePortfolio(idPrtf int, data portfolios.Core) (int, int, error) {
 	var dataPortfolio = fromCore(data)
-	result := repo.db.Where("id = ?", idPrtf).Updates(&dataPortfolio)
+	result := repo.db.Preload("Contractor").Where("id = ?", idPrtf).Updates(&dataPortfolio).First(&dataPortfolio)
 	if result.Error != nil {
-		return 0, result.Error
+		return 0, 0, result.Error
 	}
-	return 1, nil
+	return 1, int(dataPortfolio.ContractorID), nil
 }
 
 func (repo *mysqlPortfolioRepository) DeletePortfolio(idPrtf int) (int, error) {
