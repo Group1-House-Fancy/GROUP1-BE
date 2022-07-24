@@ -94,3 +94,12 @@ func (repo *mysqlContractorRepository) CountContractorData() (int, error) {
 	}
 	return int(count), nil
 }
+
+func (repo *mysqlContractorRepository) SelectOwnContractor(id int) (contractors.Core, error) {
+	var dataCrt Contractor
+	result := repo.db.Where("user_id = ?", id).First(&dataCrt)
+	if result.Error != nil {
+		return contractors.Core{}, result.Error
+	}
+	return dataCrt.toCore(), nil
+}

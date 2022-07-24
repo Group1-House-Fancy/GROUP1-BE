@@ -165,3 +165,19 @@ func (h *ContractorHandler) EditContractor(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, helpers.ResponseSuccesNoData("success to update data"))
 }
+
+func (h *ContractorHandler) GetOwnContractor(c echo.Context) error {
+	idToken, errToken := middlewares.ExtractToken(c)
+	if errToken != nil {
+		return c.JSON(http.StatusBadRequest, helpers.ResponseFailed("invalid token"))
+	}
+
+	if idToken == 0 {
+		return c.JSON(http.StatusUnauthorized, helpers.ResponseFailed("Unauthorized"))
+	}
+	result, err := h.contractorBusiness.GetOwnContractor(idToken)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, helpers.ResponseFailed("failed to get data"))
+	}
+	return c.JSON(http.StatusOK, helpers.ResponseSuccesWithData("success to get data", _responseContractor.FromCore(result)))
+}
